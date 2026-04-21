@@ -228,15 +228,15 @@ export default function ServicesPage() {
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)"; e.currentTarget.style.boxShadow = "none"; }}>
 
                 {/* Image/Visual Side */}
-                <div style={{ order: 0, background: `linear-gradient(135deg, ${service.color}08 0%, ${service.color}15 100%)`, padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px", overflow: "hidden" }}>
-                  <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+                <div style={{ order: 0, background: `linear-gradient(135deg, ${service.color}08 0%, ${service.color}15 100%)`, padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
+                  <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "200px", height: "200px", background: `radial-gradient(circle, ${service.color}15 0%, transparent 70%)`, pointerEvents: "none" }} />
+                  <div style={{ width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", boxShadow: `0 10px 40px ${service.color}20`, border: `1px solid ${service.color}30` }}>
                     <img 
-                      src={index % 2 === 0 ? "/window.webp" : "/phone.png"} 
+                      src="/window.webp" 
                       alt={service.title}
                       style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
                     />
                   </div>
-                  <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${service.color}10 0%, ${service.color}20 100%)`, pointerEvents: "none" }} />
                 </div>
 
                 {/* Content Side */}
