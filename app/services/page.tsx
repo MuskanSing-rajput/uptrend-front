@@ -9,108 +9,108 @@ gsap.registerPlugin(ScrollTrigger);
 
 const services = [
   {
-    id: "ai-trading-signals",
-    title: "AI Trading Signals",
-    category: "TRADING",
+    id: "multi-market-dashboard",
+    title: "Multi-Market Dashboard",
+    category: "UNIFIED",
     color: "#00f0ff",
     icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
     ),
-    shortDesc: "Get real-time, AI-powered trading signals with precision accuracy.",
-    longDesc: "Our advanced algorithms analyze market patterns, sentiment, and technical indicators to deliver actionable insights. Receive buy/sell signals across Forex and Crypto markets with entry points, stop-loss levels, and take-profit targets — all powered by machine learning models trained on millions of data points.",
-    features: ["Real-time signal delivery", "Multi-timeframe analysis", "Risk/reward ratios", "Win-rate tracking", "Push notifications", "Historical performance data"],
-    tags: ["Real-time", "AI-Powered", "Accurate"],
+    shortDesc: "Monitor major Forex pairs and top Crypto assets side-by-side with live prices.",
+    longDesc: "Monitor major Forex pairs and top Crypto assets side-by-side with live prices. Switch between markets instantly - no tabs, no switching platforms, just one powerful dashboard.",
+    features: ["Live price updates", "Multi-market view", "Side-by-side comparison", "Instant switching", "No platform switching", "Unified interface"],
+    tags: ["Unified", "Real-Time", "Multi-Market"],
   },
   {
-    id: "automated-trading",
-    title: "Automated Trading",
-    category: "AUTOMATION",
+    id: "ai-strategy-builder",
+    title: "AI Strategy Builder",
+    category: "AI BUILDER",
     color: "#a855f7",
     icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2"><path d="M12 2v20M2 12h20" /><circle cx="12" cy="12" r="10" /></svg>
     ),
-    shortDesc: "Set your strategy and let our bots execute trades 24/7.",
-    longDesc: "Configure risk parameters, profit targets, and stop-losses while our system monitors markets around the clock. Our automated trading bots use sophisticated algorithms to execute trades at lightning speed, eliminating emotional decision-making and ensuring you never miss a profitable opportunity.",
-    features: ["24/7 automated execution", "Custom strategy builder", "Backtesting engine", "Risk management tools", "Multiple bot strategies", "Performance dashboard"],
-    tags: ["24/7 Active", "Configurable", "Smart Bots"],
+    shortDesc: "Type what you want in plain English, and our AI instantly creates strategies.",
+    longDesc: "Type what you want in plain English, and our AI instantly creates, backtests, and refines the complete strategy for you. Perfect for scalping XAUUSD or swing trading BTC.",
+    features: ["Plain English input", "AI creation", "Autobactesting", "Strategy refinement", "Multi-asset support", "Instant deployment"],
+    tags: ["No-Code", "AI-Powered", "Instant"],
   },
   {
-    id: "portfolio-management",
-    title: "Portfolio Management",
-    category: "PORTFOLIO",
+    id: "ai-trade-assistant",
+    title: "AI Trade Assistant",
+    category: "ANALYSIS",
     color: "#10b981",
     icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" /><path d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" /></svg>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" /><path d="M12 6v6l4.25 2.52" /></svg>
     ),
-    shortDesc: "Track and optimize your entire portfolio with intelligent diversification tools.",
-    longDesc: "Get detailed analytics, performance metrics, and AI-driven recommendations to balance your portfolio for maximum returns with minimized risk. Our intelligent diversification engine helps you spread across asset classes, currencies, and strategies — all from one unified dashboard.",
-    features: ["Real-time portfolio tracking", "Asset allocation insights", "Profit/Loss analytics", "Diversification scoring", "Performance benchmarking", "Tax reporting tools"],
-    tags: ["Analytics", "Optimization", "Insights"],
+    shortDesc: "Ask for market sentiment on any Forex pair or Crypto coin instantly.",
+    longDesc: "Pick any Forex pair or Crypto coin and ask for market sentiment. Our AI scans thousands of global news sources, analyst reports, and on-chain data in seconds, then executes the trade at your chosen risk level - low, moderate, or high.",
+    features: ["News scanning", "Analyst reports", "On-chain data", "Risk levels", "Instant execution", "Sentiment analysis"],
+    tags: ["Analysis", "Execution", "Research"],
   },
   {
-    id: "risk-analysis",
-    title: "Risk Analysis",
-    category: "SECURITY",
+    id: "backtesting-engine",
+    title: "Advanced Backtesting Engine",
+    category: "BACKTEST",
     color: "#f59e0b",
     icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" /><polyline points="13 2 13 9 20 9" /></svg>
     ),
-    shortDesc: "Advanced risk assessment tools that analyze market volatility and exposure.",
-    longDesc: "Protect your capital with comprehensive risk reports, real-time alerts, and position-sizing calculators. Our risk analysis engine monitors your entire portfolio for exposure, correlation risks, and market volatility — helping you make informed decisions before entering any trade.",
-    features: ["Volatility monitoring", "Position sizing calculator", "Drawdown alerts", "Correlation matrix", "Exposure analysis", "Risk-reward optimizer"],
-    tags: ["Protection", "Alerts", "Analysis"],
+    shortDesc: "Run strategies on years of real historical Forex and Crypto data.",
+    longDesc: "Run your strategies on years of real historical Forex and Crypto data. See exact win rate, drawdown, and profit potential before you put a single rupee on the line.",
+    features: ["Historical data", "Win rate tracking", "Drawdown analysis", "Profit potential", "Risk assessment", "Multi-year backtests"],
+    tags: ["Historical", "Results", "Data"],
   },
   {
-    id: "market-analytics",
-    title: "Market Analytics",
-    category: "ANALYTICS",
-    color: "#ef4444",
-    icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
-    ),
-    shortDesc: "Deep dive into market trends with our comprehensive analytics dashboard.",
-    longDesc: "Access historical data, predictive models, and sentiment analysis to understand market dynamics. Our analytics platform combines fundamental analysis, technical charting, and social sentiment data to give you a 360-degree view of any market — helping you spot opportunities before the crowd.",
-    features: ["Sentiment analysis", "Technical indicators", "Fundamental data", "Predictive models", "Market heatmaps", "Economic calendar"],
-    tags: ["Trends", "Predictions", "Sentiment"],
-  },
-  {
-    id: "copy-trading",
-    title: "Copy Trading",
-    category: "SOCIAL",
+    id: "smart-copy-trading",
+    title: "Smart Copy Trading",
+    category: "COPY TRADING",
     color: "#ec4899",
     icon: (
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ec4899" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
     ),
-    shortDesc: "Follow and automatically replicate trades from top-performing traders.",
-    longDesc: "Browse verified profiles, analyze performance history, and mirror strategies with customizable settings. Our smart copy trading feature lets you allocate funds to multiple lead traders, set risk limits, and automatically replicate their positions in real-time — perfect for beginners and busy professionals.",
-    features: ["Verified trader profiles", "Performance leaderboard", "Customizable risk limits", "Real-time replication", "Multi-trader following", "Earnings analytics"],
-    tags: ["Social", "Replicate", "Verified"],
+    shortDesc: "Copy trades from verified master traders in real time.",
+    longDesc: "Copy trades from verified master traders in Forex and Crypto in real time. Set up Master & Child accounts with full control over risk and allocation - earn while you sleep.",
+    features: ["Verified traders", "Real-time copying", "Master accounts", "Child accounts", "Risk control", "Allocation management"],
+    tags: ["Master", "Child", "Copy"],
   },
   {
-    id: "educational-resources",
-    title: "Educational Resources",
-    category: "EDUCATION",
-    color: "#8b5cf6",
-    icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>
-    ),
-    shortDesc: "Access a comprehensive library of trading courses, webinars, and tutorials.",
-    longDesc: "From beginner basics to advanced strategies, continuously improve your trading skills with our curated educational content. Includes video courses, interactive quizzes, live webinars with expert traders, downloadable guides, and a structured learning path that takes you from novice to professional.",
-    features: ["Video courses", "Live webinars", "Interactive quizzes", "Expert mentorship", "Certification program", "Community forums"],
-    tags: ["Courses", "Webinars", "Tutorials"],
-  },
-  {
-    id: "expert-support",
-    title: "24/7 Expert Support",
-    category: "SUPPORT",
+    id: "paper-live-trading",
+    title: "Paper + Live Trading",
+    category: "TRADING",
     color: "#06b6d4",
     icon: (
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
     ),
-    shortDesc: "Round-the-clock assistance from our dedicated team of trading experts.",
-    longDesc: "Get technical help, trading advice, or account support whenever you need it. Our multilingual support team is available 24/7 via live chat, email, and phone — ensuring you're never left without guidance. Whether it's a platform question or a trading strategy discussion, our experts are here for you.",
-    features: ["24/7 live chat", "Email support", "Phone assistance", "Multilingual team", "Priority for premium", "Knowledge base"],
-    tags: ["24/7", "Expert Help", "Dedicated"],
+    shortDesc: "Test every strategy in paper trading first, then switch to live with one click.",
+    longDesc: "Test every strategy in a full paper trading environment first. When you're confident, switch to live trading with one click — zero downtime.",
+    features: ["Paper trading", "Live trading", "One-click switching", "Zero downtime", "Strategy testing", "Confidence building"],
+    tags: ["Paper", "Live", "Seamless"],
+  },
+  {
+    id: "broker-api-integration",
+    title: "Broker API Integration",
+    category: "INTEGRATION",
+    color: "#8b5cf6",
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>
+    ),
+    shortDesc: "Secure API connections to your favorite Forex brokers and Crypto exchanges.",
+    longDesc: "Secure, bank-level API connections to your favorite Forex brokers and leading Crypto exchanges. Your funds always stay safely in your own accounts.",
+    features: ["Bank-level security", "Forex brokers", "Crypto exchanges", "Secure connections", "Own accounts", "Full control"],
+    tags: ["API", "Secure", "Brokers"],
+  },
+  {
+    id: "strategy-marketplace",
+    title: "Strategy Marketplace",
+    category: "MARKETPLACE",
+    color: "#ef4444",
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
+    ),
+    shortDesc: "Browse proven algo strategies from top Indian traders.",
+    longDesc: "Browse proven algo strategies from top Indian traders or publish your own. A complete marketplace built only for Forex and Crypto — save time and discover what actually works.",
+    features: ["Proven strategies", "Top traders", "Publish own", "Forex focused", "Crypto support", "Community tested"],
+    tags: ["Strategies", "Community", "Marketplace"],
   },
 ];
 
@@ -223,26 +223,24 @@ export default function ServicesPage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px" }}>
           <div className="services-grid" style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
             {services.map((service, index) => (
-              <div key={service.id} id={service.id} className="service-detail-card" style={{ display: "grid", gridTemplateColumns: index % 2 === 0 ? "1fr 1.2fr" : "1.2fr 1fr", gap: "0", background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease", opacity: 0 }}
+              <div key={service.id} id={service.id} className="service-detail-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease", opacity: 0 }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${service.color}40`; e.currentTarget.style.boxShadow = `0 20px 60px ${service.color}10`; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)"; e.currentTarget.style.boxShadow = "none"; }}>
 
                 {/* Image/Visual Side */}
-                <div style={{ order: index % 2 === 0 ? 0 : 1, background: `linear-gradient(135deg, ${service.color}08 0%, ${service.color}15 100%)`, padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
-                  <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "200px", height: "200px", background: `radial-gradient(circle, ${service.color}15 0%, transparent 70%)`, pointerEvents: "none" }} />
-                  <div style={{ width: "100px", height: "100px", background: `${service.color}15`, borderRadius: "24px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "32px", border: `1px solid ${service.color}30` }}>
-                    {service.icon}
+                <div style={{ order: 0, background: `linear-gradient(135deg, ${service.color}08 0%, ${service.color}15 100%)`, padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px", overflow: "hidden" }}>
+                  <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+                    <img 
+                      src={index % 2 === 0 ? "/window.webp" : "/phone.png"} 
+                      alt={service.title}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+                    />
                   </div>
-                  <span style={{ background: `${service.color}20`, color: service.color, padding: "6px 16px", borderRadius: "50px", fontSize: "12px", fontWeight: 700, letterSpacing: "1.5px", marginBottom: "16px" }}>{service.category}</span>
-                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
-                    {service.tags.map((tag, ti) => (
-                      <span key={ti} style={{ background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: "50px", padding: "6px 14px", fontSize: "12px", color: "rgba(255, 255, 255, 0.6)" }}>{tag}</span>
-                    ))}
-                  </div>
+                  <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${service.color}10 0%, ${service.color}20 100%)`, pointerEvents: "none" }} />
                 </div>
 
                 {/* Content Side */}
-                <div style={{ order: index % 2 === 0 ? 1 : 0, padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ order: 1, padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
                     <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.3)", fontWeight: 600 }}>0{index + 1} / 08</span>
                   </div>
