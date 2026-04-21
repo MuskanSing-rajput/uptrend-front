@@ -1112,29 +1112,29 @@ export default function Home() {
           </div>
 
           <div className="stacking-cards-wrapper">
-            {/* Card 1 - AI Trading Signals */}
+            {/* Card 1 - Multi-Market Dashboard */}
             <div className="stacking-card" style={{ '--card-index': 0, '--card-color': '#00f0ff' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="AI Trading Signals" />
+                  <img src="/window.webp" alt="Multi-Market Dashboard" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 100, 200, 0.25) 100%)' }}></div>
                   <div className="card-content-inner">
                     <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(0, 240, 255, 0.2)', color: '#00f0ff' }}>TRADING</span>
+                      <span className="card-category" style={{ background: 'rgba(0, 240, 255, 0.2)', color: '#00f0ff' }}>UNIFIED</span>
                       <span className="card-counter">01 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">AI Trading Signals</h3>
+                    <h3 className="stacking-card-title">Multi-Market Dashboard</h3>
                     <p className="stacking-card-description">
-                      Get real-time, AI-powered trading signals with precision accuracy. Our advanced algorithms analyze market patterns, sentiment, and technical indicators to deliver actionable insights.
+                      Monitor major Forex pairs and top Crypto assets side-by-side with live prices. Switch between markets instantly - no tabs, no switching platforms, just one powerful dashboard.
                     </p>
                     <div className="card-tags">
-                      <span className="card-tag">Real-time</span>
-                      <span className="card-tag">AI-Powered</span>
-                      <span className="card-tag">Accurate</span>
+                      <span className="card-tag">Unified</span>
+                      <span className="card-tag">Real-Time</span>
+                      <span className="card-tag">Multi-Market</span>
                     </div>
-                    <a href="/services#ai-trading-signals" className="stacking-card-btn">
+                    <a href="/services#multi-market-dashboard" className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
@@ -1145,29 +1145,29 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 2 - Automated Trading */}
+            {/* Card 2 - AI Strategy Builder */}
             <div className="stacking-card" style={{ '--card-index': 1, '--card-color': '#a855f7' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/phone.png" alt="Automated Trading" />
+                  <img src="/window.webp" alt="AI Strategy Builder" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(99, 102, 241, 0.25) 100%)' }}></div>
                   <div className="card-content-inner">
                     <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7' }}>AUTOMATION</span>
+                      <span className="card-category" style={{ background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7' }}>AI BUILDER</span>
                       <span className="card-counter">02 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">Automated Trading</h3>
+                    <h3 className="stacking-card-title">AI Strategy Builder</h3>
                     <p className="stacking-card-description">
-                      Set your strategy and let our bots execute trades 24/7. Configure risk parameters, profit targets, and stop-losses while our system monitors markets around the clock.
+                      Type what you want in plain English, and our AI instantly creates, backtests, and refines the complete strategy for you. Perfect for scalping XAUUSD or swing trading BTC.
                     </p>
                     <div className="card-tags">
-                      <span className="card-tag">24/7 Active</span>
-                      <span className="card-tag">Configurable</span>
-                      <span className="card-tag">Smart Bots</span>
+                      <span className="card-tag">No-Code</span>
+                      <span className="card-tag">AI-Powered</span>
+                      <span className="card-tag">Instant</span>
                     </div>
-                    <a href="/services#automated-trading" className="stacking-card-btn">
+                    <a href="/services#ai-strategy-builder" className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
@@ -1178,29 +1178,29 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 3 - Portfolio Management */}
+            {/* Card 3 - AI Trade Assistant */}
             <div className="stacking-card" style={{ '--card-index': 2, '--card-color': '#10b981' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Portfolio Management" />
+                  <img src="/window.webp" alt="AI Trade Assistant" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.25) 100%)' }}></div>
                   <div className="card-content-inner">
                     <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' }}>PORTFOLIO</span>
+                      <span className="card-category" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' }}>ANALYSIS</span>
                       <span className="card-counter">03 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">Portfolio Management</h3>
+                    <h3 className="stacking-card-title">AI Trade Assistant</h3>
                     <p className="stacking-card-description">
-                      Track and optimize your entire portfolio with intelligent diversification tools. Get detailed analytics, performance metrics, and AI-driven recommendations.
+                      Pick any Forex pair or Crypto coin and ask for market sentiment. Our AI scans thousands of global news sources, analyst reports, and on-chain data in seconds, then executes the trade at your chosen risk level.
                     </p>
                     <div className="card-tags">
-                      <span className="card-tag">Analytics</span>
-                      <span className="card-tag">Optimization</span>
-                      <span className="card-tag">Insights</span>
+                      <span className="card-tag">Analysis</span>
+                      <span className="card-tag">Execution</span>
+                      <span className="card-tag">Research</span>
                     </div>
-                    <a href="/services#portfolio-management" className="stacking-card-btn">
+                    <a href="/services#ai-trade-assistant" className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
@@ -1211,29 +1211,29 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 4 - Risk Analysis */}
+            {/* Card 4 - Advanced Backtesting Engine */}
             <div className="stacking-card" style={{ '--card-index': 3, '--card-color': '#f59e0b' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/phone.png" alt="Risk Analysis" />
+                  <img src="/window.webp" alt="Advanced Backtesting Engine" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.25) 100%)' }}></div>
                   <div className="card-content-inner">
                     <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b' }}>SECURITY</span>
+                      <span className="card-category" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b' }}>BACKTEST</span>
                       <span className="card-counter">04 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">Risk Analysis</h3>
+                    <h3 className="stacking-card-title">Advanced Backtesting Engine</h3>
                     <p className="stacking-card-description">
-                      Advanced risk assessment tools that analyze market volatility, position sizing, and exposure levels. Protect your capital with comprehensive reports and alerts.
+                      Run your strategies on years of real historical Forex and Crypto data. See exact win rate, drawdown, and profit potential before you put a single rupee on the line.
                     </p>
                     <div className="card-tags">
-                      <span className="card-tag">Protection</span>
-                      <span className="card-tag">Alerts</span>
-                      <span className="card-tag">Analysis</span>
+                      <span className="card-tag">Historical</span>
+                      <span className="card-tag">Results</span>
+                      <span className="card-tag">Data</span>
                     </div>
-                    <a href="/services#risk-analysis" className="stacking-card-btn">
+                    <a href="/services#backtesting-engine" className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
@@ -1244,62 +1244,29 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 5 - Market Analytics */}
-            <div className="stacking-card" style={{ '--card-index': 4, '--card-color': '#ef4444' } as React.CSSProperties}>
+            {/* Card 5 - Smart Copy Trading */}
+            <div className="stacking-card" style={{ '--card-index': 4, '--card-color': '#ec4899' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Market Analytics" />
-                </div>
-                <div className="stacking-card-content">
-                  <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%)' }}></div>
-                  <div className="card-content-inner">
-                    <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>ANALYTICS</span>
-                      <span className="card-counter">05 / 08</span>
-                    </div>
-                    <h3 className="stacking-card-title">Market Analytics</h3>
-                    <p className="stacking-card-description">
-                      Deep dive into market trends with our comprehensive analytics dashboard. Access historical data, predictive models, and sentiment analysis to understand market dynamics.
-                    </p>
-                    <div className="card-tags">
-                      <span className="card-tag">Trends</span>
-                      <span className="card-tag">Predictions</span>
-                      <span className="card-tag">Sentiment</span>
-                    </div>
-                    <a href="/services#market-analytics" className="stacking-card-btn">
-                      View Details
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 6 - Copy Trading */}
-            <div className="stacking-card" style={{ '--card-index': 5, '--card-color': '#ec4899' } as React.CSSProperties}>
-              <div className="stacking-card-inner">
-                <div className="stacking-card-image">
-                  <img src="/phone.png" alt="Copy Trading" />
+                  <img src="/window.webp" alt="Smart Copy Trading" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(190, 24, 93, 0.25) 100%)' }}></div>
                   <div className="card-content-inner">
                     <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(236, 72, 153, 0.2)', color: '#ec4899' }}>SOCIAL</span>
-                      <span className="card-counter">06 / 08</span>
+                      <span className="card-category" style={{ background: 'rgba(236, 72, 153, 0.2)', color: '#ec4899' }}>COPY TRADING</span>
+                      <span className="card-counter">05 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">Copy Trading</h3>
+                    <h3 className="stacking-card-title">Smart Copy Trading</h3>
                     <p className="stacking-card-description">
-                      Follow and automatically replicate trades from top-performing traders. Browse verified profiles, analyze performance history, and mirror strategies with customizable settings.
+                      Copy trades from verified master traders in Forex and Crypto in real time. Set up Master & Child accounts with full control over risk and allocation - earn while you sleep.
                     </p>
                     <div className="card-tags">
-                      <span className="card-tag">Social</span>
-                      <span className="card-tag">Replicate</span>
-                      <span className="card-tag">Verified</span>
+                      <span className="card-tag">Master</span>
+                      <span className="card-tag">Child</span>
+                      <span className="card-tag">Copy</span>
                     </div>
-                    <a href="/services#copy-trading" className="stacking-card-btn">
+                    <a href="/services#smart-copy-trading" className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
@@ -1310,62 +1277,95 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 7 - Educational Resources */}
-            <div className="stacking-card" style={{ '--card-index': 6, '--card-color': '#8b5cf6' } as React.CSSProperties}>
+            {/* Card 6 - Paper + Live Trading */}
+            <div className="stacking-card" style={{ '--card-index': 5, '--card-color': '#06b6d4' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Educational Resources" />
-                </div>
-                <div className="stacking-card-content">
-                  <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(109, 40, 217, 0.25) 100%)' }}></div>
-                  <div className="card-content-inner">
-                    <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(139, 92, 246, 0.2)', color: '#8b5cf6' }}>EDUCATION</span>
-                      <span className="card-counter">07 / 08</span>
-                    </div>
-                    <h3 className="stacking-card-title">Educational Resources</h3>
-                    <p className="stacking-card-description">
-                      Access a comprehensive library of trading courses, webinars, and tutorials. From beginner basics to advanced strategies, continuously improve your trading skills.
-                    </p>
-                    <div className="card-tags">
-                      <span className="card-tag">Courses</span>
-                      <span className="card-tag">Webinars</span>
-                      <span className="card-tag">Tutorials</span>
-                    </div>
-                    <a href="/services#educational-resources" className="stacking-card-btn">
-                      View Details
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 8 - 24/7 Expert Support */}
-            <div className="stacking-card" style={{ '--card-index': 7, '--card-color': '#06b6d4' } as React.CSSProperties}>
-              <div className="stacking-card-inner">
-                <div className="stacking-card-image">
-                  <img src="/phone.png" alt="24/7 Expert Support" />
+                  <img src="/window.webp" alt="Paper + Live Trading" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(14, 116, 144, 0.25) 100%)' }}></div>
                   <div className="card-content-inner">
                     <div className="card-meta">
-                      <span className="card-category" style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#06b6d4' }}>SUPPORT</span>
-                      <span className="card-counter">08 / 08</span>
+                      <span className="card-category" style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#06b6d4' }}>TRADING</span>
+                      <span className="card-counter">06 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">24/7 Expert Support</h3>
+                    <h3 className="stacking-card-title">Paper + Live Trading</h3>
                     <p className="stacking-card-description">
-                      Round-the-clock assistance from our dedicated team of trading experts. Get technical help, trading advice, or account support whenever you need it.
+                      Test every strategy in a full paper trading environment first. When you're confident, switch to live trading with one click — zero downtime.
                     </p>
                     <div className="card-tags">
-                      <span className="card-tag">24/7</span>
-                      <span className="card-tag">Expert Help</span>
-                      <span className="card-tag">Dedicated</span>
+                      <span className="card-tag">Paper</span>
+                      <span className="card-tag">Live</span>
+                      <span className="card-tag">Seamless</span>
                     </div>
-                    <a href="/services#expert-support" className="stacking-card-btn">
+                    <a href="/services#paper-live-trading" className="stacking-card-btn">
+                      View Details
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 7 - Broker API Integration */}
+            <div className="stacking-card" style={{ '--card-index': 6, '--card-color': '#8b5cf6' } as React.CSSProperties}>
+              <div className="stacking-card-inner">
+                <div className="stacking-card-image">
+                  <img src="/window.webp" alt="Broker API Integration" />
+                </div>
+                <div className="stacking-card-content">
+                  <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(109, 40, 217, 0.25) 100%)' }}></div>
+                  <div className="card-content-inner">
+                    <div className="card-meta">
+                      <span className="card-category" style={{ background: 'rgba(139, 92, 246, 0.2)', color: '#8b5cf6' }}>INTEGRATION</span>
+                      <span className="card-counter">07 / 08</span>
+                    </div>
+                    <h3 className="stacking-card-title">Broker API Integration</h3>
+                    <p className="stacking-card-description">
+                      Secure, bank-level API connections to your favorite Forex brokers and leading Crypto exchanges. Your funds always stay safely in your own accounts.
+                    </p>
+                    <div className="card-tags">
+                      <span className="card-tag">API</span>
+                      <span className="card-tag">Secure</span>
+                      <span className="card-tag">Brokers</span>
+                    </div>
+                    <a href="/services#broker-api-integration" className="stacking-card-btn">
+                      View Details
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 8 - Strategy Marketplace */}
+            <div className="stacking-card" style={{ '--card-index': 7, '--card-color': '#ef4444' } as React.CSSProperties}>
+              <div className="stacking-card-inner">
+                <div className="stacking-card-image">
+                  <img src="/window.webp" alt="Strategy Marketplace" />
+                </div>
+                <div className="stacking-card-content">
+                  <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%)' }}></div>
+                  <div className="card-content-inner">
+                    <div className="card-meta">
+                      <span className="card-category" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>MARKETPLACE</span>
+                      <span className="card-counter">08 / 08</span>
+                    </div>
+                    <h3 className="stacking-card-title">Strategy Marketplace</h3>
+                    <p className="stacking-card-description">
+                      Browse proven algo strategies from top Indian traders or publish your own. A complete marketplace built only for Forex and Crypto — save time and discover what actually works.
+                    </p>
+                    <div className="card-tags">
+                      <span className="card-tag">Strategies</span>
+                      <span className="card-tag">Community</span>
+                      <span className="card-tag">Marketplace</span>
+                    </div>
+                    <a href="/services#strategy-marketplace" className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
