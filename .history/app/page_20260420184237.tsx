@@ -871,9 +871,9 @@ export default function Home() {
           <nav className="hidden md:flex items-center nav-menu">
             <a href="/" className="nav-link" style={{ color: "#00f0ff" }}>Home</a>
             <a href="/about" className="nav-link">About Us</a>
+            <a href="#" className="nav-link">Features</a>
             <a href="/services" className="nav-link">Services</a>
-            <a href="#pricing" className="nav-link">Pricing</a>
-            <a href="#features" className="nav-link">Features</a>
+            <a href="#" className="nav-link">Pricing</a>
             <a href="/blog" className="nav-link">Blog</a>
             <a href="/contact" className="nav-link">Contact Us</a>
           </nav>
@@ -1463,7 +1463,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" ref={pricingRef} style={{ 
+      <section ref={pricingRef} style={{ 
         background: 'linear-gradient(180deg, #0a0a0a 0%, #0a1540 50%, #0a0a0a 100%)', 
         padding: '100px 0', 
         position: 'relative', 
@@ -1707,7 +1707,7 @@ export default function Home() {
 
 
       {/* Features Section */}
-      <section id="features" ref={exploreRef} style={{ 
+      <section ref={exploreRef} style={{ 
         background: '#0a0a0a', 
         padding: '120px 0', 
         position: 'relative', 

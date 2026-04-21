@@ -65,18 +65,6 @@ const tickerSecondary: TickerItem[] = [
 const tickerItems = [...tickerPrimary, ...tickerSecondary];
 const tickerLoop = [...tickerItems, ...tickerItems];
 
-type PricingPlan = {
-  id: string;
-  name: string;
-  description: string;
-  monthlyPrice: number;
-  yearlyPrice: number;
-  features: { text: string; included: boolean }[];
-  popular: boolean;
-  cta: string;
-  ctaLink: string;
-};
-
 export default function Home() {
   const [navVisible, setNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -86,8 +74,6 @@ export default function Home() {
   const [isAnnual, setIsAnnual] = useState(false);
   const [showSocialMenu, setShowSocialMenu] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [pricingPlans, setPricingPlans] = useState<PricingPlan[]>([]);
-  const [loadingPricing, setLoadingPricing] = useState(true);
   
   // Refs for all sections
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -95,43 +81,10 @@ export default function Home() {
   const alwaysReadyRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const whyChooseRef = useRef<HTMLDivElement>(null);
-  const pricingRef = useRef<HTMLDivElement>(null);
   const awardsRef = useRef<HTMLDivElement>(null);
   const ratingsRef = useRef<HTMLDivElement>(null);
   const partnershipsRef = useRef<HTMLDivElement>(null);
   const exploreRef = useRef<HTMLDivElement>(null);
-
-  // Fetch pricing data
-  useEffect(() => {
-    const fetchPricing = async () => {
-      try {
-        const response = await fetch('https://app.uptrender.in/user/pricing');
-        if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
-          const data = await response.json();
-          setPricingPlans(data.plans || []);
-        } else {
-          // API not available or not returning JSON, use fallback data
-          setLoadingPricing(false);
-        }
-      } catch (error) {
-        // Silently fail and use fallback pricing data
-        setLoadingPricing(false);
-      } finally {
-        setLoadingPricing(false);
-      }
-    };
-    fetchPricing();
-  }, []);
-
-  // Refresh ScrollTrigger when pricing cards finish loading
-  useEffect(() => {
-    if (!loadingPricing) {
-      // Give React time to render the cards, then refresh ScrollTrigger
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-    }
-  }, [loadingPricing]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -230,6 +183,25 @@ export default function Home() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".everything-subtitle",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+
+      // Animate feature cards
+      gsap.fromTo(
+        ".feature-card",
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          delay: 0.3,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".feature-cards",
             start: "top 80%",
             toggleActions: "play none none none",
           },
@@ -370,84 +342,6 @@ export default function Home() {
     return () => ctx.revert();
   }, []);
 
-  // GSAP animation for Services section header
-  useEffect(() => {
-    if (!servicesRef.current) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".services-label",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".services-label",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      gsap.fromTo(
-        ".services-title",
-        { opacity: 0, y: 50, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          delay: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".services-title",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      gsap.fromTo(
-        ".services-subtitle",
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          delay: 0.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".services-subtitle",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      gsap.fromTo(
-        ".stacking-card",
-        { opacity: 0, y: 80, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".stacking-cards-wrapper",
-            start: "top 75%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }, servicesRef);
-
-    return () => ctx.revert();
-  }, []);
-
   // GSAP animation for Why Choose section
   useEffect(() => {
     if (!whyChooseRef.current) return;
@@ -486,88 +380,6 @@ export default function Home() {
         }
       );
     }, whyChooseRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  // GSAP animation for Pricing section
-  useEffect(() => {
-    if (!pricingRef.current) return;
-
-    const ctx = gsap.context(() => {
-      // Animate pricing section title
-      gsap.fromTo(
-        ".pricing-title",
-        { opacity: 0, y: 50, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: "back.out(1.2)",
-          scrollTrigger: {
-            trigger: ".pricing-title",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      // Animate pricing subtitle
-      gsap.fromTo(
-        ".pricing-subtitle",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".pricing-subtitle",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      // Animate toggle
-      gsap.fromTo(
-        ".pricing-toggle",
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.6,
-          delay: 0.2,
-          ease: "back.out(1.5)",
-          scrollTrigger: {
-            trigger: ".pricing-toggle",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      // Animate pricing cards with stagger
-      gsap.fromTo(
-        ".pricing-card",
-        { opacity: 0, y: 60, rotateX: 15 },
-        {
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 1,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".pricing-cards-grid",
-            start: "top 75%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }, pricingRef);
 
     return () => ctx.revert();
   }, []);
@@ -704,29 +516,12 @@ export default function Home() {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".features-label",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".features-label",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      gsap.fromTo(
         ".explore-title",
         { opacity: 0, y: 50 },
         {
           opacity: 1,
           y: 0,
           duration: 1,
-          delay: 0.1,
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".explore-title",
@@ -869,11 +664,11 @@ export default function Home() {
 
           {/* Navigation - Left aligned with gap */}
           <nav className="hidden md:flex items-center nav-menu">
-            <a href="/" className="nav-link" style={{ color: "#00f0ff" }}>Home</a>
+            <a href="/" className="nav-link">Home</a>
             <a href="/about" className="nav-link">About Us</a>
-            <a href="/services" className="nav-link">Services</a>
-            <a href="#pricing" className="nav-link">Pricing</a>
-            <a href="#features" className="nav-link">Features</a>
+            <a href="#" className="nav-link">Features</a>
+            <a href="#" className="nav-link">Services</a>
+            <a href="#" className="nav-link">Pricing</a>
             <a href="/blog" className="nav-link">Blog</a>
             <a href="/contact" className="nav-link">Contact Us</a>
           </nav>
@@ -998,10 +793,57 @@ export default function Home() {
             <h2 className="everything-title" style={{ color: '#ffffff', fontSize: '48px', fontWeight: 700, lineHeight: 1.1, marginBottom: '24px', opacity: 0 }}>
               Everything you need for profitable <span style={{ color: '#00f0ff' }}>Forex & Crypto trading</span><span className="everything-dot" style={{ color: '#dc2626' }}>.</span>
             </h2>
-            <p className="everything-subtitle" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '18px', lineHeight: 1.6, marginBottom: '4px', maxWidth: '500px', opacity: 0 }}>
+            <p className="everything-subtitle" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '18px', lineHeight: 1.6, marginBottom: '32px', maxWidth: '500px', opacity: 0 }}>
               Now powered by India's smartest AI. Real-time market sentiment analysis. No-code strategy builder. <br/> Smart copy trading. All of it, right in your pocket. Trade smarter, faster, and 24/7 — whether you're at your desk or on the move.
             </p>
-            <a href="/about" className="read-more-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#00f0ff', fontSize: '16px', fontWeight: 600, textDecoration: 'none', marginBottom: '16px', opacity: 0, transition: 'all 0.3s ease' }}>
+            
+            {/* Feature Cards */}
+            <div className="feature-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+              {/* Broker Integration */}
+              <div className="feature-card" style={{ background: 'rgba(20, 20, 25, 0.8)', border: '1px solid rgba(0, 240, 255, 0.2)', borderRadius: '16px', padding: '24px', transition: 'all 0.3s ease' }}>
+                <div style={{ width: '48px', height: '48px', background: 'rgba(0, 240, 255, 0.1)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>Broker Integration</h3>
+                <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.5 }}>
+                  Secure API to Indian brokers, Forex and Crypto exchanges.
+                </p>
+              </div>
+
+              {/* Strategy Marketplace */}
+              <div className="feature-card" style={{ background: 'rgba(20, 20, 25, 0.8)', border: '1px solid rgba(0, 240, 255, 0.2)', borderRadius: '16px', padding: '24px', transition: 'all 0.3s ease' }}>
+                <div style={{ width: '48px', height: '48px', background: 'rgba(0, 240, 255, 0.1)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
+                </div>
+                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>Strategy Marketplace</h3>
+                <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.5 }}>
+                  Buy, sell, or share proven strategies from top Indian traders. Save time.
+                </p>
+              </div>
+
+              {/* Instant Funding */}
+              <div className="feature-card" style={{ background: 'rgba(20, 20, 25, 0.8)', border: '1px solid rgba(0, 240, 255, 0.2)', borderRadius: '16px', padding: '24px', transition: 'all 0.3s ease' }}>
+                <div style={{ width: '48px', height: '48px', background: 'rgba(0, 240, 255, 0.1)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                  </svg>
+                </div>
+                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>Instant Funding</h3>
+                <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.5 }}>
+                  Add money instantly via UPI, Razorpay, or crypto. Fully secure and transparent.
+                </p>
+              </div>
+            </div>
+            
+            <a href="/about" className="read-more-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#00f0ff', fontSize: '16px', fontWeight: 600, textDecoration: 'none', marginBottom: '24px', opacity: 0, transition: 'all 0.3s ease' }}>
               Read More About Us
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -1134,12 +976,12 @@ export default function Home() {
                       <span className="card-tag">AI-Powered</span>
                       <span className="card-tag">Accurate</span>
                     </div>
-                    <a href="/services#ai-trading-signals" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1167,12 +1009,12 @@ export default function Home() {
                       <span className="card-tag">Configurable</span>
                       <span className="card-tag">Smart Bots</span>
                     </div>
-                    <a href="/services#automated-trading" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1200,12 +1042,12 @@ export default function Home() {
                       <span className="card-tag">Optimization</span>
                       <span className="card-tag">Insights</span>
                     </div>
-                    <a href="/services#portfolio-management" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1233,12 +1075,12 @@ export default function Home() {
                       <span className="card-tag">Alerts</span>
                       <span className="card-tag">Analysis</span>
                     </div>
-                    <a href="/services#risk-analysis" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1266,12 +1108,12 @@ export default function Home() {
                       <span className="card-tag">Predictions</span>
                       <span className="card-tag">Sentiment</span>
                     </div>
-                    <a href="/services#market-analytics" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1299,12 +1141,12 @@ export default function Home() {
                       <span className="card-tag">Replicate</span>
                       <span className="card-tag">Verified</span>
                     </div>
-                    <a href="/services#copy-trading" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1332,12 +1174,12 @@ export default function Home() {
                       <span className="card-tag">Webinars</span>
                       <span className="card-tag">Tutorials</span>
                     </div>
-                    <a href="/services#educational-resources" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1365,12 +1207,12 @@ export default function Home() {
                       <span className="card-tag">Expert Help</span>
                       <span className="card-tag">Dedicated</span>
                     </div>
-                    <a href="/services#expert-support" className="stacking-card-btn">
+                    <button className="stacking-card-btn">
                       View Details
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M7 17L17 7M17 7H7M17 7V17"/>
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1463,35 +1305,33 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" ref={pricingRef} style={{ 
+      <section style={{ 
         background: 'linear-gradient(180deg, #0a0a0a 0%, #0a1540 50%, #0a0a0a 100%)', 
         padding: '100px 0', 
         position: 'relative', 
         zIndex: 12 
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px' }}>
-          <h2 className="pricing-title" style={{ 
+          <h2 style={{ 
             color: '#ffffff', 
             fontSize: '48px', 
             fontWeight: 700, 
             textAlign: 'center',
-            marginBottom: '20px',
-            opacity: 0
+            marginBottom: '20px'
           }}>
             Choose Your Plan<span style={{ color: '#00f0ff' }}>.</span>
           </h2>
-          <p className="pricing-subtitle" style={{ 
+          <p style={{ 
             color: 'rgba(255, 255, 255, 0.6)', 
             fontSize: '18px', 
             textAlign: 'center',
-            marginBottom: '40px',
-            opacity: 0
+            marginBottom: '40px'
           }}>
             Select the perfect plan for your trading journey
           </p>
 
           {/* Monthly/Annual Toggle */}
-          <div className="pricing-toggle" style={{ display: 'flex', justifyContent: 'center', marginBottom: '60px', opacity: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '60px' }}>
             <div style={{ 
               background: 'rgba(255, 255, 255, 0.1)', 
               borderRadius: '50px', 
@@ -1534,180 +1374,234 @@ export default function Home() {
           </div>
 
           {/* Pricing Cards */}
-          {loadingPricing ? (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: 'rgba(255, 255, 255, 0.5)' }}>
-              Loading pricing plans...
-            </div>
-          ) : (
-            <div className="pricing-cards-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${pricingPlans.length || 3}, 1fr)`, gap: '30px', alignItems: 'stretch' }}>
-              {(pricingPlans.length > 0 ? pricingPlans : [
-                {
-                  id: 'standard',
-                  name: 'Standard',
-                  description: 'Perfect for individual traders getting started',
-                  monthlyPrice: 1999,
-                  yearlyPrice: 19990,
-                  popular: false,
-                  cta: 'Get Started',
-                  ctaLink: 'https://app.uptrender.in/auth/register',
-                  features: [
-                    { text: '5 Active Strategies', included: true },
-                    { text: 'Basic Backtesting', included: true },
-                    { text: '1 Broker Integration', included: true },
-                    { text: 'Email Support', included: true },
-                    { text: 'Strategy Marketplace Access', included: true },
-                    { text: 'Advanced Analytics', included: false },
-                    { text: 'Priority Support', included: false },
-                    { text: 'API Access', included: false }
-                  ]
-                },
-                {
-                  id: 'premium',
-                  name: 'Premium',
-                  description: 'For serious traders who want more power',
-                  monthlyPrice: 4999,
-                  yearlyPrice: 49990,
-                  popular: true,
-                  cta: 'Get Premium',
-                  ctaLink: 'https://app.uptrender.in/auth/register',
-                  features: [
-                    { text: 'Unlimited Strategies', included: true },
-                    { text: 'Advanced Backtesting', included: true },
-                    { text: 'Multi-Broker Support', included: true },
-                    { text: 'Priority Email & Chat', included: true },
-                    { text: 'Strategy Marketplace - Sell Your Strategies', included: true },
-                    { text: 'Advanced Analytics & Reports', included: true },
-                    { text: 'Copy Trading', included: true },
-                    { text: 'API Access', included: false }
-                  ]
-                },
-                {
-                  id: 'enterprise',
-                  name: 'Enterprise',
-                  description: 'For professional traders and institutions',
-                  monthlyPrice: 9999,
-                  yearlyPrice: 99990,
-                  popular: false,
-                  cta: 'Contact Sales',
-                  ctaLink: 'mailto:sales@uptrender.tech',
-                  features: [
-                    { text: 'Everything in Premium', included: true },
-                    { text: 'Dedicated Account Manager', included: true },
-                    { text: 'Custom Broker Integration', included: true },
-                    { text: '24/7 Priority Support', included: true },
-                    { text: 'White-Label Solutions', included: true },
-                    { text: 'Full API Access', included: true },
-                    { text: 'Custom Development', included: true },
-                    { text: 'SLA Guarantee', included: true }
-                  ]
-                }
-              ]).map((plan, index) => {
-                const price = isAnnual ? plan.yearlyPrice : plan.monthlyPrice;
-                const saving = (plan.monthlyPrice * 12) - plan.yearlyPrice;
-                return (
-                  <div key={plan.id} className="pricing-card" style={{ 
-                    background: 'rgba(10, 15, 30, 0.8)', 
-                    borderRadius: '16px', 
-                    padding: '40px 32px',
-                    boxShadow: plan.popular ? '0 0 40px rgba(0, 240, 255, 0.15), 0 8px 40px rgba(0, 0, 0, 0.3)' : '0 4px 20px rgba(0, 0, 0, 0.3)',
-                    border: plan.popular ? '2px solid rgba(0, 240, 255, 0.4)' : '1px solid rgba(255, 255, 255, 0.1)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'relative',
-                    backdropFilter: 'blur(10px)',
-                    transform: plan.popular ? 'scale(1.02)' : 'scale(1)',
-                    transition: 'all 0.3s ease'
-                  }}>
-                    {plan.popular && (
-                      <div style={{ 
-                        position: 'absolute', 
-                        top: '-16px', 
-                        right: '24px', 
-                        background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
-                        color: '#0a0a0a', 
-                        padding: '8px 20px', 
-                        borderRadius: '20px',
-                        fontSize: '13px',
-                        fontWeight: 700
-                      }}>
-                        Most Popular
-                      </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px', alignItems: 'stretch' }}>
+            {/* Standard Plan */}
+            <div style={{ 
+              background: 'rgba(10, 15, 30, 0.8)', 
+              borderRadius: '16px', 
+              padding: '40px 32px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              backdropFilter: 'blur(10px)',
+              transition: 'all 0.3s ease'
+            }}>
+              <div style={{ marginBottom: '24px' }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>Standard</h3>
+              <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '14px', marginBottom: '24px' }}>Perfect for individual traders getting started</p>
+              <div style={{ marginBottom: '24px' }}>
+                <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.5)' }}>₹</span>
+                <span style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff' }}>{isAnnual ? '19,990' : '1,999'}</span>
+                <span style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.5)' }}>{isAnnual ? '/year' : '/month'}</span>
+              </div>
+              {isAnnual && <p style={{ color: '#00f0ff', fontSize: '13px', marginTop: '-16px', marginBottom: '16px' }}>Save ₹3,998/year</p>}
+              <a href="https://app.uptrender.in/auth/register" style={{ 
+                background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
+                color: '#0a0a0a', 
+                padding: '16px 24px', 
+                borderRadius: '8px', 
+                textAlign: 'center',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontSize: '16px',
+                marginBottom: '32px',
+                display: 'block',
+                transition: 'all 0.3s ease'
+              }}>
+                Get Started
+              </a>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1 }}>
+                {[
+                  { text: '5 Active Strategies', included: true },
+                  { text: 'Basic Backtesting', included: true },
+                  { text: '1 Broker Integration', included: true },
+                  { text: 'Email Support', included: true },
+                  { text: 'Strategy Marketplace Access', included: true },
+                  { text: 'Advanced Analytics', included: false },
+                  { text: 'Priority Support', included: false },
+                  { text: 'API Access', included: false }
+                ].map((feature, i) => (
+                  <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    {feature.included ? (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    ) : (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
                     )}
-                    <div style={{ marginBottom: '24px' }}>
-                      {index === 0 ? (
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                          <circle cx="12" cy="12" r="10"/>
-                          <polyline points="12 6 12 12 16 14"/>
-                        </svg>
-                      ) : index === 1 ? (
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                        </svg>
-                      ) : (
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                          <circle cx="12" cy="12" r="5"/>
-                          <line x1="12" y1="1" x2="12" y2="3"/>
-                          <line x1="12" y1="21" x2="12" y2="23"/>
-                          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                          <line x1="1" y1="12" x2="3" y2="12"/>
-                          <line x1="21" y1="12" x2="23" y2="12"/>
-                          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                        </svg>
-                      )}
-                    </div>
-                    <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>{plan.name}</h3>
-                    <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '14px', marginBottom: '24px' }}>{plan.description}</p>
-                    <div style={{ marginBottom: '24px' }}>
-                      <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.5)' }}>₹</span>
-                      <span style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff' }}>{price.toLocaleString()}</span>
-                      <span style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.5)' }}>{isAnnual ? '/year' : '/month'}</span>
-                    </div>
-                    {isAnnual && saving > 0 && <p style={{ color: '#00f0ff', fontSize: '13px', marginTop: '-16px', marginBottom: '16px' }}>Save ₹{saving.toLocaleString()}/year</p>}
-                    <a href={plan.ctaLink} style={{ 
-                      background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
-                      color: '#0a0a0a', 
-                      padding: '16px 24px', 
-                      borderRadius: '8px', 
-                      textAlign: 'center',
-                      textDecoration: 'none',
-                      fontWeight: 700,
-                      fontSize: '16px',
-                      marginBottom: '32px',
-                      display: 'block',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      {plan.cta}
-                    </a>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1 }}>
-                      {plan.features.map((feature, i) => (
-                        <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                          {feature.included ? (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                              <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                          ) : (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2">
-                              <line x1="18" y1="6" x2="6" y2="18"/>
-                              <line x1="6" y1="6" x2="18" y2="18"/>
-                            </svg>
-                          )}
-                          <span style={{ color: feature.included ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)', fontSize: '15px' }}>{feature.text}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              })}
+                    <span style={{ color: feature.included ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)', fontSize: '15px' }}>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          )}
+
+            {/* Premium Plan - Most Popular */}
+            <div style={{ 
+              background: 'rgba(10, 15, 30, 0.8)', 
+              borderRadius: '16px', 
+              padding: '40px 32px',
+              boxShadow: '0 0 40px rgba(0, 240, 255, 0.15), 0 8px 40px rgba(0, 0, 0, 0.3)',
+              border: '2px solid rgba(0, 240, 255, 0.4)',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              backdropFilter: 'blur(10px)',
+              transform: 'scale(1.02)',
+              transition: 'all 0.3s ease'
+            }}>
+              <div style={{ 
+                position: 'absolute', 
+                top: '-16px', 
+                right: '24px', 
+                background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
+                color: '#0a0a0a', 
+                padding: '8px 20px', 
+                borderRadius: '20px',
+                fontSize: '13px',
+                fontWeight: 700
+              }}>
+                Most Popular
+              </div>
+              <div style={{ marginBottom: '24px' }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </div>
+              <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>Premium</h3>
+              <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '14px', marginBottom: '24px' }}>For serious traders who want more power</p>
+              <div style={{ marginBottom: '24px' }}>
+                <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.5)' }}>₹</span>
+                <span style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff' }}>{isAnnual ? '49,990' : '4,999'}</span>
+                <span style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.5)' }}>{isAnnual ? '/year' : '/month'}</span>
+              </div>
+              {isAnnual && <p style={{ color: '#00f0ff', fontSize: '13px', marginTop: '-16px', marginBottom: '16px' }}>Save ₹9,998/year</p>}
+              <a href="https://app.uptrender.in/auth/register" style={{ 
+                background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
+                color: '#0a0a0a', 
+                padding: '16px 24px', 
+                borderRadius: '8px', 
+                textAlign: 'center',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontSize: '16px',
+                marginBottom: '32px',
+                display: 'block',
+                transition: 'all 0.3s ease'
+              }}>
+                Get Premium
+              </a>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1 }}>
+                {[
+                  { text: 'Unlimited Strategies', included: true },
+                  { text: 'Advanced Backtesting', included: true },
+                  { text: 'Multi-Broker Support', included: true },
+                  { text: 'Priority Email & Chat', included: true },
+                  { text: 'Strategy Marketplace - Sell Your Strategies', included: true },
+                  { text: 'Advanced Analytics & Reports', included: true },
+                  { text: 'Copy Trading', included: true },
+                  { text: 'API Access', included: false }
+                ].map((feature, i) => (
+                  <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    {feature.included ? (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    ) : (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
+                    )}
+                    <span style={{ color: feature.included ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)', fontSize: '15px' }}>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div style={{ 
+              background: 'rgba(10, 15, 30, 0.8)', 
+              borderRadius: '16px', 
+              padding: '40px 32px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              backdropFilter: 'blur(10px)',
+              transition: 'all 0.3s ease'
+            }}>
+              <div style={{ marginBottom: '24px' }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                  <circle cx="12" cy="12" r="5"/>
+                  <line x1="12" y1="1" x2="12" y2="3"/>
+                  <line x1="12" y1="21" x2="12" y2="23"/>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                  <line x1="1" y1="12" x2="3" y2="12"/>
+                  <line x1="21" y1="12" x2="23" y2="12"/>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+              </div>
+              <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>Enterprise</h3>
+              <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '14px', marginBottom: '24px' }}>For professional traders and institutions</p>
+              <div style={{ marginBottom: '24px' }}>
+                <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.5)' }}>₹</span>
+                <span style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff' }}>{isAnnual ? '99,990' : '9,999'}</span>
+                <span style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.5)' }}>{isAnnual ? '/year' : '/month'}</span>
+              </div>
+              {isAnnual && <p style={{ color: '#00f0ff', fontSize: '13px', marginTop: '-16px', marginBottom: '16px' }}>Save ₹19,998/year</p>}
+              <a href="mailto:sales@uptrender.tech" style={{ 
+                background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
+                color: '#0a0a0a', 
+                padding: '16px 24px', 
+                borderRadius: '8px', 
+                textAlign: 'center',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontSize: '16px',
+                marginBottom: '32px',
+                display: 'block',
+                transition: 'all 0.3s ease'
+              }}>
+                Contact Sales
+              </a>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1 }}>
+                {[
+                  { text: 'Everything in Premium', included: true },
+                  { text: 'Dedicated Account Manager', included: true },
+                  { text: 'Custom Broker Integration', included: true },
+                  { text: '24/7 Priority Support', included: true },
+                  { text: 'White-Label Solutions', included: true },
+                  { text: 'Full API Access', included: true },
+                  { text: 'Custom Development', included: true },
+                  { text: 'SLA Guarantee', included: true }
+                ].map((feature, i) => (
+                  <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: '15px' }}>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
 
       {/* Features Section */}
-      <section id="features" ref={exploreRef} style={{ 
+      <section ref={exploreRef} style={{ 
         background: '#0a0a0a', 
         padding: '120px 0', 
         position: 'relative', 
@@ -1717,7 +1611,6 @@ export default function Home() {
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px' }}>
           {/* Section Header */}
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span className="features-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0 }}>Our Features</span>
             <h2 className="explore-title" style={{ 
               color: '#ffffff', 
               fontSize: '48px', 
@@ -2210,8 +2103,8 @@ export default function Home() {
               <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Company</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {[
-                  { name: 'About', href: '/about' },
-                  { name: 'Services', href: '/services' },
+                  { name: 'About', href: '#' },
+                  { name: 'Services', href: '#' },
                   { name: 'Blog', href: '/blog' },
                   { name: 'Contact', href: '/contact' }
                 ].map((item, i) => (

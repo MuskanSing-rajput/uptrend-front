@@ -128,7 +128,7 @@ export default function BlogPage() {
       gsap.fromTo(".blog-card", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.12, ease: "power3.out", scrollTrigger: { trigger: ".blog-card", start: "top 90%", toggleActions: "play none none none" } });
     }, gridRef);
     return () => ctx.revert();
-  }, [activeCategory, showAllPosts]);
+  }, [activeCategory]);
 
   // Featured post change animation
   useEffect(() => {

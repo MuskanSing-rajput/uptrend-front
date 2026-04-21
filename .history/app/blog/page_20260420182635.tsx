@@ -1,11 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const blogPosts = [
   {
@@ -88,11 +84,6 @@ export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [navVisible, setNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [selectedPost, setSelectedPost] = useState(blogPosts[0]);
-  const [showAllPosts, setShowAllPosts] = useState(false);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const featuredRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
 
   const filteredPosts =
     activeCategory === "All"
@@ -101,44 +92,6 @@ export default function BlogPage() {
 
   const featuredPost = blogPosts.find((p) => p.featured);
   const gridPosts = filteredPosts.filter((p) => !p.featured || activeCategory !== "All");
-
-  // Hero animations
-  useEffect(() => {
-    if (!heroRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".blog-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.2 });
-      gsap.fromTo(".category-btn", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.5)", delay: 0.5 });
-    }, heroRef);
-    return () => ctx.revert();
-  }, []);
-
-  // Featured post animation
-  useEffect(() => {
-    if (!featuredRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".featured-post", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".featured-post", start: "top 85%", toggleActions: "play none none none" } });
-    }, featuredRef);
-    return () => ctx.revert();
-  }, [activeCategory]);
-
-  // Grid posts animation
-  useEffect(() => {
-    if (!gridRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".blog-card", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.12, ease: "power3.out", scrollTrigger: { trigger: ".blog-card", start: "top 90%", toggleActions: "play none none none" } });
-    }, gridRef);
-    return () => ctx.revert();
-  }, [activeCategory, showAllPosts]);
-
-  // Featured post change animation
-  useEffect(() => {
-    if (!featuredRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".featured-post-image", { opacity: 0.7, scale: 0.98 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
-      gsap.fromTo(".featured-post-content", { opacity: 0.7, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
-    }, featuredRef);
-    return () => ctx.revert();
-  }, [selectedPost]);
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -168,9 +121,9 @@ export default function BlogPage() {
           <nav className="hidden md:flex items-center nav-menu">
             <Link href="/" className="nav-link">Home</Link>
             <Link href="/about" className="nav-link">About Us</Link>
+            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/services" className="nav-link">Services</Link>
             <Link href="/#pricing" className="nav-link">Pricing</Link>
-            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/blog" className="nav-link" style={{ color: "#00f0ff" }}>Blog</Link>
             <Link href="/contact" className="nav-link">Contact Us</Link>
           </nav>
@@ -186,16 +139,15 @@ export default function BlogPage() {
 
       {/* Hero Banner */}
       <section
-        ref={heroRef}
         style={{
-          paddingTop: "140px",
-          paddingBottom: "20px",
+          paddingTop: "160px",
+          paddingBottom: "80px",
           textAlign: "center",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* Animated gradient orbs */}
+        {/* Subtle glow */}
         <div
           style={{
             position: "absolute",
@@ -204,86 +156,78 @@ export default function BlogPage() {
             transform: "translateX(-50%)",
             width: "800px",
             height: "800px",
-            background: "radial-gradient(circle, rgba(0,240,255,0.12) 0%, rgba(139,92,246,0.08) 40%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(0,240,255,0.06) 0%, transparent 70%)",
             pointerEvents: "none",
-            filter: "blur(60px)",
           }}
         />
-        <div
-          style={{
-            position: "absolute",
-            top: "20%",
-            right: "-10%",
-            width: "400px",
-            height: "400px",
-            background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 60%)",
-            pointerEvents: "none",
-            filter: "blur(40px)",
-          }}
-        />
-        
-        <div style={{ position: "relative", zIndex: 1, maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ position: "relative", zIndex: 1, maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
+          <p
+            style={{
+              color: "#00f0ff",
+              fontSize: "14px",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "3px",
+              marginBottom: "16px",
+            }}
+          >
+            Uptrender Blog
+          </p>
           <h1
-            className="blog-title"
             style={{
               color: "#ffffff",
-              fontSize: "clamp(32px, 5vw, 48px)",
+              fontSize: "clamp(36px, 5vw, 56px)",
               fontWeight: 800,
               lineHeight: 1.1,
-              marginBottom: "16px",
-              opacity: 0,
+              marginBottom: "20px",
             }}
           >
             Insights, Strategies &<br />
-            <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Market Intelligence</span>
+            Market Intelligence
           </h1>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "18px", lineHeight: 1.6, maxWidth: "560px", margin: "0 auto" }}>
+            Stay ahead of the markets with expert analysis, trading education, and product updates from the Uptrender team.
+          </p>
         </div>
       </section>
 
-      {/* Category Filter - Simplified */}
+      {/* Category Filter */}
       <div
         style={{
-          maxWidth: "1400px",
+          maxWidth: "1200px",
           margin: "0 auto",
-          padding: "0 24px 24px",
+          padding: "0 24px 48px",
           display: "flex",
-          justifyContent: "flex-start",
+          justifyContent: "center",
           gap: "12px",
           flexWrap: "wrap",
         }}
       >
-        {categories.slice(0, 5).map((cat, index) => (
+        {categories.map((cat) => (
           <button
             key={cat}
-            className="category-btn"
             onClick={() => setActiveCategory(cat)}
             style={{
               padding: "10px 24px",
               borderRadius: "100px",
-              border: activeCategory === cat ? "1px solid #00f0ff" : "1px solid rgba(255,255,255,0.12)",
-              background: activeCategory === cat ? "linear-gradient(135deg, rgba(0,240,255,0.15), rgba(0,150,255,0.15))" : "rgba(255,255,255,0.03)",
+              border: activeCategory === cat ? "1px solid #00f0ff" : "1px solid rgba(255,255,255,0.15)",
+              background: activeCategory === cat ? "rgba(0,240,255,0.1)" : "transparent",
               color: activeCategory === cat ? "#00f0ff" : "rgba(255,255,255,0.6)",
-              fontSize: "13px",
+              fontSize: "14px",
               fontWeight: 600,
               cursor: "pointer",
               transition: "all 0.3s ease",
-              opacity: 0,
-              backdropFilter: "blur(10px)",
             }}
             onMouseEnter={(e) => {
               if (activeCategory !== cat) {
                 e.currentTarget.style.borderColor = "rgba(0,240,255,0.4)";
                 e.currentTarget.style.color = "#ffffff";
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.06)";
               }
             }}
             onMouseLeave={(e) => {
               if (activeCategory !== cat) {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
                 e.currentTarget.style.color = "rgba(255,255,255,0.6)";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
               }
             }}
           >
@@ -292,28 +236,25 @@ export default function BlogPage() {
         ))}
       </div>
 
-      {/* Main Content Section - Two Column Layout */}
-      <section ref={featuredRef} style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 24px 100px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: "40px", alignItems: "start" }}>
-          
-          {/* Left Side - Large Featured Post */}
+      {/* Featured Post */}
+      {activeCategory === "All" && featuredPost && (
+        <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px 64px" }}>
           <div
-            className="featured-post"
             style={{
-              background: "linear-gradient(135deg, rgba(17,17,34,0.8) 0%, rgba(10,10,20,0.9) 100%)",
-              borderRadius: "24px",
-              border: "1px solid rgba(255,255,255,0.08)",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "0",
+              borderRadius: "20px",
               overflow: "hidden",
+              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#111122",
               cursor: "pointer",
               transition: "all 0.4s ease",
-              opacity: 0,
-              position: "sticky",
-              top: "120px",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(0,240,255,0.4)";
-              e.currentTarget.style.transform = "translateY(-8px)";
-              e.currentTarget.style.boxShadow = "0 24px 80px rgba(0,240,255,0.15)";
+              e.currentTarget.style.borderColor = "rgba(0,240,255,0.3)";
+              e.currentTarget.style.transform = "translateY(-4px)";
+              e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,240,255,0.1)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
@@ -321,19 +262,20 @@ export default function BlogPage() {
               e.currentTarget.style.boxShadow = "none";
             }}
           >
-            {/* Featured badge */}
-            <div style={{ position: "absolute", top: "24px", left: "24px", zIndex: 10, padding: "8px 20px", background: "linear-gradient(135deg, #00f0ff, #00b8d4)", borderRadius: "100px", fontSize: "12px", fontWeight: 800, color: "#0a0a14", letterSpacing: "1px", textTransform: "uppercase", boxShadow: "0 4px 20px rgba(0,240,255,0.3)" }}>
-              Featured Post
-            </div>
-            
-            {/* Large Image */}
+            {/* Image placeholder */}
             <div
-              className="featured-post-image"
               style={{
-                backgroundImage: `url(${selectedPost.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                height: "360px",
+                ...(featuredPost.image.startsWith('http')
+                  ? {
+                      backgroundImage: `url(${featuredPost.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }
+                  : { background: featuredPost.image }),
+                minHeight: "380px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 position: "relative",
               }}
             >
@@ -341,17 +283,30 @@ export default function BlogPage() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  background: "linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)",
+                  background: "rgba(0,0,0,0.2)",
                 }}
               />
+              <svg
+                width="80"
+                height="80"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="rgba(255,255,255,0.5)"
+                strokeWidth="1"
+                style={{ position: "relative", zIndex: 1 }}
+              >
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              </svg>
             </div>
 
             {/* Content */}
-            <div className="featured-post-content" style={{ padding: "32px" }}>
+            <div style={{ padding: "48px 40px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <span
                 style={{
                   display: "inline-block",
-                  padding: "6px 18px",
+                  width: "fit-content",
+                  padding: "6px 16px",
                   background: "rgba(0,240,255,0.1)",
                   border: "1px solid rgba(0,240,255,0.2)",
                   borderRadius: "100px",
@@ -363,198 +318,247 @@ export default function BlogPage() {
                   marginBottom: "20px",
                 }}
               >
-                {selectedPost.category}
+                {featuredPost.category}
               </span>
               <h2
                 style={{
                   color: "#ffffff",
                   fontSize: "28px",
-                  fontWeight: 800,
-                  lineHeight: 1.3,
+                  fontWeight: 700,
+                  lineHeight: 1.25,
                   marginBottom: "16px",
                 }}
               >
-                {selectedPost.title}
+                {featuredPost.title}
               </h2>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.65)",
-                  fontSize: "15px",
+                  color: "rgba(255,255,255,0.6)",
+                  fontSize: "16px",
                   lineHeight: 1.7,
-                  marginBottom: "24px",
+                  marginBottom: "28px",
                 }}
               >
-                {selectedPost.excerpt}
+                {featuredPost.excerpt}
               </p>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  paddingTop: "20px",
-                  borderTop: "1px solid rgba(255,255,255,0.08)",
+                  gap: "16px",
+                  color: "rgba(255,255,255,0.4)",
+                  fontSize: "13px",
+                  fontWeight: 500,
                 }}
               >
-                <div>
-                  <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "14px", fontWeight: 600, marginBottom: "6px" }}>{selectedPost.author}</p>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>
-                    <span>{selectedPost.date}</span>
-                    <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
-                    <span>{selectedPost.readTime}</span>
-                  </div>
-                </div>
+                <span>{featuredPost.author}</span>
+                <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
+                <span>{featuredPost.date}</span>
+                <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
+                <span>{featuredPost.readTime}</span>
               </div>
             </div>
           </div>
+        </section>
+      )}
 
-          {/* Right Side - List of Blog Posts */}
-          <div ref={gridRef} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <h3 style={{ fontSize: "24px", fontWeight: 700, color: "#ffffff", marginBottom: "12px", paddingLeft: "4px" }}>
-              Recent Posts
-            </h3>
-            
-            {blogPosts.slice(1, showAllPosts ? blogPosts.length : 4).map((post, index) => (
-              <article
-                key={post.id}
-                className="blog-card"
-                onClick={() => setSelectedPost(post)}
-                style={{
-                  background: selectedPost.id === post.id ? "linear-gradient(135deg, rgba(0,240,255,0.08) 0%, rgba(0,150,255,0.08) 100%)" : "linear-gradient(135deg, rgba(17,17,34,0.6) 0%, rgba(10,10,20,0.8) 100%)",
-                  borderRadius: "16px",
-                  border: selectedPost.id === post.id ? "1px solid rgba(0,240,255,0.4)" : "1px solid rgba(255,255,255,0.08)",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  opacity: 0,
-                  display: "grid",
-                  gridTemplateColumns: "180px 1fr",
-                  gap: "20px",
-                }}
-                onMouseEnter={(e) => {
-                  if (selectedPost.id !== post.id) {
-                    e.currentTarget.style.borderColor = "rgba(0,240,255,0.3)";
-                  }
-                  e.currentTarget.style.transform = "translateX(8px)";
-                  e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,240,255,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  if (selectedPost.id !== post.id) {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                  }
-                  e.currentTarget.style.transform = "translateX(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                {/* Small Image */}
-                <div
-                  style={{
-                    backgroundImage: `url(${post.image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    height: "100%",
-                    minHeight: "160px",
-                    position: "relative",
-                  }}
-                >
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,240,255,0.05) 0%, rgba(0,0,0,0.2) 100%)" }} />
-                </div>
-
-                {/* Content */}
-                <div style={{ padding: "20px 20px 20px 0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "fit-content",
-                      padding: "4px 12px",
-                      background: "rgba(0,240,255,0.08)",
-                      border: "1px solid rgba(0,240,255,0.15)",
-                      borderRadius: "100px",
-                      color: "#00f0ff",
-                      fontSize: "10px",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "1px",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    {post.category}
-                  </span>
-                  <h4
-                    style={{
-                      color: "#ffffff",
-                      fontSize: "17px",
-                      fontWeight: 700,
-                      lineHeight: 1.4,
-                      marginBottom: "10px",
-                    }}
-                  >
-                    {post.title}
-                  </h4>
-                  <p
-                    style={{
-                      color: "rgba(255,255,255,0.5)",
-                      fontSize: "13px",
-                      lineHeight: 1.6,
-                      marginBottom: "14px",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {post.excerpt}
-                  </p>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "rgba(255,255,255,0.35)", fontSize: "12px" }}>
-                    <span>{post.date}</span>
-                    <span style={{ width: "3px", height: "3px", borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
-                    <span>{post.readTime}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-            
-            {/* Show More / Show Less Link */}
-            {blogPosts.length > 4 && (
+      {/* Blog Grid */}
+      <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px 100px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+            gap: "32px",
+          }}
+        >
+          {(activeCategory === "All" ? gridPosts.filter((p) => !p.featured) : gridPosts).map((post) => (
+            <article
+              key={post.id}
+              style={{
+                background: "#111122",
+                borderRadius: "16px",
+                border: "1px solid rgba(255,255,255,0.08)",
+                overflow: "hidden",
+                cursor: "pointer",
+                transition: "all 0.4s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(0,240,255,0.3)";
+                e.currentTarget.style.transform = "translateY(-6px)";
+                e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,240,255,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              {/* Card image */}
               <div
-                onClick={() => setShowAllPosts(!showAllPosts)}
                 style={{
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
+                  ...(post.image.startsWith('http')
+                    ? {
+                        backgroundImage: `url(${post.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }
+                    : { background: post.image }),
+                  height: "200px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "8px",
-                  color: "#00f0ff",
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  marginTop: showAllPosts ? "-12px" : "-8px",
-                  paddingLeft: "4px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "#00d4e6";
-                  e.currentTarget.style.transform = "translateX(4px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "#00f0ff";
-                  e.currentTarget.style.transform = "translateX(0)";
+                  position: "relative",
                 }}
               >
-                {showAllPosts ? (
-                  <>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                    Show Less
-                  </>
-                ) : (
-                  <>
-                    Show More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </>
-                )}
+                <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.15)" }} />
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.4)"
+                  strokeWidth="1"
+                  style={{ position: "relative", zIndex: 1 }}
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
               </div>
-            )}
+
+              {/* Card content */}
+              <div style={{ padding: "28px 24px" }}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    padding: "4px 12px",
+                    background: "rgba(0,240,255,0.08)",
+                    border: "1px solid rgba(0,240,255,0.15)",
+                    borderRadius: "100px",
+                    color: "#00f0ff",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {post.category}
+                </span>
+                <h3
+                  style={{
+                    color: "#ffffff",
+                    fontSize: "20px",
+                    fontWeight: 700,
+                    lineHeight: 1.3,
+                    marginBottom: "12px",
+                  }}
+                >
+                  {post.title}
+                </h3>
+                <p
+                  style={{
+                    color: "rgba(255,255,255,0.55)",
+                    fontSize: "14px",
+                    lineHeight: 1.7,
+                    marginBottom: "24px",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {post.excerpt}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    borderTop: "1px solid rgba(255,255,255,0.06)",
+                    paddingTop: "16px",
+                  }}
+                >
+                  <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px" }}>{post.date}</span>
+                  <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px" }}>{post.readTime}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Newsletter CTA */}
+      <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px 100px" }}>
+        <div
+          style={{
+            background: "linear-gradient(135deg, rgba(0,240,255,0.08), rgba(0,128,255,0.08))",
+            border: "1px solid rgba(0,240,255,0.2)",
+            borderRadius: "20px",
+            padding: "64px 48px",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ color: "#ffffff", fontSize: "32px", fontWeight: 700, marginBottom: "12px" }}>
+            Never Miss a Market Move
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "16px", marginBottom: "36px", maxWidth: "480px", margin: "0 auto 36px" }}>
+            Subscribe to our newsletter for weekly insights, strategy breakdowns, and exclusive trading tips.
+          </p>
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "center",
+              maxWidth: "500px",
+              margin: "0 auto",
+              flexWrap: "wrap",
+            }}
+          >
+            <input
+              type="email"
+              placeholder="Enter your email"
+              style={{
+                flex: 1,
+                minWidth: "240px",
+                padding: "16px 20px",
+                borderRadius: "10px",
+                border: "1px solid rgba(255,255,255,0.15)",
+                background: "rgba(255,255,255,0.05)",
+                color: "#ffffff",
+                fontSize: "15px",
+                outline: "none",
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = "rgba(0,240,255,0.5)";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+              }}
+            />
+            <button
+              style={{
+                padding: "16px 32px",
+                borderRadius: "10px",
+                border: "none",
+                background: "linear-gradient(135deg, #00f0ff, #0080ff)",
+                color: "#0a0a14",
+                fontSize: "15px",
+                fontWeight: 700,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                whiteSpace: "nowrap",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,240,255,0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              Subscribe
+            </button>
           </div>
         </div>
       </section>

@@ -155,23 +155,25 @@ export default function About() {
           0% {
             opacity: 0;
             transform: translateY(20px) scale(0.5);
-            filter: blur(10px);
+            filter: blur(10px) drop-shadow(0 0 0px transparent);
           }
-          50% {
-            filter: blur(0px);
+          70% {
+            filter: blur(0px) drop-shadow(0 0 15px rgba(0, 240, 255, 0.8));
           }
           100% {
             opacity: 1;
             transform: translateY(0) scale(1);
-            filter: blur(0px);
+            filter: blur(0px) drop-shadow(0 0 10px rgba(0, 240, 255, 0.6));
           }
         }
         @keyframes wordPulse {
           0%, 100% {
             transform: scale(1);
+            filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.6)) drop-shadow(0 0 20px rgba(0, 240, 255, 0.4));
           }
           50% {
             transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.8)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.6));
           }
         }
         .uptrender-letter {
@@ -206,9 +208,9 @@ export default function About() {
           <nav className="hidden md:flex items-center nav-menu">
             <Link href="/" className="nav-link">Home</Link>
             <Link href="/about" className="nav-link" style={{ color: "#00f0ff" }}>About Us</Link>
+            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/services" className="nav-link">Services</Link>
             <Link href="/#pricing" className="nav-link">Pricing</Link>
-            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/contact" className="nav-link">Contact Us</Link>
           </nav>
@@ -294,25 +296,83 @@ export default function About() {
                 transform: "translate(-50%, -50%)",
                 fontSize: "clamp(24px, 3vw, 36px)",
                 fontWeight: 900,
-                background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 3s ease-in-out infinite",
                 letterSpacing: "1px",
                 pointerEvents: "none",
                 zIndex: 10,
-                filter: "drop-shadow(0 0 20px rgba(0, 240, 255, 0.5)) drop-shadow(0 0 40px rgba(0, 240, 255, 0.3))",
+                whiteSpace: "nowrap",
               }}>
-                <span className="uptrender-letter" style={{ animationDelay: "0.1s" }}>u</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.2s" }}>p</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.3s" }}>t</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.4s" }}>r</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.5s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.6s" }}>n</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.7s" }}>d</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.8s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.9s" }}>r</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.1s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>u</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.2s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>p</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.3s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>t</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.4s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>r</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.5s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>e</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.6s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>n</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.7s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>d</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.8s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>e</span>
+                <span className="uptrender-letter" style={{ 
+                  animationDelay: "0.9s",
+                  background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>r</span>
               </div>
             </div>
 

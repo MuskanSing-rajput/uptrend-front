@@ -137,52 +137,6 @@ export default function About() {
           50% { opacity: 0.5; }
           100% { opacity: 0.1; background-position: 100% 100%; }
         }
-        @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        @keyframes textGlow {
-          0%, 100% { 
-            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6)) 
-                    drop-shadow(0 0 40px rgba(0, 240, 255, 0.4)); 
-          }
-          50% { 
-            filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.8)) 
-                    drop-shadow(0 0 60px rgba(168, 85, 247, 0.6)); 
-          }
-        }
-        @keyframes letterAppear {
-          0% {
-            opacity: 0;
-            transform: translateY(20px) scale(0.5);
-            filter: blur(10px);
-          }
-          50% {
-            filter: blur(0px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0px);
-          }
-        }
-        @keyframes wordPulse {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.05);
-          }
-        }
-        .uptrender-letter {
-          display: inline-block;
-          opacity: 0;
-          animation: letterAppear 0.6s ease-out forwards;
-        }
-        .uptrender-word {
-          animation: wordPulse 2s ease-in-out infinite;
-          animation-delay: 5s;
-        }
         .grid-cell {
           transition: all 0.3s ease;
         }
@@ -206,9 +160,8 @@ export default function About() {
           <nav className="hidden md:flex items-center nav-menu">
             <Link href="/" className="nav-link">Home</Link>
             <Link href="/about" className="nav-link" style={{ color: "#00f0ff" }}>About Us</Link>
-            <Link href="/services" className="nav-link">Services</Link>
-            <Link href="/#pricing" className="nav-link">Pricing</Link>
             <Link href="/#features" className="nav-link">Features</Link>
+            <Link href="/services" className="nav-link">Services</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/contact" className="nav-link">Contact Us</Link>
           </nav>
@@ -278,6 +231,11 @@ export default function About() {
                     display: "flex", alignItems: "center", justifyContent: "center",
                     backdropFilter: "blur(10px)",
                   }}>
+                    {i === 12 && (
+                      <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(139, 92, 246, 0.3))", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 30px rgba(0, 240, 255, 0.2)" }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                      </div>
+                    )}
                     {i === 7 && <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#00f0ff", boxShadow: "0 0 10px #00f0ff", animation: "gridPulse 2s ease-in-out infinite" }} />}
                     {i === 17 && <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a855f7", boxShadow: "0 0 10px #a855f7", animation: "gridPulse 2.5s ease-in-out infinite" }} />}
                     {i === 11 && <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "gridPulse 3s ease-in-out infinite" }} />}
@@ -285,35 +243,6 @@ export default function About() {
                   </div>
                 );
               })}
-              
-              {/* Uptrender text overlay centered on grid */}
-              <div className="uptrender-word" style={{ 
-                position: "absolute", 
-                top: "50%", 
-                left: "50%", 
-                transform: "translate(-50%, -50%)",
-                fontSize: "clamp(24px, 3vw, 36px)",
-                fontWeight: 900,
-                background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 3s ease-in-out infinite",
-                letterSpacing: "1px",
-                pointerEvents: "none",
-                zIndex: 10,
-                filter: "drop-shadow(0 0 20px rgba(0, 240, 255, 0.5)) drop-shadow(0 0 40px rgba(0, 240, 255, 0.3))",
-              }}>
-                <span className="uptrender-letter" style={{ animationDelay: "0.1s" }}>u</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.2s" }}>p</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.3s" }}>t</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.4s" }}>r</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.5s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.6s" }}>n</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.7s" }}>d</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.8s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.9s" }}>r</span>
-              </div>
             </div>
 
             {/* Floating connection lines */}

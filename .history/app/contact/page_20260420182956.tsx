@@ -102,9 +102,9 @@ export default function ContactPage() {
           <nav className="hidden md:flex items-center nav-menu">
             <Link href="/" className="nav-link">Home</Link>
             <Link href="/about" className="nav-link">About Us</Link>
+            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/services" className="nav-link">Services</Link>
             <Link href="/#pricing" className="nav-link">Pricing</Link>
-            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/contact" className="nav-link" style={{ color: "#00f0ff" }}>Contact Us</Link>
           </nav>

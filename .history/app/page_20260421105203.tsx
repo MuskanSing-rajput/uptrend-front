@@ -871,9 +871,9 @@ export default function Home() {
           <nav className="hidden md:flex items-center nav-menu">
             <a href="/" className="nav-link" style={{ color: "#00f0ff" }}>Home</a>
             <a href="/about" className="nav-link">About Us</a>
+            <a href="#" className="nav-link">Features</a>
             <a href="/services" className="nav-link">Services</a>
-            <a href="#pricing" className="nav-link">Pricing</a>
-            <a href="#features" className="nav-link">Features</a>
+            <a href="#" className="nav-link">Pricing</a>
             <a href="/blog" className="nav-link">Blog</a>
             <a href="/contact" className="nav-link">Contact Us</a>
           </nav>

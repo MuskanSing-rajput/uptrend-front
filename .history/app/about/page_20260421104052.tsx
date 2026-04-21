@@ -137,52 +137,6 @@ export default function About() {
           50% { opacity: 0.5; }
           100% { opacity: 0.1; background-position: 100% 100%; }
         }
-        @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        @keyframes textGlow {
-          0%, 100% { 
-            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6)) 
-                    drop-shadow(0 0 40px rgba(0, 240, 255, 0.4)); 
-          }
-          50% { 
-            filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.8)) 
-                    drop-shadow(0 0 60px rgba(168, 85, 247, 0.6)); 
-          }
-        }
-        @keyframes letterAppear {
-          0% {
-            opacity: 0;
-            transform: translateY(20px) scale(0.5);
-            filter: blur(10px);
-          }
-          50% {
-            filter: blur(0px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0px);
-          }
-        }
-        @keyframes wordPulse {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.05);
-          }
-        }
-        .uptrender-letter {
-          display: inline-block;
-          opacity: 0;
-          animation: letterAppear 0.6s ease-out forwards;
-        }
-        .uptrender-word {
-          animation: wordPulse 2s ease-in-out infinite;
-          animation-delay: 5s;
-        }
         .grid-cell {
           transition: all 0.3s ease;
         }
@@ -206,9 +160,9 @@ export default function About() {
           <nav className="hidden md:flex items-center nav-menu">
             <Link href="/" className="nav-link">Home</Link>
             <Link href="/about" className="nav-link" style={{ color: "#00f0ff" }}>About Us</Link>
+            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/services" className="nav-link">Services</Link>
             <Link href="/#pricing" className="nav-link">Pricing</Link>
-            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/contact" className="nav-link">Contact Us</Link>
           </nav>
@@ -287,7 +241,7 @@ export default function About() {
               })}
               
               {/* Uptrender text overlay centered on grid */}
-              <div className="uptrender-word" style={{ 
+              <div style={{ 
                 position: "absolute", 
                 top: "50%", 
                 left: "50%", 
@@ -298,21 +252,13 @@ export default function About() {
                 backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                animation: "gradientShift 3s ease-in-out infinite",
+                animation: "gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite",
+                textShadow: "0 0 40px rgba(0, 240, 255, 0.5), 0 0 80px rgba(0, 240, 255, 0.3)",
                 letterSpacing: "1px",
                 pointerEvents: "none",
                 zIndex: 10,
-                filter: "drop-shadow(0 0 20px rgba(0, 240, 255, 0.5)) drop-shadow(0 0 40px rgba(0, 240, 255, 0.3))",
               }}>
-                <span className="uptrender-letter" style={{ animationDelay: "0.1s" }}>u</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.2s" }}>p</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.3s" }}>t</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.4s" }}>r</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.5s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.6s" }}>n</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.7s" }}>d</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.8s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.9s" }}>r</span>
+                uptrender
               </div>
             </div>
 

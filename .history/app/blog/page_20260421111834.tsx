@@ -89,7 +89,6 @@ export default function BlogPage() {
   const [navVisible, setNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [selectedPost, setSelectedPost] = useState(blogPosts[0]);
-  const [showAllPosts, setShowAllPosts] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const featuredRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -106,8 +105,10 @@ export default function BlogPage() {
   useEffect(() => {
     if (!heroRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".blog-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.2 });
-      gsap.fromTo(".category-btn", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.5)", delay: 0.5 });
+      gsap.fromTo(".blog-badge", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.2 });
+      gsap.fromTo(".blog-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.4 });
+      gsap.fromTo(".blog-subtitle", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.6 });
+      gsap.fromTo(".category-btn", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.5)", delay: 0.8 });
     }, heroRef);
     return () => ctx.revert();
   }, []);
@@ -128,17 +129,7 @@ export default function BlogPage() {
       gsap.fromTo(".blog-card", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.12, ease: "power3.out", scrollTrigger: { trigger: ".blog-card", start: "top 90%", toggleActions: "play none none none" } });
     }, gridRef);
     return () => ctx.revert();
-  }, [activeCategory, showAllPosts]);
-
-  // Featured post change animation
-  useEffect(() => {
-    if (!featuredRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".featured-post-image", { opacity: 0.7, scale: 0.98 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
-      gsap.fromTo(".featured-post-content", { opacity: 0.7, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
-    }, featuredRef);
-    return () => ctx.revert();
-  }, [selectedPost]);
+  }, [activeCategory]);
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -189,7 +180,7 @@ export default function BlogPage() {
         ref={heroRef}
         style={{
           paddingTop: "140px",
-          paddingBottom: "20px",
+          paddingBottom: "40px",
           textAlign: "center",
           position: "relative",
           overflow: "hidden",
@@ -227,10 +218,10 @@ export default function BlogPage() {
             className="blog-title"
             style={{
               color: "#ffffff",
-              fontSize: "clamp(32px, 5vw, 48px)",
+              fontSize: "clamp(40px, 6vw, 64px)",
               fontWeight: 800,
               lineHeight: 1.1,
-              marginBottom: "16px",
+              marginBottom: "24px",
               opacity: 0,
             }}
           >
@@ -245,7 +236,7 @@ export default function BlogPage() {
         style={{
           maxWidth: "1400px",
           margin: "0 auto",
-          padding: "0 24px 24px",
+          padding: "0 24px 40px",
           display: "flex",
           justifyContent: "flex-start",
           gap: "12px",
@@ -328,12 +319,11 @@ export default function BlogPage() {
             
             {/* Large Image */}
             <div
-              className="featured-post-image"
               style={{
                 backgroundImage: `url(${selectedPost.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                height: "360px",
+                height: "480px",
                 position: "relative",
               }}
             >
@@ -347,7 +337,7 @@ export default function BlogPage() {
             </div>
 
             {/* Content */}
-            <div className="featured-post-content" style={{ padding: "32px" }}>
+            <div style={{ padding: "40px" }}>
               <span
                 style={{
                   display: "inline-block",
@@ -368,10 +358,10 @@ export default function BlogPage() {
               <h2
                 style={{
                   color: "#ffffff",
-                  fontSize: "28px",
+                  fontSize: "36px",
                   fontWeight: 800,
                   lineHeight: 1.3,
-                  marginBottom: "16px",
+                  marginBottom: "20px",
                 }}
               >
                 {selectedPost.title}
@@ -379,9 +369,9 @@ export default function BlogPage() {
               <p
                 style={{
                   color: "rgba(255,255,255,0.65)",
-                  fontSize: "15px",
-                  lineHeight: 1.7,
-                  marginBottom: "24px",
+                  fontSize: "17px",
+                  lineHeight: 1.8,
+                  marginBottom: "32px",
                 }}
               >
                 {selectedPost.excerpt}
@@ -390,7 +380,8 @@ export default function BlogPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  paddingTop: "20px",
+                  justifyContent: "space-between",
+                  paddingTop: "24px",
                   borderTop: "1px solid rgba(255,255,255,0.08)",
                 }}
               >
@@ -402,6 +393,12 @@ export default function BlogPage() {
                     <span>{selectedPost.readTime}</span>
                   </div>
                 </div>
+                <div style={{ padding: "14px 28px", background: "linear-gradient(135deg, #00f0ff, #00b8d4)", borderRadius: "100px", color: "#0a0a14", fontSize: "14px", fontWeight: 700, display: "flex", alignItems: "center", gap: "8px", boxShadow: "0 4px 20px rgba(0,240,255,0.3)" }}>
+                  Read Article
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -412,7 +409,7 @@ export default function BlogPage() {
               Recent Posts
             </h3>
             
-            {blogPosts.slice(1, showAllPosts ? blogPosts.length : 4).map((post, index) => (
+            {blogPosts.slice(1, 6).map((post, index) => (
               <article
                 key={post.id}
                 className="blog-card"
@@ -511,50 +508,107 @@ export default function BlogPage() {
                 </div>
               </article>
             ))}
-            
-            {/* Show More / Show Less Link */}
-            {blogPosts.length > 4 && (
-              <div
-                onClick={() => setShowAllPosts(!showAllPosts)}
+          </div>
+        </div>
+      </section>
+
+      {/* Explore All Articles Section */}
+      <section style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 24px 80px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <h3 style={{ fontSize: "32px", fontWeight: 700, color: "#ffffff", marginBottom: "12px" }}>
+            Explore All <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Articles</span>
+          </h3>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "16px" }}>Dive deeper into trading insights and strategies</p>
+        </div>
+      </section>
+
+      {/* Newsletter CTA */}
+      <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px 100px" }}>
+        <div
+          style={{
+            background: "linear-gradient(135deg, rgba(0,240,255,0.1), rgba(139,92,246,0.1))",
+            border: "1px solid rgba(0,240,255,0.2)",
+            borderRadius: "24px",
+            padding: "64px 48px",
+            textAlign: "center",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          {/* Glow effect */}
+          <div style={{ position: "absolute", top: "-50%", left: "50%", transform: "translateX(-50%)", width: "400px", height: "400px", background: "radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%)", pointerEvents: "none", filter: "blur(40px)" }} />
+          
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <h2 style={{ color: "#ffffff", fontSize: "36px", fontWeight: 800, marginBottom: "16px" }}>
+              Never Miss a <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Market Move</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "17px", marginBottom: "40px", maxWidth: "560px", margin: "0 auto 40px", lineHeight: 1.7 }}>
+              Subscribe to our newsletter for weekly insights, strategy breakdowns, and exclusive trading tips delivered to your inbox.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                justifyContent: "center",
+                maxWidth: "540px",
+                margin: "0 auto",
+                flexWrap: "wrap",
+              }}
+            >
+              <input
+                type="email"
+                placeholder="Enter your email address"
                 style={{
+                  flex: 1,
+                  minWidth: "280px",
+                  padding: "16px 24px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(255,255,255,0.05)",
+                  backdropFilter: "blur(10px)",
+                  color: "#ffffff",
+                  fontSize: "15px",
+                  outline: "none",
+                  transition: "all 0.3s ease",
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(0,240,255,0.5)";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                }}
+              />
+              <button
+                style={{
+                  padding: "16px 36px",
+                  borderRadius: "12px",
+                  border: "none",
+                  background: "linear-gradient(135deg, #00f0ff, #00b8d4)",
+                  color: "#0a0a14",
+                  fontSize: "15px",
+                  fontWeight: 700,
                   cursor: "pointer",
                   transition: "all 0.3s ease",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  color: "#00f0ff",
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  marginTop: showAllPosts ? "-12px" : "-8px",
-                  paddingLeft: "4px",
+                  whiteSpace: "nowrap",
+                  boxShadow: "0 4px 20px rgba(0,240,255,0.2)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "#00d4e6";
-                  e.currentTarget.style.transform = "translateX(4px)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,240,255,0.4)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "#00f0ff";
-                  e.currentTarget.style.transform = "translateX(0)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,240,255,0.2)";
                 }}
               >
-                {showAllPosts ? (
-                  <>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                    Show Less
-                  </>
-                ) : (
-                  <>
-                    Show More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </>
-                )}
-              </div>
-            )}
+                Subscribe Now
+              </button>
+            </div>
+            <p style={{ marginTop: "20px", color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>
+              Join 100,000+ traders getting market insights weekly. Unsubscribe anytime.
+            </p>
           </div>
         </div>
       </section>
