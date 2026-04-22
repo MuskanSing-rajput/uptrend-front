@@ -78,7 +78,9 @@ type PricingPlan = {
 };
 
 export default function Home() {
-      const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
+  const [navVisible, setNavVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
   const [tradersCount, setTradersCount] = useState(0);
   const [clientsCount, setClientsCount] = useState(0);
   const [isAnnual, setIsAnnual] = useState(false);
@@ -131,7 +133,23 @@ export default function Home() {
     }
   }, [loadingPricing]);
 
-  
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setNavVisible(false);
+      } else {
+        setNavVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   // Close social menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -864,7 +882,46 @@ export default function Home() {
         <div className="hero-overlay"></div>
 
       {/* Header */}
-      
+      <header className={`navbar ${navVisible ? 'navbar-visible' : 'navbar-hidden'}`}>
+        <div className="navbar-inner">
+          {/* Logo */}
+          <div className="logo-wrap">
+            <span className="logo-mark" aria-label="uptrender">
+              <span className="logo-v">up</span>
+              <span className="logo-t">trender</span>
+              <span className="logo-dot"></span>
+            </span>
+            <span className="logo-text"></span>
+          </div>
+
+          {/* Navigation - Left aligned with gap */}
+          <nav className="hidden md:flex items-center nav-menu">
+            <a href="/" className="nav-link" style={{ color: "#00f0ff" }}>Home</a>
+            <a href="/about" className="nav-link">About Us</a>
+            <a href="/services" className="nav-link">Services</a>
+            <a href="#pricing" className="nav-link">Pricing</a>
+            <a href="#features" className="nav-link">Features</a>
+            <a href="/blog" className="nav-link">Blog</a>
+            <a href="/contact" className="nav-link">Contact Us</a>
+          </nav>
+
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Right Actions */}
+          <div className="flex items-center gap-6">
+            <a href="https://app.uptrender.in/auth/register" className="btn-primary">Trade Now</a>
+            <a href="https://app.uptrender.in/auth/login" className="nav-link">Login</a>
+            {/* <div className="nav-locale">
+              <svg className="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span className="nav-lang">EN</span>
+            </div> */}
+          </div>
+        </div>
+      </header>
 
       {/* Hero Section */}
       <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-8">
@@ -962,9 +1019,9 @@ export default function Home() {
 
       {/* Everything You Need Section */}
       <section ref={everythingSectionRef} className="everything-section" style={{ background: '#0a0a0a', padding: '100px 0' }}>
-        <div className="everything-inner" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px', display: 'flex', alignItems: 'stretch', justifyContent: 'space-between', gap: '80px' }}>
-          <div className="everything-content" style={{ flex: 1, maxWidth: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <span className="about-us-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0, alignSelf: 'flex-start' }}>About Us</span>
+        <div className="everything-inner" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '80px' }}>
+          <div className="everything-content" style={{ flex: 1, maxWidth: '600px' }}>
+            <span className="about-us-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0 }}>About Us</span>
             <h2 className="everything-title" style={{ color: '#ffffff', fontSize: '48px', fontWeight: 700, lineHeight: 1.1, marginBottom: '24px', opacity: 0 }}>
               Everything you need for profitable <span style={{ color: '#00f0ff' }}>Forex & Crypto trading</span><span className="everything-dot" style={{ color: '#dc2626' }}>.</span>
             </h2>
@@ -1021,8 +1078,8 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="everything-phone" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'stretch', maxWidth: '700px', position: 'relative', marginTop: '55px' }}>
-            <img src="/about.jpg" alt="Uptrender Trading App" className="phone-image" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '24px', opacity: 0, minHeight: '100%' }} />
+          <div className="everything-phone" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '500px' }}>
+            <img src="/phone.png" alt="Uptrender Trading App" className="phone-image" style={{ width: '100%', height: 'auto', maxWidth: '450px', objectFit: 'contain', opacity: 0 }} />
           </div>
         </div>
       </section>
@@ -1086,7 +1143,7 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 0, '--card-color': '#00f0ff' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/service1.jpg" alt="Multi-Market Dashboard" />
+                  <img src="/window.webp" alt="Multi-Market Dashboard" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 100, 200, 0.25) 100%)' }}></div>
@@ -1247,11 +1304,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 6 - Paper / Live Trading */}
+            {/* Card 6 - Paper + Live Trading */}
             <div className="stacking-card" style={{ '--card-index': 5, '--card-color': '#06b6d4' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Paper / Live Trading" />
+                  <img src="/window.webp" alt="Paper + Live Trading" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(14, 116, 144, 0.25) 100%)' }}></div>
@@ -1260,7 +1317,7 @@ export default function Home() {
                       <span className="card-category" style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#06b6d4' }}>TRADING</span>
                       <span className="card-counter">06 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">Paper / Live Trading</h3>
+                    <h3 className="stacking-card-title">Paper + Live Trading</h3>
                     <p className="stacking-card-description">
                       Test every strategy in a full paper trading environment first. When you're confident, switch to live trading with one click — zero downtime.
                     </p>
@@ -1968,7 +2025,7 @@ export default function Home() {
                       </svg>
                     </div>
                     <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
-                      Paper / Live Trading Suite
+                      Paper + Live Trading Suite
                     </h3>
                     <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
                       Practice risk-free, then go live in one click. Zero downtime between modes.
@@ -2130,7 +2187,160 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      
+      <footer style={{ background: '#0a0a0a', color: '#9ca3af', position: 'relative', zIndex: 12, borderTop: '2px solid rgba(0, 240, 255, 0.3)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 60px 60px' }}>
+          {/* Risk Warning */}
+          <div style={{ marginBottom: '48px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Risk Warning</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af' }}>
+              Trading Contracts for Difference (CFDs) carries a high level of risk and may not be suitable for all investors. The use of leverage can significantly magnify gains and losses and may result in losses exceeding your initial investment. Prior to engaging in CFD trading, you should ensure that you fully understand the risks involved, carefully consider your investment objectives, financial situation, and level of experience, and seek independent advice where necessary. Past performance is not indicative of future results. Please refer to our legal documents for a comprehensive overview of the risks associated with CFD trading.
+            </p>
+          </div>
+
+          {/* General Disclaimer */}
+          <div style={{ marginBottom: '48px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>General Disclaimer</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af', marginBottom: '16px' }}>
+              The content on this website is provided for general informational purposes only and does not take into account your specific investment objectives, financial circumstances, or particular needs. Access to this website is made at your own initiative. Uptrender makes no warranties regarding the accuracy, timeliness, completeness, or relevance of any information provided and disclaims any liability for reliance placed on such information.
+            </p>
+            <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af' }}>
+              Uptrender does not offer its services to residents of certain jurisdictions, including, but not limited to, the United States, Singapore, India, Russia, and any jurisdictions listed by the Financial Action Task Force (FATF) or subject to international sanctions. The information on this website is not intended for distribution to, or use by, any person or entity in any jurisdiction where such distribution or use would contravene local law or regulation.
+            </p>
+          </div>
+
+          {/* Regulatory Information */}
+          <div style={{ marginBottom: '48px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Regulatory Information</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af', marginBottom: '12px' }}>
+              Uptrender is a global brand comprising multiple entities, each authorised and registered in various jurisdictions:
+            </p>
+            <ul style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af', paddingLeft: '20px', marginBottom: '12px' }}>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: '#ffffff' }}>Uptrender (Pty) Ltd</strong> is an authorized Financial Services Provider (FSP No. 50865, Company Reg. No. 2015/072049/07) (&ldquo;FSP&rdquo;) regulated by the Financial Sector Conduct Authority in South Africa. The FSP is not the market maker or product issuer and acts solely as an intermediary in terms of the FAIS Act between the client and Uptrender Limited (the &ldquo;Product Supplier&rdquo;), rendering only intermediary services in relation to derivative products offer by the Product Supplier. Therefore the FSP does not act as principal or counterparty in any of your transactions. Registered address: 18 Cavendish Road, Claremont, Cape Town, Western Cape, 7708, South Africa.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: '#ffffff' }}>Uptrender (Pty) Ltd – Dubai Branch</strong> is licensed by the UAE Capital Markets Authority (CMA) under License No. 20200000299 as a Category 5 licensee, authorised to carry out regulated activities of Introduction and Promotion in the UAE. It is not authorised to provide brokerage services or execute client trades.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: '#ffffff' }}>Uptrender Limited</strong> is a Full-Service Investment Dealer (excluding Underwriting), authorised and regulated by the Financial Services Commission (FSC) of Mauritius (License No. GB23202269). Registered address: 40 Silicon Avenue, The Catalyst, Level 2, Suite 201, Ebene, Mauritius.
+              </li>
+              <li>
+                <strong style={{ color: '#ffffff' }}>Uptrender Ltd</strong>, incorporated in the Republic of Cyprus with Company Reg. No. HE436466 and Registered address: 160 Archbishop Makarios III Avenue, Floor 1, 3026 Limassol, Cyprus. This entity does not offer regulated financial products or provide trading services.
+              </li>
+            </ul>
+          </div>
+
+          {/* Quick Links Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '60px', marginBottom: '48px', paddingTop: '48px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            {/* Column 1 - Company */}
+            <div>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Company</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {[
+                  { name: 'About', href: '/about' },
+                  { name: 'Services', href: '/services' },
+                  { name: 'Blog', href: '/blog' },
+                  { name: 'Contact', href: '/contact' }
+                ].map((item, i) => (
+                  <li key={i} style={{ marginBottom: '12px' }}>
+                    <a href={item.href} style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }}
+                       onMouseEnter={(e) => e.currentTarget.style.color = '#00f0ff'}
+                       onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}>
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 2 - Social Media */}
+            <div>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Social Media</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                <li style={{ marginBottom: '12px' }}>
+                  <a href="https://www.facebook.com/uptrender" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '10px', transition: 'color 0.2s' }}
+                     onMouseEnter={(e) => e.currentTarget.style.color = '#00f0ff'}
+                     onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    Facebook
+                  </a>
+                </li>
+                <li style={{ marginBottom: '12px' }}>
+                  <a href="https://www.instagram.com/uptrender.in/" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '10px', transition: 'color 0.2s' }}
+                     onMouseEnter={(e) => e.currentTarget.style.color = '#00f0ff'}
+                     onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                    Instagram
+                  </a>
+                </li>
+                <li style={{ marginBottom: '12px' }}>
+                  <a href="https://t.me/uptrender1" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '10px', transition: 'color 0.2s' }}
+                     onMouseEnter={(e) => e.currentTarget.style.color = '#00f0ff'}
+                     onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                    Telegram
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3 - Legal & Press */}
+            <div>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Legal & Press</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {[
+                  { name: 'Privacy Policy', href: '/privacy-policy' },
+                  { name: 'Terms & Conditions', href: '/terms-and-conditions' },
+                  { name: 'Refund Policy', href: '/refund-policy' }
+                ].map((item, i) => (
+                  <li key={i} style={{ marginBottom: '12px' }}>
+                    <a href={item.href} style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }}
+                       onMouseEnter={(e) => e.currentTarget.style.color = '#00f0ff'}
+                       onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}>
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 4 - Resources */}
+            <div>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Resources</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {[
+                  { name: 'Partnership', href: '/partnership' },
+                  { name: 'White Label', href: '/white-label' },
+                  { name: 'FAQ', href: '/faq' }
+                ].map((item, i) => (
+                  <li key={i} style={{ marginBottom: '12px' }}>
+                    <a href={item.href} style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }}
+                       onMouseEnter={(e) => e.currentTarget.style.color = '#00f0ff'}
+                       onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}>
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: '30px', textAlign: 'center' }}>
+            <p style={{ fontSize: '13px', color: '#6b7280' }}>
+              © 2026 Uptrender. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
 
       {/* Floating Action Buttons */}
       <div className="fixed right-8 bottom-32 flex flex-col gap-4 z-20">

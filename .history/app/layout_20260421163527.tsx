@@ -32,9 +32,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#0a0a14]">
         <Navbar />
-        <main style={{ flex: "1 0 auto" }}>
-          {children}
-        </main>
+        {children}
         <Footer />
       </body>
     </html>

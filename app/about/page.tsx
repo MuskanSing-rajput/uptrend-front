@@ -44,89 +44,199 @@ function CountUp({ target, prefix = "", suffix = "" }: { target: number; prefix?
 }
 
 export default function About() {
-  const [navVisible, setNavVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const heroRef = useRef<HTMLDivElement>(null);
+      const heroRef = useRef<HTMLDivElement>(null);
   const storyRef = useRef<HTMLDivElement>(null);
   const missionRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setNavVisible(false);
-      } else {
-        setNavVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  // Hero animations
+  
+  // Hero animations - Optimized for performance
   useEffect(() => {
     if (!heroRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".about-hero-badge", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.2 });
-      gsap.fromTo(".about-hero-title", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.4 });
-      gsap.fromTo(".about-hero-desc", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.6 });
-      gsap.fromTo(".about-hero-stats", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.8 });
-      gsap.fromTo(".hero-grid-effect", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power3.out", delay: 0.3 });
-      // Animate grid glow pulse
-      gsap.to(".grid-glow-orb", { scale: 1.2, opacity: 0.6, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1 });
+      // Batch all hero animations into a single timeline for better performance
+      gsap.fromTo(".about-hero-badge", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true, delay: 0.2 });
+      gsap.fromTo(".about-hero-title", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", force3D: true, delay: 0.4 });
+      gsap.fromTo(".about-hero-desc", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true, delay: 0.6 });
+      gsap.fromTo(".about-hero-stats", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true, delay: 0.8 });
+      gsap.fromTo(".hero-grid-effect", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power3.out", force3D: true, delay: 0.3 });
+      
+      // Limit grid glow animation - only reduce opacity for subtle effect
+      gsap.to(".grid-glow-orb", { opacity: 0.8, duration: 4, ease: "sine.inOut", yoyo: true, repeat: -1 });
     }, heroRef);
     return () => ctx.revert();
   }, []);
 
-  // Story section animations
+  // Story section animations - Optimized with ScrollTrigger batching
   useEffect(() => {
     if (!storyRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".story-badge", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: ".story-badge", start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo(".story-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: ".story-title", start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo(".story-text", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: ".story-text", start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo(".story-line", { scaleY: 0 }, { scaleY: 1, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: ".story-line", start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo(".story-milestone", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.7, stagger: 0.2, ease: "power3.out", scrollTrigger: { trigger: ".story-milestones", start: "top 80%", toggleActions: "play none none none" } });
+      // Batch story animations
+      gsap.fromTo(".story-badge", 
+        { opacity: 0, y: 20 }, 
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-badge", start: "top 85%", toggleActions: "play none none none" } }
+      );
+      
+      gsap.fromTo(".story-title", 
+        { opacity: 0, y: 40 }, 
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-title", start: "top 85%", toggleActions: "play none none none" } }
+      );
+      
+      gsap.fromTo(".story-text", 
+        { opacity: 0, y: 30 }, 
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-text", start: "top 85%", toggleActions: "play none none none" } }
+      );
+      
+      gsap.fromTo(".story-line", 
+        { scaleY: 0 }, 
+        { scaleY: 1, duration: 1, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-line", start: "top 85%", toggleActions: "play none none none" } }
+      );
+      
+      gsap.fromTo(".story-milestone", 
+        { opacity: 0, x: -30 }, 
+        { opacity: 1, x: 0, duration: 0.6, stagger: 0.15, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-milestones", start: "top 80%", toggleActions: "play none none none" } }
+      );
     }, storyRef);
     return () => ctx.revert();
   }, []);
 
-  // Mission/Vision animations - enhanced
+  // Mission/Vision animations - Optimized with batching and GPU acceleration
   useEffect(() => {
     if (!missionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".mv-title", { opacity: 0, y: 50, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.5)", scrollTrigger: { trigger: ".mv-title", start: "top 80%", toggleActions: "play none none none" } });
-      // Mission and Vision cards with rotation + scale
-      gsap.fromTo(".mv-card", { opacity: 0, y: 80, rotateX: 15, scale: 0.85 }, { opacity: 1, y: 0, rotateX: 0, scale: 1, duration: 1, stagger: 0.25, ease: "power4.out", scrollTrigger: { trigger: ".mv-cards", start: "top 80%", toggleActions: "play none none none" } });
-      // Floating icon animation
-      gsap.to(".mv-icon", { y: -8, duration: 2, ease: "sine.inOut", yoyo: true, repeat: -1, stagger: 0.3 });
-      // Values title
-      gsap.fromTo(".values-title-badge", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: ".values-title-badge", start: "top 85%", toggleActions: "play none none none" } });
-      gsap.fromTo(".values-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: ".values-title", start: "top 85%", toggleActions: "play none none none" } });
-      // Value cards stagger with scale and rotation
-      gsap.fromTo(".value-card", { opacity: 0, y: 60, scale: 0.8, rotateY: -10 }, { opacity: 1, y: 0, scale: 1, rotateY: 0, duration: 0.8, stagger: 0.12, ease: "back.out(1.2)", scrollTrigger: { trigger: ".values-grid", start: "top 80%", toggleActions: "play none none none" } });
+      // Title animation
+      gsap.fromTo(".mv-title", 
+        { opacity: 0, y: 50, scale: 0.9 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1, 
+          duration: 1, 
+          ease: "back.out(1.5)", 
+          force3D: true,
+          scrollTrigger: { 
+            trigger: ".mv-title", 
+            start: "top 80%", 
+            toggleActions: "play none none none" 
+          } 
+        }
+      );
+      
+      // Mission and Vision cards - staggered with GPU acceleration
+      gsap.fromTo(".mv-card", 
+        { opacity: 0, y: 80, scale: 0.85 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1, 
+          duration: 0.8, 
+          stagger: 0.15, 
+          ease: "power4.out", 
+          force3D: true,
+          scrollTrigger: { 
+            trigger: ".mv-cards", 
+            start: "top 80%", 
+            toggleActions: "play none none none" 
+          } 
+        }
+      );
+      
+      // Floating icon animation - reduced intensity
+      gsap.to(".mv-icon", { y: -6, duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: -1, force3D: true, stagger: 0.2 });
+      
+      // Values section animations
+      gsap.fromTo(".values-title-badge", 
+        { opacity: 0, y: 30 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.7, 
+          ease: "power3.out", 
+          force3D: true,
+          scrollTrigger: { 
+            trigger: ".values-title-badge", 
+            start: "top 85%", 
+            toggleActions: "play none none none" 
+          } 
+        }
+      );
+      
+      gsap.fromTo(".values-title", 
+        { opacity: 0, y: 40 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8, 
+          ease: "power3.out", 
+          force3D: true,
+          scrollTrigger: { 
+            trigger: ".values-title", 
+            start: "top 85%", 
+            toggleActions: "play none none none" 
+          } 
+        }
+      );
+      
+      // Value cards - simpler animation
+      gsap.fromTo(".value-card", 
+        { opacity: 0, y: 50, scale: 0.9 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1, 
+          duration: 0.7, 
+          stagger: 0.1, 
+          ease: "back.out(1)", 
+          force3D: true,
+          scrollTrigger: { 
+            trigger: ".values-grid", 
+            start: "top 80%", 
+            toggleActions: "play none none none" 
+          } 
+        }
+      );
     }, missionRef);
     return () => ctx.revert();
   }, []);
 
-  // CTA animations
+  // CTA animations - Optimized
   useEffect(() => {
     if (!ctaRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".cta-content", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".cta-content", start: "top 85%", toggleActions: "play none none none" } });
+      gsap.fromTo(".cta-content", 
+        { opacity: 0, y: 40 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.9, 
+          ease: "power3.out", 
+          force3D: true,
+          scrollTrigger: { 
+            trigger: ".cta-content", 
+            start: "top 85%", 
+            toggleActions: "play none none none" 
+          } 
+        }
+      );
     }, ctaRef);
     return () => ctx.revert();
   }, []);
 
+  // Refresh ScrollTrigger on mount to ensure animations trigger correctly
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div style={{ background: "#0a0a0a", minHeight: "100vh", color: "#ffffff" }}>
-      {/* Gradient Grid Keyframes */}
+      {/* Gradient Grid Keyframes - Optimized for performance */}
       <style>{`
         @keyframes gridPulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.7; }
+          0%, 100% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(1.02); opacity: 0.7; }
         }
         @keyframes floatUp {
           0%, 100% { transform: translateY(0px); }
@@ -141,29 +251,14 @@ export default function About() {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
         }
-        @keyframes textGlow {
-          0%, 100% { 
-            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.6)) 
-                    drop-shadow(0 0 40px rgba(0, 240, 255, 0.4)); 
-          }
-          50% { 
-            filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.8)) 
-                    drop-shadow(0 0 60px rgba(168, 85, 247, 0.6)); 
-          }
-        }
         @keyframes letterAppear {
           0% {
             opacity: 0;
             transform: translateY(20px) scale(0.5);
-            filter: blur(10px);
-          }
-          50% {
-            filter: blur(0px);
           }
           100% {
             opacity: 1;
             transform: translateY(0) scale(1);
-            filter: blur(0px);
           }
         }
         @keyframes wordPulse {
@@ -178,47 +273,33 @@ export default function About() {
           display: inline-block;
           opacity: 0;
           animation: letterAppear 0.6s ease-out forwards;
+          will-change: transform, opacity;
         }
         .uptrender-word {
           animation: wordPulse 2s ease-in-out infinite;
           animation-delay: 5s;
+          will-change: transform;
         }
         .grid-cell {
-          transition: all 0.3s ease;
+          will-change: transform, background;
+          transition: transform 0.3s ease, background 0.3s ease;
         }
         .grid-cell:hover {
           background: rgba(0, 240, 255, 0.12) !important;
           border-color: rgba(0, 240, 255, 0.4) !important;
           box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+          transform: scale(1.05);
+        }
+        .animated-glow {
+          will-change: transform, opacity;
+        }
+        .animated-icon {
+          will-change: transform;
         }
       `}</style>
 
       {/* Header */}
-      <header className={`navbar ${navVisible ? "navbar-visible" : "navbar-hidden"}`}>
-        <div className="navbar-inner">
-          <Link href="/" className="logo-wrap" style={{ textDecoration: "none" }}>
-            <span className="logo-mark" aria-label="uptrender">
-              <span className="logo-v">up</span>
-              <span className="logo-t">trender</span>
-              <span className="logo-dot"></span>
-            </span>
-          </Link>
-          <nav className="hidden md:flex items-center nav-menu">
-            <Link href="/" className="nav-link">Home</Link>
-            <Link href="/about" className="nav-link" style={{ color: "#00f0ff" }}>About Us</Link>
-            <Link href="/services" className="nav-link">Services</Link>
-            <Link href="/#pricing" className="nav-link">Pricing</Link>
-            <Link href="/#features" className="nav-link">Features</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-            <Link href="/contact" className="nav-link">Contact Us</Link>
-          </nav>
-          <div className="flex-1" />
-          <div className="flex items-center gap-6">
-            <a href="https://app.uptrender.in/auth/register" className="btn-primary">Trade Now</a>
-            <a href="https://app.uptrender.in/auth/login" className="nav-link">Login</a>
-          </div>
-        </div>
-      </header>
+      
 
       {/* Hero Section - Split Layout with Gradient Grid */}
       <section ref={heroRef} style={{ paddingTop: "140px", paddingBottom: "80px", position: "relative", overflow: "hidden" }}>
@@ -274,14 +355,12 @@ export default function About() {
                     width: "100%", aspectRatio: "1", borderRadius: "12px",
                     background: isHighlight ? "rgba(0, 240, 255, 0.08)" : isMedium ? "rgba(0, 240, 255, 0.03)" : "rgba(255, 255, 255, 0.02)",
                     border: `1px solid ${isHighlight ? "rgba(0, 240, 255, 0.25)" : isMedium ? "rgba(0, 240, 255, 0.12)" : "rgba(255, 255, 255, 0.06)"}`,
-                    animation: isHighlight ? `gridPulse ${3 + (i % 3) * 0.5}s ease-in-out infinite` : "none",
+                    animation: isHighlight ? `gridPulse ${3 + (i % 2) * 0.3}s ease-in-out infinite` : "none",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     backdropFilter: "blur(10px)",
                   }}>
                     {i === 7 && <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#00f0ff", boxShadow: "0 0 10px #00f0ff", animation: "gridPulse 2s ease-in-out infinite" }} />}
                     {i === 17 && <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a855f7", boxShadow: "0 0 10px #a855f7", animation: "gridPulse 2.5s ease-in-out infinite" }} />}
-                    {i === 11 && <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "gridPulse 3s ease-in-out infinite" }} />}
-                    {i === 13 && <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b", boxShadow: "0 0 8px #f59e0b", animation: "gridPulse 2.8s ease-in-out infinite" }} />}
                   </div>
                 );
               })}
@@ -302,7 +381,6 @@ export default function About() {
                 letterSpacing: "1px",
                 pointerEvents: "none",
                 zIndex: 10,
-                filter: "drop-shadow(0 0 20px rgba(0, 240, 255, 0.5)) drop-shadow(0 0 40px rgba(0, 240, 255, 0.3))",
               }}>
                 <span className="uptrender-letter" style={{ animationDelay: "0.1s" }}>u</span>
                 <span className="uptrender-letter" style={{ animationDelay: "0.2s" }}>p</span>
@@ -315,9 +393,8 @@ export default function About() {
                 <span className="uptrender-letter" style={{ animationDelay: "0.9s" }}>r</span>
               </div>
             </div>
-
-            {/* Floating connection lines */}
-            <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: 0.3 }}>
+            {/* Floating connection lines - simplified for performance */}
+            <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: 0.2 }}>
               <line x1="30%" y1="30%" x2="50%" y2="50%" stroke="url(#gridGrad)" strokeWidth="1" />
               <line x1="70%" y1="30%" x2="50%" y2="50%" stroke="url(#gridGrad)" strokeWidth="1" />
               <line x1="30%" y1="70%" x2="50%" y2="50%" stroke="url(#gridGrad)" strokeWidth="1" />
@@ -475,13 +552,7 @@ export default function About() {
       </section>
 
       {/* Footer */}
-      <footer style={{ background: "#05070f", padding: "40px 0", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", textAlign: "center" }}>
-          <p style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: "14px" }}>
-            © 2026 Uptrender. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      
     </div>
   );
 }

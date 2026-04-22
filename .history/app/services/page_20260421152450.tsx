@@ -75,7 +75,7 @@ const services = [
   },
   {
     id: "paper-live-trading",
-    title: "Paper / Live Trading",
+    title: "Paper + Live Trading",
     category: "TRADING",
     color: "#06b6d4",
     icon: (
@@ -115,11 +115,26 @@ const services = [
 ];
 
 export default function ServicesPage() {
-      const heroRef = useRef<HTMLDivElement>(null);
+  const [navVisible, setNavVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
-  
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setNavVisible(false);
+      } else {
+        setNavVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   // Hero animations
   useEffect(() => {
     if (!heroRef.current) return;
@@ -155,7 +170,31 @@ export default function ServicesPage() {
   return (
     <div style={{ background: "#0a0a0a", minHeight: "100vh", color: "#ffffff" }}>
       {/* Header */}
-      
+      <header className={`navbar ${navVisible ? "navbar-visible" : "navbar-hidden"}`}>
+        <div className="navbar-inner">
+          <Link href="/" className="logo-wrap" style={{ textDecoration: "none" }}>
+            <span className="logo-mark" aria-label="uptrender">
+              <span className="logo-v">up</span>
+              <span className="logo-t">trender</span>
+              <span className="logo-dot"></span>
+            </span>
+          </Link>
+          <nav className="hidden md:flex items-center nav-menu">
+            <Link href="/" className="nav-link">Home</Link>
+            <Link href="/about" className="nav-link">About Us</Link>
+            <Link href="/services" className="nav-link" style={{ color: "#00f0ff" }}>Services</Link>
+            <Link href="/#pricing" className="nav-link">Pricing</Link>
+            <Link href="/#features" className="nav-link">Features</Link>
+            <Link href="/blog" className="nav-link">Blog</Link>
+            <Link href="/contact" className="nav-link">Contact Us</Link>
+          </nav>
+          <div className="flex-1" />
+          <div className="flex items-center gap-6">
+            <a href="https://app.uptrender.in/auth/register" className="btn-primary">Trade Now</a>
+            <a href="https://app.uptrender.in/auth/login" className="nav-link">Login</a>
+          </div>
+        </div>
+      </header>
 
       {/* Hero Section */}
       <section ref={heroRef} style={{ paddingTop: "140px", paddingBottom: "60px", position: "relative", overflow: "hidden" }}>
@@ -193,7 +232,7 @@ export default function ServicesPage() {
                   <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "200px", height: "200px", background: `radial-gradient(circle, ${service.color}15 0%, transparent 70%)`, pointerEvents: "none" }} />
                   <div style={{ width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", boxShadow: `0 10px 40px ${service.color}20`, border: `1px solid ${service.color}30` }}>
                     <img 
-                      src="/service1.jpg" 
+                      src="/window.webp" 
                       alt={service.title}
                       style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
                     />
@@ -253,7 +292,13 @@ export default function ServicesPage() {
       </section>
 
       {/* Footer */}
-      
+      <footer style={{ background: "#05070f", padding: "40px 0", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", textAlign: "center" }}>
+          <p style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: "14px" }}>
+            © 2026 Uptrender. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

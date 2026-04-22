@@ -962,9 +962,9 @@ export default function Home() {
 
       {/* Everything You Need Section */}
       <section ref={everythingSectionRef} className="everything-section" style={{ background: '#0a0a0a', padding: '100px 0' }}>
-        <div className="everything-inner" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px', display: 'flex', alignItems: 'stretch', justifyContent: 'space-between', gap: '80px' }}>
-          <div className="everything-content" style={{ flex: 1, maxWidth: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <span className="about-us-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0, alignSelf: 'flex-start' }}>About Us</span>
+        <div className="everything-inner" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '80px' }}>
+          <div className="everything-content" style={{ flex: 1, maxWidth: '600px' }}>
+            <span className="about-us-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0 }}>About Us</span>
             <h2 className="everything-title" style={{ color: '#ffffff', fontSize: '48px', fontWeight: 700, lineHeight: 1.1, marginBottom: '24px', opacity: 0 }}>
               Everything you need for profitable <span style={{ color: '#00f0ff' }}>Forex & Crypto trading</span><span className="everything-dot" style={{ color: '#dc2626' }}>.</span>
             </h2>
@@ -1021,8 +1021,8 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="everything-phone" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'stretch', maxWidth: '700px', position: 'relative', marginTop: '55px' }}>
-            <img src="/about.jpg" alt="Uptrender Trading App" className="phone-image" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '24px', opacity: 0, minHeight: '100%' }} />
+          <div className="everything-phone" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '500px' }}>
+            <img src="/p" alt="Uptrender Trading App" className="phone-image" style={{ width: '100%', height: 'auto', maxWidth: '450px', objectFit: 'contain', opacity: 0 }} />
           </div>
         </div>
       </section>
@@ -1247,11 +1247,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Card 6 - Paper / Live Trading */}
+            {/* Card 6 - Paper + Live Trading */}
             <div className="stacking-card" style={{ '--card-index': 5, '--card-color': '#06b6d4' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Paper / Live Trading" />
+                  <img src="/window.webp" alt="Paper + Live Trading" />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(14, 116, 144, 0.25) 100%)' }}></div>
@@ -1260,7 +1260,7 @@ export default function Home() {
                       <span className="card-category" style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#06b6d4' }}>TRADING</span>
                       <span className="card-counter">06 / 08</span>
                     </div>
-                    <h3 className="stacking-card-title">Paper / Live Trading</h3>
+                    <h3 className="stacking-card-title">Paper + Live Trading</h3>
                     <p className="stacking-card-description">
                       Test every strategy in a full paper trading environment first. When you're confident, switch to live trading with one click — zero downtime.
                     </p>
@@ -1968,7 +1968,7 @@ export default function Home() {
                       </svg>
                     </div>
                     <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
-                      Paper / Live Trading Suite
+                      Paper + Live Trading Suite
                     </h3>
                     <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
                       Practice risk-free, then go live in one click. Zero downtime between modes.

@@ -12,9 +12,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-
 export const metadata: Metadata = {
   title: "UpTrader - Start Trading",
   description: "Start trading with an award-winning broker",
@@ -30,13 +27,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0a0a14]">
-        <Navbar />
-        <main style={{ flex: "1 0 auto" }}>
-          {children}
-        </main>
-        <Footer />
-      </body>
+      <body className="min-h-full flex flex-col bg-[#0a0a14]">{children}</body>
     </html>
   );
 }
