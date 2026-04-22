@@ -337,75 +337,47 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right - Gradient Grid Effect */}
-          <div className="hero-grid-effect" style={{ position: "relative", opacity: 0 }}>
-            {/* Main glow orb behind grid */}
-            <div className="grid-glow-orb" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "400px", height: "400px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(139, 92, 246, 0.08) 40%, transparent 70%)", pointerEvents: "none", filter: "blur(40px)" }} />
+          {/* Right - Video Background */}
+          <div className="hero-grid-effect" style={{ position: "relative", opacity: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {/* Background glow effect */}
+            <div className="grid-glow-orb" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%)", pointerEvents: "none", filter: "blur(60px)", zIndex: 0 }} />
 
-            {/* Grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "8px", padding: "20px", position: "relative" }}>
-              {Array.from({ length: 25 }).map((_, i) => {
-                const row = Math.floor(i / 5);
-                const col = i % 5;
-                const distFromCenter = Math.abs(row - 2) + Math.abs(col - 2);
-                const isHighlight = distFromCenter <= 1;
-                const isMedium = distFromCenter === 2;
-                return (
-                  <div key={i} className="grid-cell" style={{
-                    width: "100%", aspectRatio: "1", borderRadius: "12px",
-                    background: isHighlight ? "rgba(0, 240, 255, 0.08)" : isMedium ? "rgba(0, 240, 255, 0.03)" : "rgba(255, 255, 255, 0.02)",
-                    border: `1px solid ${isHighlight ? "rgba(0, 240, 255, 0.25)" : isMedium ? "rgba(0, 240, 255, 0.12)" : "rgba(255, 255, 255, 0.06)"}`,
-                    animation: isHighlight ? `gridPulse ${3 + (i % 2) * 0.3}s ease-in-out infinite` : "none",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    backdropFilter: "blur(10px)",
-                  }}>
-                    {i === 7 && <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#00f0ff", boxShadow: "0 0 10px #00f0ff", animation: "gridPulse 2s ease-in-out infinite" }} />}
-                    {i === 17 && <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a855f7", boxShadow: "0 0 10px #a855f7", animation: "gridPulse 2.5s ease-in-out infinite" }} />}
-                  </div>
-                );
-              })}
+            {/* Video Container */}
+            <div style={{ 
+              position: "relative", 
+              width: "100%", 
+              maxWidth: "600px",
+              aspectRatio: "1",
+              borderRadius: "20px",
+              overflow: "hidden",
+              boxShadow: "0 20px 60px rgba(0, 240, 255, 0.2), 0 0 100px rgba(139, 92, 246, 0.15)",
+              border: "1px solid rgba(0, 240, 255, 0.2)",
+              zIndex: 1
+            }}>
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block"
+                }}
+              >
+                <source src="/sun.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
               
-              {/* Uptrender text overlay centered on grid */}
-              <div className="uptrender-word" style={{ 
-                position: "absolute", 
-                top: "50%", 
-                left: "50%", 
-                transform: "translate(-50%, -50%)",
-                fontSize: "clamp(24px, 3vw, 36px)",
-                fontWeight: 900,
-                background: "linear-gradient(135deg, #00f0ff 0%, #00b8d4 30%, #a855f7 70%, #00f0ff 100%)",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 3s ease-in-out infinite",
-                letterSpacing: "1px",
-                pointerEvents: "none",
-                zIndex: 10,
-              }}>
-                <span className="uptrender-letter" style={{ animationDelay: "0.1s" }}>u</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.2s" }}>p</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.3s" }}>t</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.4s" }}>r</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.5s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.6s" }}>n</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.7s" }}>d</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.8s" }}>e</span>
-                <span className="uptrender-letter" style={{ animationDelay: "0.9s" }}>r</span>
-              </div>
+              {/* Overlay gradient for better blend */}
+              <div style={{
+                position: "absolute",
+                inset: 0,
+                background: "radial-gradient(circle at center, transparent 40%, rgba(10, 10, 10, 0.3) 100%)",
+                pointerEvents: "none"
+              }} />
             </div>
-            {/* Floating connection lines - simplified for performance */}
-            <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: 0.2 }}>
-              <line x1="30%" y1="30%" x2="50%" y2="50%" stroke="url(#gridGrad)" strokeWidth="1" />
-              <line x1="70%" y1="30%" x2="50%" y2="50%" stroke="url(#gridGrad)" strokeWidth="1" />
-              <line x1="30%" y1="70%" x2="50%" y2="50%" stroke="url(#gridGrad)" strokeWidth="1" />
-              <line x1="70%" y1="70%" x2="50%" y2="50%" stroke="url(#gridGrad)" strokeWidth="1" />
-              <defs>
-                <linearGradient id="gridGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#00f0ff" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#a855f7" stopOpacity="0.5" />
-                </linearGradient>
-              </defs>
-            </svg>
           </div>
         </div>
       </section>
