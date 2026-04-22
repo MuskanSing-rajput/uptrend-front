@@ -1086,17 +1086,15 @@ export default function Home() {
             {/* Card 1 - Multi-Market Dashboard */}
             <div className="stacking-card" style={{ '--card-index': 0, '--card-color': '#00f0ff' } as React.CSSProperties}>
               <div className="stacking-card-inner">
-                <div className="stacking-card-image">
-                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
-                    <Image 
-                      src="/service1.jpg" 
-                      alt="Multi-Market Dashboard"
-                      fill
-                      style={{ objectFit: "contain" }}
-                      sizes="(max-width: 768px) 100vw, 500px"
-                      priority
-                    />
-                  </div>
+                <div className="stacking-card-image" style={{ position: "relative", width: "100%", height: "100%" }}>
+                  <Image 
+                    src="/service1.jpg" 
+                    alt="Multi-Market Dashboard"
+                    fill
+                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 768px) 100vw, 500px"
+                    priority
+                  />
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 100, 200, 0.25) 100%)' }}></div>
