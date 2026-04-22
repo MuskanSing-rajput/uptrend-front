@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -192,14 +191,11 @@ export default function ServicesPage() {
                 {/* Image/Visual Side */}
                 <div style={{ order: 0, background: `linear-gradient(135deg, ${service.color}08 0%, ${service.color}15 100%)`, padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
                   <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "200px", height: "200px", background: `radial-gradient(circle, ${service.color}15 0%, transparent 70%)`, pointerEvents: "none" }} />
-                  <div style={{ width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", boxShadow: `0 10px 40px ${service.color}20`, border: `1px solid ${service.color}30`, position: "relative" }}>
-                    <Image 
+                  <div style={{ width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", boxShadow: `0 10px 40px ${service.color}20`, border: `1px solid ${service.color}30` }}>
+                    <img 
                       src="/service1.jpg" 
                       alt={service.title}
-                      fill
-                      style={{ objectFit: "cover", objectPosition: "center" }}
-                      sizes="(max-width: 1200px) 100vw, 500px"
-                      priority={index === 0}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
                     />
                   </div>
                 </div>
