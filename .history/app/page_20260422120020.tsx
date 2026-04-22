@@ -1032,38 +1032,38 @@ export default function Home() {
         <div className="always-ready-inner" style={{ maxWidth: '1920px', margin: '0 auto', padding: '0 80px', textAlign: 'center' }}>
           {/* Header Row */}
           <div className="always-ready-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '-80px', gap: '100px', position: 'relative', zIndex: 20, maxWidth: '1600px', margin: '0 auto -80px' }}>
-            <h2 className="always-ready-title" style={{ color: '#ffffff', fontSize: '60px', fontWeight: 750, lineHeight: 1.2, textAlign: 'left', opacity: 0, flex: '0 0 auto' }}>
+            <h2 className="always-ready-title" style={{ color: '#ffffff', fontSize: '56px', fontWeight: 700, lineHeight: 1.2, textAlign: 'left', opacity: 0, flex: '0 0 auto' }}>
               Always one step<br />
               ahead<span style={{ color: '#dc2626' }}>.</span>
             </h2>
             <p className="always-ready-subtitle" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '19px', lineHeight: 1.6, maxWidth: '550px', textAlign: 'left', opacity: 0, flex: '1 1 auto', paddingTop: '8px' }}>
-              A powerful trading ecosystem built for every market phase.<br/>Trade Forex & Crypto with an AI-driven platform.
+              A complete trading ecosystem built to perform in every market phase. Whether you're trading Forex or Crypto, our AI-powered platform keeps you ahead.
             </p>
           </div>
 
           {/* Laptop with Platform Labels */}
-          <div className="always-ready-laptop" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '700px', zIndex: 1, padding: '0 20px', marginTop: '20px' }}>
-            {/* Copy Trading Label */}
+          <div className="always-ready-laptop" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '750px', zIndex: 1, padding: '0 20px', marginTop: '20px' }}>
+            {/* MetaTrader 5 Label */}
             <div className="platform-label-gradient" style={{ position: 'absolute', top: '15%', left: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
-              Copy Trading
+              MetaTrader 5
             </div>
             
-            {/* AI Assistant Label */}
+            {/* WebTrader Label */}
             <div className="platform-label-gradient" style={{ position: 'absolute', top: '15%', right: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
-              AI Assistant
+              WebTrader
             </div>
             
-            {/* AI Trade Label */}
-            <div className="platform-label-gradient" style={{ position: 'absolute', top: '52%', left: 'calc(6% + 50px)', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
-              AI Trade
+            {/* MetaTrader 4 Label */}
+            <div className="platform-label-gradient" style={{ position: 'absolute', top: '52%', left: '6%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
+              MetaTrader 4
             </div>
             
-            {/* Trading View Label */}
+            {/* TradingView Label */}
             <div className="platform-label-gradient" style={{ position: 'absolute', top: '60%', right: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
-              Trading View
+              TradingView
             </div>
 
-            <img src="/laptop.jpg" alt="Trading Platforms" style={{ width: '100%', maxWidth: '1700px', maxHeight: 'calc(100% - 30px)', height: 'auto', objectFit: 'contain' }} />
+            <img src="/laptop" alt="Trading Platforms" style={{ width: '100%', maxWidth: '1700px', maxHeight: 'calc(100% - 30px)', height: 'auto', objectFit: 'contain' }} />
           </div>
         </div>
       </section>
