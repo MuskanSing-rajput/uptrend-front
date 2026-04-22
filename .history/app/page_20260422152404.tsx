@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -921,7 +922,7 @@ export default function Home() {
 
           <div className="coin-stage">
             <video autoPlay muted loop playsInline className="coin-video">
-              <source src="/coin.webm" type="video/webm" />
+              <source src="/coin.mp4" type="video/webm" />
             </video>
           </div>
 
@@ -1032,7 +1033,7 @@ export default function Home() {
         <div className="always-ready-inner" style={{ maxWidth: '1920px', margin: '0 auto', padding: '0 80px', textAlign: 'center' }}>
           {/* Header Row */}
           <div className="always-ready-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '-80px', gap: '100px', position: 'relative', zIndex: 20, maxWidth: '1600px', margin: '0 auto -80px' }}>
-            <h2 className="always-ready-title" style={{ color: '#ffffff', fontSize: '5px', fontWeight: 700, lineHeight: 1.2, textAlign: 'left', opacity: 0, flex: '0 0 auto' }}>
+            <h2 className="always-ready-title" style={{ color: '#ffffff', fontSize: '60px', fontWeight: 750, lineHeight: 1.2, textAlign: 'left', opacity: 0, flex: '0 0 auto' }}>
               Always one step<br />
               ahead<span style={{ color: '#dc2626' }}>.</span>
             </h2>
@@ -1054,7 +1055,7 @@ export default function Home() {
             </div>
             
             {/* AI Trade Label */}
-            <div className="platform-label-gradient" style={{ position: 'absolute', top: '52%', left: '6%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
+            <div className="platform-label-gradient" style={{ position: 'absolute', top: '52%', left: 'calc(6% + 50px)', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
               AI Trade
             </div>
             
@@ -1086,7 +1087,16 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 0, '--card-color': '#00f0ff' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/service1.jpg" alt="Multi-Market Dashboard" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="Multi-Market Dashboard"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                      priority
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 100, 200, 0.25) 100%)' }}></div>
@@ -1119,7 +1129,15 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 1, '--card-color': '#a855f7' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="AI Strategy Builder" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="AI Strategy Builder"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(99, 102, 241, 0.25) 100%)' }}></div>
@@ -1152,7 +1170,15 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 2, '--card-color': '#10b981' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="AI Trade Assistant" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="AI Trade Assistant"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.25) 100%)' }}></div>
@@ -1185,7 +1211,15 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 3, '--card-color': '#f59e0b' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Advanced Backtesting Engine" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="Advanced Backtesting Engine"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.25) 100%)' }}></div>
@@ -1218,7 +1252,15 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 4, '--card-color': '#ec4899' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Smart Copy Trading" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="Smart Copy Trading"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(190, 24, 93, 0.25) 100%)' }}></div>
@@ -1251,7 +1293,15 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 5, '--card-color': '#06b6d4' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Paper / Live Trading" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="Paper / Live Trading"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(14, 116, 144, 0.25) 100%)' }}></div>
@@ -1284,7 +1334,15 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 6, '--card-color': '#8b5cf6' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Broker API Integration" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="Broker API Integration"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(109, 40, 217, 0.25) 100%)' }}></div>
@@ -1317,7 +1375,15 @@ export default function Home() {
             <div className="stacking-card" style={{ '--card-index': 7, '--card-color': '#ef4444' } as React.CSSProperties}>
               <div className="stacking-card-inner">
                 <div className="stacking-card-image">
-                  <img src="/window.webp" alt="Strategy Marketplace" />
+                  <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
+                    <Image 
+                      src="/service1.jpg" 
+                      alt="Strategy Marketplace"
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  </div>
                 </div>
                 <div className="stacking-card-content">
                   <div className="card-content-gradient" style={{ background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%)' }}></div>

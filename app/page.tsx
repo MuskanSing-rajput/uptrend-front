@@ -922,7 +922,7 @@ export default function Home() {
 
           <div className="coin-stage">
             <video autoPlay muted loop playsInline className="coin-video">
-              <source src="/coin.webm" type="video/webm" />
+              <source src="/coin.mp4" type="video/mp4" />
             </video>
           </div>
 
