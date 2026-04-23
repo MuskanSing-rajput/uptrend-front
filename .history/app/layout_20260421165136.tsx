@@ -18,7 +18,6 @@ import Footer from "./components/Footer";
 export const metadata: Metadata = {
   title: "UpTrader - Start Trading",
   description: "Start trading with an award-winning broker",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({

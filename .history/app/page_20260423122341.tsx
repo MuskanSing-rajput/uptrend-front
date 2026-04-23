@@ -71,8 +71,12 @@ type PricingPlan = {
   name: string;
   description: string;
   monthlyPrice: number;
-  yearlyPrice: number;
-  features: { text: string; included: boolean }[];
+  walletBalance: number;
+  maxStrategies: number | null;
+  apiAccess: boolean;
+  priority: string;
+  duration: number;
+  durationType: string;
   popular: boolean;
   cta: string;
   ctaLink: string;
@@ -104,17 +108,31 @@ export default function Home() {
   useEffect(() => {
     const fetchPricing = async () => {
       try {
-        const response = await fetch('https://app.uptrender.in/user/pricing');
-        if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
-          const data = await response.json();
-          setPricingPlans(data.plans || []);
-        } else {
-          // API not available or not returning JSON, use fallback data
-          setLoadingPricing(false);
+        const response = await fetch('https://app.uptrender.in/api/public/pricing/plans');
+        if (response.ok) {
+          const apiData = await response.json();
+          if (apiData.success && apiData.data) {
+            // Transform API data to match expected format
+            const transformedPlans = apiData.data.map((plan: any) => ({
+              id: plan.planType,
+              name: plan.name,
+              description: plan.description,
+              monthlyPrice: plan.price,
+              walletBalance: plan.walletBalance || 0,
+              maxStrategies: plan.maxStrategies,
+              apiAccess: plan.apiAccess === 1,
+              priority: plan.priority,
+              duration: plan.duration,
+              durationType: plan.durationType,
+              popular: plan.isPopular === 1,
+              cta: plan.price === 0 ? 'Get Started Free' : 'Get Started',
+              ctaLink: 'https://app.uptrender.in/auth/register'
+            }));
+            setPricingPlans(transformedPlans);
+          }
         }
       } catch (error) {
-        // Silently fail and use fallback pricing data
-        setLoadingPricing(false);
+        console.error('Error fetching pricing:', error);
       } finally {
         setLoadingPricing(false);
       }
@@ -754,12 +772,12 @@ export default function Home() {
         {
           opacity: 1,
           y: 0,
-          duration: 1,
-          delay: 0.5,
+          duration: 0.5,
+          delay: 0,
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".explore-cta",
-            start: "top 80%",
+            start: "top 90%",
             toggleActions: "play none none none",
           },
         }
@@ -922,7 +940,7 @@ export default function Home() {
 
           <div className="coin-stage">
             <video autoPlay muted loop playsInline className="coin-video">
-              <source src="/coin.mp4" type="video/webm" />
+              <source src="/coin.mp4" type="video/mp4" />
             </video>
           </div>
 
@@ -1500,7 +1518,7 @@ export default function Home() {
 
       {/* Pricing Section */}
       <section id="pricing" ref={pricingRef} style={{ 
-        background: 'linear-gradient(180deg, #0a0a0a 0%, #0a1540 50%, #0a0a0a 100%)', 
+        background: '#000000', 
         padding: '100px 0', 
         position: 'relative', 
         zIndex: 12 
@@ -1514,60 +1532,17 @@ export default function Home() {
             marginBottom: '20px',
             opacity: 0
           }}>
-            Choose Your Plan<span style={{ color: '#00f0ff' }}>.</span>
+            Choose Your Plan<span style={{ color: '#13b1ac' }}>.</span>
           </h2>
           <p className="pricing-subtitle" style={{ 
             color: 'rgba(255, 255, 255, 0.6)', 
             fontSize: '18px', 
             textAlign: 'center',
-            marginBottom: '40px',
+            marginBottom: '60px',
             opacity: 0
           }}>
             Select the perfect plan for your trading journey
           </p>
-
-          {/* Monthly/Annual Toggle */}
-          <div className="pricing-toggle" style={{ display: 'flex', justifyContent: 'center', marginBottom: '60px', opacity: 0 }}>
-            <div style={{ 
-              background: 'rgba(255, 255, 255, 0.1)', 
-              borderRadius: '50px', 
-              padding: '6px',
-              display: 'flex',
-              gap: '4px',
-              border: '1px solid rgba(255, 255, 255, 0.15)'
-            }}>
-              <button 
-                onClick={() => setIsAnnual(false)}
-                style={{ 
-                  background: !isAnnual ? '#00f0ff' : 'transparent', 
-                  color: !isAnnual ? '#0a0a0a' : 'rgba(255, 255, 255, 0.6)', 
-                  padding: '12px 32px', 
-                  borderRadius: '50px', 
-                  border: 'none',
-                  fontWeight: 600,
-                  fontSize: '15px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}>
-                Monthly
-              </button>
-              <button 
-                onClick={() => setIsAnnual(true)}
-                style={{ 
-                  background: isAnnual ? '#00f0ff' : 'transparent', 
-                  color: isAnnual ? '#0a0a0a' : 'rgba(255, 255, 255, 0.6)', 
-                  padding: '12px 32px', 
-                  borderRadius: '50px', 
-                  border: 'none',
-                  fontWeight: 600,
-                  fontSize: '15px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}>
-                Annual
-              </button>
-            </div>
-          </div>
 
           {/* Pricing Cards */}
           {loadingPricing ? (
@@ -1575,93 +1550,76 @@ export default function Home() {
               Loading pricing plans...
             </div>
           ) : (
-            <div className="pricing-cards-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${pricingPlans.length || 3}, 1fr)`, gap: '30px', alignItems: 'stretch' }}>
+            <div className="pricing-cards-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${pricingPlans.length || 3}, 1fr)`, gap: '30px', alignItems: 'start' }}>
               {(pricingPlans.length > 0 ? pricingPlans : [
                 {
-                  id: 'standard',
-                  name: 'Standard',
-                  description: 'Perfect for individual traders getting started',
-                  monthlyPrice: 1999,
-                  yearlyPrice: 19990,
-                  popular: false,
+                  id: 'professional',
+                  name: 'professional',
+                  description: 'professional',
+                  monthlyPrice: 30,
+                  walletBalance: 10,
+                  maxStrategies: 3,
+                  apiAccess: true,
+                  priority: 'high',
+                  duration: 30,
+                  durationType: 'days',
+                  popular: true,
                   cta: 'Get Started',
-                  ctaLink: 'https://app.uptrender.in/auth/register',
-                  features: [
-                    { text: '5 Active Strategies', included: true },
-                    { text: 'Basic Backtesting', included: true },
-                    { text: '1 Broker Integration', included: true },
-                    { text: 'Email Support', included: true },
-                    { text: 'Strategy Marketplace Access', included: true },
-                    { text: 'Advanced Analytics', included: false },
-                    { text: 'Priority Support', included: false },
-                    { text: 'API Access', included: false }
-                  ]
+                  ctaLink: 'https://app.uptrender.in/auth/register'
                 },
                 {
-                  id: 'premium',
-                  name: 'Premium',
-                  description: 'For serious traders who want more power',
-                  monthlyPrice: 4999,
-                  yearlyPrice: 49990,
-                  popular: true,
-                  cta: 'Get Premium',
-                  ctaLink: 'https://app.uptrender.in/auth/register',
-                  features: [
-                    { text: 'Unlimited Strategies', included: true },
-                    { text: 'Advanced Backtesting', included: true },
-                    { text: 'Multi-Broker Support', included: true },
-                    { text: 'Priority Email & Chat', included: true },
-                    { text: 'Strategy Marketplace - Sell Your Strategies', included: true },
-                    { text: 'Advanced Analytics & Reports', included: true },
-                    { text: 'Copy Trading', included: true },
-                    { text: 'API Access', included: false }
-                  ]
+                  id: 'basic',
+                  name: 'Free Forever',
+                  description: 'Free Forever',
+                  monthlyPrice: 0,
+                  walletBalance: 0,
+                  maxStrategies: 1,
+                  apiAccess: false,
+                  priority: 'standard',
+                  duration: 30,
+                  durationType: 'days',
+                  popular: false,
+                  cta: 'Get Started Free',
+                  ctaLink: 'https://app.uptrender.in/auth/register'
                 },
                 {
                   id: 'enterprise',
-                  name: 'Enterprise',
-                  description: 'For professional traders and institutions',
-                  monthlyPrice: 9999,
-                  yearlyPrice: 99990,
+                  name: 'Elite',
+                  description: 'Elite',
+                  monthlyPrice: 100,
+                  walletBalance: 10,
+                  maxStrategies: null,
+                  apiAccess: true,
+                  priority: 'high',
+                  duration: 30,
+                  durationType: 'days',
                   popular: false,
-                  cta: 'Contact Sales',
-                  ctaLink: 'mailto:sales@uptrender.tech',
-                  features: [
-                    { text: 'Everything in Premium', included: true },
-                    { text: 'Dedicated Account Manager', included: true },
-                    { text: 'Custom Broker Integration', included: true },
-                    { text: '24/7 Priority Support', included: true },
-                    { text: 'White-Label Solutions', included: true },
-                    { text: 'Full API Access', included: true },
-                    { text: 'Custom Development', included: true },
-                    { text: 'SLA Guarantee', included: true }
-                  ]
+                  cta: 'Get Started',
+                  ctaLink: 'https://app.uptrender.in/auth/register'
                 }
-              ]).map((plan, index) => {
-                const price = isAnnual ? plan.yearlyPrice : plan.monthlyPrice;
-                const saving = (plan.monthlyPrice * 12) - plan.yearlyPrice;
+              ]).map((plan) => {
                 return (
                   <div key={plan.id} className="pricing-card" style={{ 
-                    background: 'rgba(10, 15, 30, 0.8)', 
+                    background: '#000000', 
                     borderRadius: '16px', 
                     padding: '40px 32px',
-                    boxShadow: plan.popular ? '0 0 40px rgba(0, 240, 255, 0.15), 0 8px 40px rgba(0, 0, 0, 0.3)' : '0 4px 20px rgba(0, 0, 0, 0.3)',
-                    border: plan.popular ? '2px solid rgba(0, 240, 255, 0.4)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: plan.popular ? '0 8px 30px rgba(19, 177, 172, 0.3)' : '0 4px 20px rgba(255, 255, 255, 0.05)',
+                    border: plan.popular ? '2px solid #13b1ac' : '1px solid rgba(255, 255, 255, 0.2)',
                     display: 'flex',
                     flexDirection: 'column',
                     position: 'relative',
-                    backdropFilter: 'blur(10px)',
-                    transform: plan.popular ? 'scale(1.02)' : 'scale(1)',
+                    minHeight: '480px',
                     transition: 'all 0.3s ease'
                   }}>
                     {plan.popular && (
                       <div style={{ 
                         position: 'absolute', 
                         top: '-16px', 
-                        right: '24px', 
-                        background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
-                        color: '#0a0a0a', 
-                        padding: '8px 20px', 
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: '#13b1ac', 
+                        color: '#ffffff', 
+                        padding: '8px 24px', 
                         borderRadius: '20px',
                         fontSize: '13px',
                         fontWeight: 700
@@ -1669,70 +1627,57 @@ export default function Home() {
                         Most Popular
                       </div>
                     )}
-                    <div style={{ marginBottom: '24px' }}>
-                      {index === 0 ? (
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                          <circle cx="12" cy="12" r="10"/>
-                          <polyline points="12 6 12 12 16 14"/>
-                        </svg>
-                      ) : index === 1 ? (
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                        </svg>
-                      ) : (
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                          <circle cx="12" cy="12" r="5"/>
-                          <line x1="12" y1="1" x2="12" y2="3"/>
-                          <line x1="12" y1="21" x2="12" y2="23"/>
-                          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                          <line x1="1" y1="12" x2="3" y2="12"/>
-                          <line x1="21" y1="12" x2="23" y2="12"/>
-                          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                        </svg>
-                      )}
-                    </div>
+                    
+                    {/* Plan Name */}
                     <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>{plan.name}</h3>
                     <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '14px', marginBottom: '24px' }}>{plan.description}</p>
+                    
+                    {/* Price */}
                     <div style={{ marginBottom: '24px' }}>
-                      <span style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.5)' }}>₹</span>
-                      <span style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff' }}>{price.toLocaleString()}</span>
-                      <span style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.5)' }}>{isAnnual ? '/year' : '/month'}</span>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                        <span style={{ fontSize: '20px', color: 'rgba(255, 255, 255, 0.5)' }}>$</span>
+                        <span style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff' }}>{plan.monthlyPrice}</span>
+                      </div>
+                      <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', marginTop: '4px' }}>
+                        per {plan.duration} {plan.durationType}
+                      </p>
                     </div>
-                    {isAnnual && saving > 0 && <p style={{ color: '#00f0ff', fontSize: '13px', marginTop: '-16px', marginBottom: '16px' }}>Save ₹{saving.toLocaleString()}/year</p>}
-                    <a href={plan.ctaLink} style={{ 
-                      background: 'linear-gradient(135deg, #00f0ff, #0080ff)', 
-                      color: '#0a0a0a', 
-                      padding: '16px 24px', 
-                      borderRadius: '8px', 
-                      textAlign: 'center',
-                      textDecoration: 'none',
-                      fontWeight: 700,
-                      fontSize: '16px',
-                      marginBottom: '32px',
-                      display: 'block',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      {plan.cta}
-                    </a>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, flex: 1 }}>
-                      {plan.features.map((feature, i) => (
-                        <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                          {feature.included ? (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                              <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                          ) : (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2">
-                              <line x1="18" y1="6" x2="6" y2="18"/>
-                              <line x1="6" y1="6" x2="18" y2="18"/>
-                            </svg>
-                          )}
-                          <span style={{ color: feature.included ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)', fontSize: '15px' }}>{feature.text}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    
+                    {/* Wallet Balance (if applicable) */}
+                    {plan.walletBalance > 0 && (
+                      <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '16px' }}>
+                        Wallet Balance: ${plan.walletBalance}
+                      </p>
+                    )}
+                    
+                    {/* Duration */}
+                    <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px' }}>
+                      Duration: {plan.duration} {plan.durationType}
+                    </p>
+                    
+                    {/* Trading Limits */}
+                    <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px', fontWeight: 600 }}>
+                      Trading Limits
+                    </p>
+                    
+                    {/* Strategies */}
+                    <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px' }}>
+                      {plan.maxStrategies === null ? 'Unlimited' : plan.maxStrategies} Active {plan.maxStrategies === 1 ? 'Strategy' : 'Strategies'}
+                    </p>
+                    
+                    {/* API Access (if applicable) */}
+                    {plan.apiAccess && (
+                      <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px' }}>
+                        Full API Access
+                      </p>
+                    )}
+                    
+                    {/* Priority Support (if applicable) */}
+                    {plan.priority === 'high' && (
+                      <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '24px' }}>
+                        High Priority Support
+                      </p>
+                    )}
                   </div>
                 );
               })}
