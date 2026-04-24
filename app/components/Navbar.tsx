@@ -8,7 +8,19 @@ export default function Navbar() {
   const [navVisible, setNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
+
+  // Check screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,12 +44,31 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add('mobile-menu-open');
+    } else {
+      document.body.classList.remove('mobile-menu-open');
+    }
+    
+    return () => {
+      document.body.classList.remove('mobile-menu-open');
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <>
       <header className={`navbar ${navVisible ? 'navbar-visible' : 'navbar-hidden'}`}>
-        <div className="navbar-inner">
+        <div className="navbar-inner" style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          width: '100%',
+          position: 'relative'
+        }}>
           {/* Logo */}
-          <Link href="/" className="logo-wrap" style={{ textDecoration: "none" }}>
+          <Link href="/" className="logo-wrap" style={{ textDecoration: "none", zIndex: 1002 }}>
             <span className="logo-mark" aria-label="uptrender">
               <span className="logo-v">up</span>
               <span className="logo-t">trender</span>
@@ -47,68 +78,78 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center nav-menu">
-            <Link href="/" className="nav-link" style={{ color: pathname === "/" ? "#00f0ff" : undefined }}>Home</Link>
-            <Link href="/about" className="nav-link" style={{ color: pathname === "/about" ? "#00f0ff" : undefined }}>About Us</Link>
-            <Link href="/services" className="nav-link" style={{ color: pathname === "/services" ? "#00f0ff" : undefined }}>Services</Link>
+          <nav style={{ 
+            display: isMobile ? 'none' : 'flex', 
+            alignItems: 'center',
+            gap: '32px'
+          }} className="nav-menu">
+            <Link href="/" className="nav-link" style={{ color: pathname === "/" ? "#13b1ac" : undefined }}>Home</Link>
+            <Link href="/about" className="nav-link" style={{ color: pathname === "/about" ? "#13b1ac" : undefined }}>About Us</Link>
+            <Link href="/services" className="nav-link" style={{ color: pathname === "/services" ? "#13b1ac" : undefined }}>Services</Link>
             <Link href="/#pricing" className="nav-link">Pricing</Link>
             <Link href="/#features" className="nav-link">Features</Link>
-            <Link href="/blog" className="nav-link" style={{ color: pathname === "/blog" ? "#00f0ff" : undefined }}>Blog</Link>
-            <Link href="/contact" className="nav-link" style={{ color: pathname === "/contact" ? "#00f0ff" : undefined }}>Contact Us</Link>
+            <Link href="/blog" className="nav-link" style={{ color: pathname === "/blog" ? "#13b1ac" : undefined }}>Blog</Link>
+            <Link href="/contact" className="nav-link" style={{ color: pathname === "/contact" ? "#13b1ac" : undefined }}>Contact Us</Link>
           </nav>
 
-          {/* Spacer */}
-          <div className="flex-1" />
-
           {/* Right Actions - Desktop */}
-          <div className="hidden md:flex items-center gap-6">
+          <div style={{ 
+            display: isMobile ? 'none' : 'flex', 
+            alignItems: 'center', 
+            gap: '24px' 
+          }}>
             <a href="https://app.uptrender.in/auth/register" className="btn-primary">Trade Now</a>
             <a href="https://app.uptrender.in/auth/login" className="nav-link">Login</a>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px',
-              zIndex: 1001
-            }}
-            aria-label="Toggle menu"
-          >
-            <span style={{
-              width: '24px',
-              height: '2px',
-              background: '#ffffff',
-              transition: 'all 0.3s ease',
-              transform: mobileMenuOpen ? 'rotate(45deg) translateY(6px)' : 'none'
-            }} />
-            <span style={{
-              width: '24px',
-              height: '2px',
-              background: '#ffffff',
-              transition: 'all 0.3s ease',
-              opacity: mobileMenuOpen ? 0 : 1
-            }} />
-            <span style={{
-              width: '24px',
-              height: '2px',
-              background: '#ffffff',
-              transition: 'all 0.3s ease',
-              transform: mobileMenuOpen ? 'rotate(-45deg) translateY(-6px)' : 'none'
-            }} />
-          </button>
+          {isMobile && (
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5px',
+                zIndex: 1001,
+                position: 'relative'
+              }}
+              aria-label="Toggle menu"
+            >
+              <span style={{
+                width: '28px',
+                height: '3px',
+                background: '#ffffff',
+                borderRadius: '2px',
+                transition: 'all 0.3s ease',
+                transform: mobileMenuOpen ? 'rotate(45deg) translateY(8px)' : 'none'
+              }} />
+              <span style={{
+                width: '28px',
+                height: '3px',
+                background: '#ffffff',
+                borderRadius: '2px',
+                transition: 'all 0.3s ease',
+                opacity: mobileMenuOpen ? 0 : 1
+              }} />
+              <span style={{
+                width: '28px',
+                height: '3px',
+                background: '#ffffff',
+                borderRadius: '2px',
+                transition: 'all 0.3s ease',
+                transform: mobileMenuOpen ? 'rotate(-45deg) translateY(-8px)' : 'none'
+              }} />
+            </button>
+          )}
         </div>
       </header>
 
       {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
+      {mobileMenuOpen && isMobile && (
         <div 
           style={{
             position: 'fixed',
@@ -116,73 +157,131 @@ export default function Navbar() {
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'rgba(0, 0, 0, 0.95)',
+            background: 'rgba(0, 0, 0, 0.98)',
             zIndex: 999,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '80px 20px 20px',
-            animation: 'fadeIn 0.3s ease'
+            animation: 'fadeIn 0.3s ease',
+            overflowY: 'auto'
           }}
-          onClick={() => setMobileMenuOpen(false)}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setMobileMenuOpen(false);
+            }
+          }}
         >
           <nav style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '24px',
+            gap: '20px',
             width: '100%',
             maxWidth: '400px'
           }}>
-            <Link href="/" className="nav-link" style={{ 
-              color: pathname === "/" ? "#13b1ac" : "#ffffff",
-              fontSize: '20px',
-              padding: '12px 0',
-              textAlign: 'center',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>Home</Link>
-            <Link href="/about" className="nav-link" style={{ 
-              color: pathname === "/about" ? "#13b1ac" : "#ffffff",
-              fontSize: '20px',
-              padding: '12px 0',
-              textAlign: 'center',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>About Us</Link>
-            <Link href="/services" className="nav-link" style={{ 
-              color: pathname === "/services" ? "#13b1ac" : "#ffffff",
-              fontSize: '20px',
-              padding: '12px 0',
-              textAlign: 'center',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>Services</Link>
-            <Link href="/#pricing" className="nav-link" style={{ 
-              color: "#ffffff",
-              fontSize: '20px',
-              padding: '12px 0',
-              textAlign: 'center',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>Pricing</Link>
-            <Link href="/#features" className="nav-link" style={{ 
-              color: "#ffffff",
-              fontSize: '20px',
-              padding: '12px 0',
-              textAlign: 'center',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>Features</Link>
-            <Link href="/blog" className="nav-link" style={{ 
-              color: pathname === "/blog" ? "#13b1ac" : "#ffffff",
-              fontSize: '20px',
-              padding: '12px 0',
-              textAlign: 'center',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>Blog</Link>
-            <Link href="/contact" className="nav-link" style={{ 
-              color: pathname === "/contact" ? "#13b1ac" : "#ffffff",
-              fontSize: '20px',
-              padding: '12px 0',
-              textAlign: 'center',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>Contact Us</Link>
+            <Link 
+              href="/" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ 
+                color: pathname === "/" ? "#13b1ac" : "#ffffff",
+                fontSize: '20px',
+                padding: '16px 0',
+                textAlign: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                fontWeight: pathname === "/" ? '600' : '400',
+                transition: 'all 0.2s ease'
+              }}
+            >Home</Link>
+            
+            <Link 
+              href="/about" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ 
+                color: pathname === "/about" ? "#13b1ac" : "#ffffff",
+                fontSize: '20px',
+                padding: '16px 0',
+                textAlign: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                fontWeight: pathname === "/about" ? '600' : '400',
+                transition: 'all 0.2s ease'
+              }}
+            >About Us</Link>
+            
+            <Link 
+              href="/services" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ 
+                color: pathname === "/services" ? "#13b1ac" : "#ffffff",
+                fontSize: '20px',
+                padding: '16px 0',
+                textAlign: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                fontWeight: pathname === "/services" ? '600' : '400',
+                transition: 'all 0.2s ease'
+              }}
+            >Services</Link>
+            
+            <Link 
+              href="/#pricing" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ 
+                color: "#ffffff",
+                fontSize: '20px',
+                padding: '16px 0',
+                textAlign: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease'
+              }}
+            >Pricing</Link>
+            
+            <Link 
+              href="/#features" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ 
+                color: "#ffffff",
+                fontSize: '20px',
+                padding: '16px 0',
+                textAlign: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease'
+              }}
+            >Features</Link>
+            
+            <Link 
+              href="/blog" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ 
+                color: pathname === "/blog" ? "#13b1ac" : "#ffffff",
+                fontSize: '20px',
+                padding: '16px 0',
+                textAlign: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                fontWeight: pathname === "/blog" ? '600' : '400',
+                transition: 'all 0.2s ease'
+              }}
+            >Blog</Link>
+            
+            <Link 
+              href="/contact" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ 
+                color: pathname === "/contact" ? "#13b1ac" : "#ffffff",
+                fontSize: '20px',
+                padding: '16px 0',
+                textAlign: 'center',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                textDecoration: 'none',
+                fontWeight: pathname === "/contact" ? '600' : '400',
+                transition: 'all 0.2s ease'
+              }}
+            >Contact Us</Link>
             
             {/* Mobile Buttons */}
             <div style={{ 
@@ -191,18 +290,35 @@ export default function Navbar() {
               gap: '16px', 
               marginTop: '32px' 
             }}>
-              <a href="https://app.uptrender.in/auth/register" className="btn-primary" style={{
-                textAlign: 'center',
-                padding: '16px 32px',
-                fontSize: '18px'
-              }}>Trade Now</a>
-              <a href="https://app.uptrender.in/auth/login" className="nav-link" style={{
-                textAlign: 'center',
-                padding: '16px 32px',
-                fontSize: '18px',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: '8px'
-              }}>Login</a>
+              <a 
+                href="https://app.uptrender.in/auth/register" 
+                className="btn-primary" 
+                style={{
+                  textAlign: 'center',
+                  padding: '16px 32px',
+                  fontSize: '18px',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  background: 'linear-gradient(135deg, #13b1ac, #0d8a86)',
+                  color: '#ffffff',
+                  fontWeight: '600'
+                }}
+              >Trade Now</a>
+              
+              <a 
+                href="https://app.uptrender.in/auth/login" 
+                style={{
+                  textAlign: 'center',
+                  padding: '16px 32px',
+                  fontSize: '18px',
+                  border: '2px solid #13b1ac',
+                  borderRadius: '8px',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease'
+                }}
+              >Login</a>
             </div>
           </nav>
         </div>

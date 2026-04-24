@@ -1107,7 +1107,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src="/s1.png" 
                       alt="Multi-Market Dashboard"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1451,11 +1451,15 @@ export default function Home() {
                 e.currentTarget.style.border = '2px solid rgba(80, 80, 80, 0.6)';
                 e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)';
               }}>
-              <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
-                <div style={{ width: '140px', height: '140px', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 150, 255, 0.2))', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                  </svg>
+              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#10141f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', width: '82%', height: '90%' }}>
+                  <Image
+                    src="/f1.png"
+                    alt="Trading dashboard preview"
+                    fill
+                    style={{ objectFit: 'contain', objectPosition: 'center' }}
+                    sizes="(max-width: 768px) 100vw, 400px"
+                  />
                 </div>
               </div>
               <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginBottom: '8px' }}>Smarter Trading</p>
@@ -1475,11 +1479,15 @@ export default function Home() {
                 e.currentTarget.style.border = '2px solid rgba(80, 80, 80, 0.6)';
                 e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)';
               }}>
-              <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
-                <div style={{ width: '140px', height: '140px', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 150, 255, 0.2))', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                  </svg>
+              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#10141f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', width: '82%', height: '90%' }}>
+                  <Image
+                    src="/f2.png"
+                    alt="AI-powered sustainable app preview"
+                    fill
+                    style={{ objectFit: 'contain', objectPosition: 'center' }}
+                    sizes="(max-width: 768px) 100vw, 400px"
+                  />
                 </div>
               </div>
               <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginBottom: '8px' }}>AI That Works for You</p>
@@ -1499,11 +1507,15 @@ export default function Home() {
                 e.currentTarget.style.border = '2px solid rgba(80, 80, 80, 0.6)';
                 e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)';
               }}>
-              <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
-                <div style={{ width: '140px', height: '140px', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 150, 255, 0.2))', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                  </svg>
+              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#10141f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', width: '82%', height: '90%' }}>
+                  <Image
+                    src="/f3.png"
+                    alt="Streaming platform interface preview"
+                    fill
+                    style={{ objectFit: 'contain', objectPosition: 'center' }}
+                    sizes="(max-width: 768px) 100vw, 400px"
+                  />
                 </div>
               </div>
               <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', marginBottom: '8px' }}>Automation You Can Rely On</p>
@@ -1524,25 +1536,32 @@ export default function Home() {
         zIndex: 12 
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px' }}>
-          <h2 className="pricing-title" style={{ 
-            color: '#ffffff', 
-            fontSize: '48px', 
-            fontWeight: 700, 
-            textAlign: 'center',
-            marginBottom: '20px',
-            opacity: 0
-          }}>
-            Choose Your Plan<span style={{ color: '#13b1ac' }}>.</span>
-          </h2>
-          <p className="pricing-subtitle" style={{ 
-            color: 'rgba(255, 255, 255, 0.6)', 
-            fontSize: '18px', 
-            textAlign: 'center',
-            marginBottom: '60px',
-            opacity: 0
-          }}>
-            Select the perfect plan for your trading journey
-          </p>
+          <div style={{ textAlign: 'center', marginBottom: '70px' }}>
+            <h2 className="pricing-title" style={{ 
+              color: '#ffffff', 
+              fontSize: '56px', 
+              fontWeight: 800, 
+              textAlign: 'center',
+              marginBottom: '16px',
+              opacity: 0,
+              letterSpacing: '-1px',
+              lineHeight: '1.1'
+            }}>
+              Choose Your Plan<span style={{ color: '#13b1ac' }}>.</span>
+            </h2>
+            <p className="pricing-subtitle" style={{ 
+              color: 'rgba(255, 255, 255, 0.6)', 
+              fontSize: '20px', 
+              textAlign: 'center',
+              marginBottom: '0',
+              opacity: 0,
+              fontWeight: 400,
+              maxWidth: '600px',
+              margin: '0 auto'
+            }}>
+              Select the perfect plan for your trading journey
+            </p>
+          </div>
 
           {/* Pricing Cards */}
           {loadingPricing ? (
@@ -1550,7 +1569,7 @@ export default function Home() {
               Loading pricing plans...
             </div>
           ) : (
-            <div className="pricing-cards-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${pricingPlans.length || 3}, 1fr)`, gap: '30px', alignItems: 'start' }}>
+            <div className="pricing-cards-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${pricingPlans.length || 3}, 1fr)`, gap: '40px', alignItems: 'stretch', maxWidth: '1400px', margin: '0 auto' }}>
               {(pricingPlans.length > 0 ? pricingPlans : [
                 {
                   id: 'professional',
@@ -1600,84 +1619,317 @@ export default function Home() {
               ]).map((plan) => {
                 return (
                   <div key={plan.id} className="pricing-card" style={{ 
-                    background: '#000000', 
-                    borderRadius: '16px', 
-                    padding: '40px 32px',
-                    boxShadow: plan.popular ? '0 8px 30px rgba(19, 177, 172, 0.3)' : '0 4px 20px rgba(255, 255, 255, 0.05)',
-                    border: plan.popular ? '2px solid #13b1ac' : '1px solid rgba(255, 255, 255, 0.2)',
+                    background: plan.popular ? 'linear-gradient(135deg, rgba(19, 177, 172, 0.05) 0%, rgba(0, 0, 0, 0.95) 100%)' : 'rgba(10, 10, 10, 0.6)',
+                    backdropFilter: 'blur(20px)',
+                    borderRadius: '24px', 
+                    padding: '36px 32px',
+                    boxShadow: plan.popular 
+                      ? '0 20px 60px rgba(19, 177, 172, 0.2), 0 0 80px rgba(19, 177, 172, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)' 
+                      : '0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                    border: plan.popular ? '2px solid rgba(19, 177, 172, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
                     display: 'flex',
                     flexDirection: 'column',
                     position: 'relative',
                     minHeight: '480px',
-                    transition: 'all 0.3s ease'
-                  }}>
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transform: plan.popular ? 'scale(1.05)' : 'scale(1)',
+                    overflow: 'hidden'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = plan.popular ? 'scale(1.08) translateY(-8px)' : 'scale(1.03) translateY(-8px)';
+                    e.currentTarget.style.boxShadow = plan.popular 
+                      ? '0 30px 80px rgba(19, 177, 172, 0.3), 0 0 100px rgba(19, 177, 172, 0.15)'
+                      : '0 20px 60px rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.borderColor = plan.popular ? 'rgba(19, 177, 172, 0.8)' : 'rgba(255, 255, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = plan.popular ? 'scale(1.05)' : 'scale(1)';
+                    e.currentTarget.style.boxShadow = plan.popular 
+                      ? '0 20px 60px rgba(19, 177, 172, 0.2), 0 0 80px rgba(19, 177, 172, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)' 
+                      : '0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.borderColor = plan.popular ? 'rgba(19, 177, 172, 0.5)' : 'rgba(255, 255, 255, 0.1)';
+                  }}
+                  >
+                    {/* Gradient Overlay */}
+                    {plan.popular && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        right: '-30%',
+                        width: '200%',
+                        height: '200%',
+                        background: 'radial-gradient(circle, rgba(19, 177, 172, 0.15) 0%, transparent 70%)',
+                        pointerEvents: 'none',
+                        zIndex: 0
+                      }} />
+                    )}
+
                     {plan.popular && (
                       <div style={{ 
                         position: 'absolute', 
-                        top: '-16px', 
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: '#13b1ac', 
-                        color: '#ffffff', 
-                        padding: '8px 24px', 
+                        top: '20px', 
+                        right: '20px',
+                        background: 'rgba(19, 177, 172, 0.15)', 
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(19, 177, 172, 0.4)',
+                        color: '#13b1ac', 
+                        padding: '6px 16px', 
                         borderRadius: '20px',
-                        fontSize: '13px',
-                        fontWeight: 700
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        letterSpacing: '0.5px',
+                        textTransform: 'uppercase',
+                        boxShadow: '0 2px 10px rgba(19, 177, 172, 0.2)',
+                        zIndex: 1
                       }}>
-                        Most Popular
+                        ⚡ Popular
                       </div>
                     )}
                     
                     {/* Plan Name */}
-                    <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>{plan.name}</h3>
-                    <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '14px', marginBottom: '24px' }}>{plan.description}</p>
+                    <h3 style={{ 
+                      fontSize: '26px', 
+                      fontWeight: 700, 
+                      color: '#ffffff', 
+                      marginBottom: '6px',
+                      marginTop: '0',
+                      position: 'relative',
+                      zIndex: 1
+                    }}>{plan.name}</h3>
+                    <p style={{ 
+                      color: 'rgba(255, 255, 255, 0.5)', 
+                      fontSize: '14px', 
+                      marginBottom: '24px',
+                      position: 'relative',
+                      zIndex: 1
+                    }}>{plan.description}</p>
                     
                     {/* Price */}
-                    <div style={{ marginBottom: '24px' }}>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                        <span style={{ fontSize: '20px', color: 'rgba(255, 255, 255, 0.5)' }}>$</span>
-                        <span style={{ fontSize: '48px', fontWeight: 800, color: '#ffffff' }}>{plan.monthlyPrice}</span>
+                    <div style={{ marginBottom: '24px', position: 'relative', zIndex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '6px' }}>
+                        <span style={{ fontSize: '20px', color: 'rgba(255, 255, 255, 0.4)', fontWeight: 600 }}>$</span>
+                        <span style={{ 
+                          fontSize: '56px', 
+                          fontWeight: 800, 
+                          color: plan.popular ? 'transparent' : '#ffffff',
+                          letterSpacing: '-2px',
+                          ...(plan.popular ? {
+                            background: 'linear-gradient(135deg, #ffffff 0%, #13b1ac 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent'
+                          } : {})
+                        }}>{plan.monthlyPrice}</span>
                       </div>
-                      <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)', marginTop: '4px' }}>
+                      <p style={{ 
+                        fontSize: '14px', 
+                        color: 'rgba(255, 255, 255, 0.5)', 
+                        fontWeight: 500,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>
                         per {plan.duration} {plan.durationType}
                       </p>
                     </div>
                     
-                    {/* Wallet Balance (if applicable) */}
-                    {plan.walletBalance > 0 && (
-                      <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '16px' }}>
-                        Wallet Balance: ${plan.walletBalance}
+                    {/* Divider */}
+                    <div style={{ 
+                      height: '1px', 
+                      background: plan.popular 
+                        ? 'linear-gradient(90deg, transparent, rgba(19, 177, 172, 0.3), transparent)' 
+                        : 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
+                      marginBottom: '24px',
+                      position: 'relative',
+                      zIndex: 1
+                    }} />
+
+                    {/* Features List */}
+                    <div style={{ flex: 1, marginBottom: '24px', position: 'relative', zIndex: 1 }}>
+                      {/* Wallet Balance */}
+                      {plan.walletBalance > 0 && (
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '10px',
+                          marginBottom: '12px'
+                        }}>
+                          <div style={{ 
+                            width: '18px',
+                            height: '18px',
+                            borderRadius: '50%',
+                            background: 'rgba(19, 177, 172, 0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                          }}>
+                            <span style={{ color: '#13b1ac', fontSize: '11px' }}>✓</span>
+                          </div>
+                          <p style={{ fontSize: '15px', color: '#ffffff', margin: 0 }}>
+                            Wallet Balance: ${plan.walletBalance}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {/* Duration */}
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '10px',
+                        marginBottom: '12px'
+                      }}>
+                        <div style={{ 
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          background: 'rgba(19, 177, 172, 0.2)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          <span style={{ color: '#13b1ac', fontSize: '11px' }}>✓</span>
+                        </div>
+                        <p style={{ fontSize: '15px', color: '#ffffff', margin: 0 }}>
+                          Duration: {plan.duration} {plan.durationType}
+                        </p>
+                      </div>
+                      
+                      {/* Trading Limits Header */}
+                      <p style={{ 
+                        fontSize: '13px', 
+                        color: 'rgba(255, 255, 255, 0.6)', 
+                        marginBottom: '10px',
+                        marginTop: '16px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px'
+                      }}>
+                        Trading Limits
                       </p>
-                    )}
-                    
-                    {/* Duration */}
-                    <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px' }}>
-                      Duration: {plan.duration} {plan.durationType}
-                    </p>
-                    
-                    {/* Trading Limits */}
-                    <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px', fontWeight: 600 }}>
-                      Trading Limits
-                    </p>
-                    
-                    {/* Strategies */}
-                    <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px' }}>
-                      {plan.maxStrategies === null ? 'Unlimited' : plan.maxStrategies} Active {plan.maxStrategies === 1 ? 'Strategy' : 'Strategies'}
-                    </p>
-                    
-                    {/* API Access (if applicable) */}
-                    {plan.apiAccess && (
-                      <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '8px' }}>
-                        Full API Access
-                      </p>
-                    )}
-                    
-                    {/* Priority Support (if applicable) */}
-                    {plan.priority === 'high' && (
-                      <p style={{ fontSize: '16px', color: '#ffffff', marginBottom: '24px' }}>
-                        High Priority Support
-                      </p>
-                    )}
+                      
+                      {/* Strategies */}
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '10px',
+                        marginBottom: '12px'
+                      }}>
+                        <div style={{ 
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          background: 'rgba(19, 177, 172, 0.2)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          <span style={{ color: '#13b1ac', fontSize: '11px' }}>✓</span>
+                        </div>
+                        <p style={{ fontSize: '15px', color: '#ffffff', margin: 0 }}>
+                          {plan.maxStrategies === null ? 'Unlimited' : plan.maxStrategies} Active {plan.maxStrategies === 1 ? 'Strategy' : 'Strategies'}
+                        </p>
+                      </div>
+                      
+                      {/* API Access */}
+                      {plan.apiAccess && (
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '10px',
+                          marginBottom: '12px'
+                        }}>
+                          <div style={{ 
+                            width: '18px',
+                            height: '18px',
+                            borderRadius: '50%',
+                            background: 'rgba(19, 177, 172, 0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                          }}>
+                            <span style={{ color: '#13b1ac', fontSize: '11px' }}>✓</span>
+                          </div>
+                          <p style={{ fontSize: '15px', color: '#ffffff', margin: 0 }}>
+                            Full API Access
+                          </p>
+                        </div>
+                      )}
+                      
+                      {/* Priority Support */}
+                      {plan.priority === 'high' && (
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '10px',
+                          marginBottom: '12px'
+                        }}>
+                          <div style={{ 
+                            width: '18px',
+                            height: '18px',
+                            borderRadius: '50%',
+                            background: 'rgba(19, 177, 172, 0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                          }}>
+                            <span style={{ color: '#13b1ac', fontSize: '11px' }}>✓</span>
+                          </div>
+                          <p style={{ fontSize: '15px', color: '#ffffff', margin: 0 }}>
+                            High Priority Support
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CTA Button */}
+                    <a 
+                      href={plan.ctaLink || 'https://app.uptrender.in/auth/register'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        padding: '16px 32px',
+                        background: plan.popular 
+                          ? 'linear-gradient(135deg, #13b1ac 0%, #0d8f8a 100%)' 
+                          : 'rgba(255, 255, 255, 0.05)',
+                        border: plan.popular ? 'none' : '1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius: '12px',
+                        color: '#ffffff',
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        zIndex: 1,
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (plan.popular) {
+                          e.currentTarget.style.background = 'linear-gradient(135deg, #15c9be 0%, #0f9d98 100%)';
+                          e.currentTarget.style.boxShadow = '0 8px 25px rgba(19, 177, 172, 0.4)';
+                        } else {
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (plan.popular) {
+                          e.currentTarget.style.background = 'linear-gradient(135deg, #13b1ac 0%, #0d8f8a 100%)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        } else {
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        }
+                      }}
+                    >
+                      {plan.cta || 'Get Started'}
+                    </a>
                   </div>
                 );
               })}

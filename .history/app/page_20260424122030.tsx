@@ -66,21 +66,6 @@ const tickerSecondary: TickerItem[] = [
 const tickerItems = [...tickerPrimary, ...tickerSecondary];
 const tickerLoop = [...tickerItems, ...tickerItems];
 
-const brokerPartners = [
-  "Binance",
-  "Coinbase",
-  "Delta Exchange",
-  "Exness",
-  "Vantage",
-  "MetaTrader 4",
-  "MetaTrader 5",
-  "XM Trading",
-  "WazirX",
-  "CoinDCX",
-  "PrimeXBT",
-];
-const brokerLoop = [...brokerPartners, ...brokerPartners];
-
 type PricingPlan = {
   id: string;
   name: string;
@@ -726,7 +711,7 @@ export default function Home() {
     return () => ctx.revert();
   }, []);
 
-  // GSAP animation for broker section
+  // GSAP animation for Explore CFD section
   useEffect(() => {
     if (!exploreRef.current) return;
 
@@ -765,7 +750,7 @@ export default function Home() {
       );
 
       gsap.fromTo(
-        ".broker-step",
+        ".explore-step",
         { opacity: 0, y: 50 },
         {
           opacity: 1,
@@ -774,8 +759,25 @@ export default function Home() {
           stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: ".broker-steps",
+            trigger: ".explore-steps",
             start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".explore-cta",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          delay: 0,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".explore-cta",
+            start: "top 90%",
             toggleActions: "play none none none",
           },
         }
@@ -1147,7 +1149,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/s1.png" 
+                      src="/s1." 
                       alt="AI Strategy Builder"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1937,87 +1939,455 @@ export default function Home() {
       </section>
 
 
-      {/* Broker Section */}
-      <section id="features" ref={exploreRef} style={{
-        background: '#0a0a0a',
-        padding: '120px 0',
-        position: 'relative',
+      {/* Features Section */}
+      <section id="features" ref={exploreRef} style={{ 
+        background: '#0a0a0a', 
+        padding: '120px 0', 
+        position: 'relative', 
         zIndex: 12,
         overflow: 'hidden'
       }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px' }}>
+          {/* Section Header */}
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span className="features-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0 }}>Our Brokers</span>
-            <h2 className="explore-title" style={{
-              color: '#ffffff',
-              fontSize: '48px',
-              fontWeight: 700,
+            <span className="features-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0 }}>Our Features</span>
+            <h2 className="explore-title" style={{ 
+              color: '#ffffff', 
+              fontSize: '48px', 
+              fontWeight: 700, 
               marginBottom: '20px',
               lineHeight: 1.2,
               opacity: 0
             }}>
-              Trade Across Top Brokers & Exchanges<span style={{ color: '#00f0ff' }}>.</span>
+              Everything you need to dominate Forex & Crypto<br />— built right in<span style={{ color: '#00f0ff' }}>.</span>
             </h2>
-            <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '18px', maxWidth: '760px', margin: '0 auto' }}>
-              Connect and execute through trusted global platforms with secure account-level integrations.
+            <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '18px', maxWidth: '700px', margin: '0 auto' }}>
+              A complete arsenal of professional tools designed for modern traders
             </p>
           </div>
 
-          <div style={{
+          {/* Features Carousel Container */}
+          <div style={{ 
             position: 'relative',
+            marginBottom: '60px',
             maskImage: 'linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)'
           }}>
-            <div className="broker-steps">
-              <div
-                className="broker-carousel-track"
-                style={{
-                  display: 'flex',
-                  gap: '24px',
-                  animation: 'features-scroll 38s linear infinite',
-                  width: 'max-content'
-                }}
-              >
-                {brokerLoop.map((broker, index) => (
-                  <article
-                    key={`${broker}-${index}`}
-                    className="broker-step broker-card"
-                    style={{
-                      background: 'rgba(10, 15, 30, 0.7)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      borderRadius: '16px',
-                      padding: '24px',
-                      minWidth: '300px',
-                      maxWidth: '300px',
-                      transition: 'all 0.3s ease'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                      <span style={{ fontSize: '11px', letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.45)', fontWeight: 600 }}>Broker</span>
-                      <span style={{ fontSize: '11px', letterSpacing: '1px', textTransform: 'uppercase', color: '#00f0ff', fontWeight: 700 }}>Live</span>
+            {/* Carousel Track */}
+            <div 
+              className="features-carousel-track"
+              style={{
+                display: 'flex',
+                gap: '32px',
+                animation: 'features-scroll 60s linear infinite',
+                width: 'max-content'
+              }}>
+              {/* Duplicate features twice for seamless loop */}
+              {[...Array(2)].map((_, setIndex) => (
+                <div key={setIndex} style={{ display: 'flex', gap: '32px' }}>
+                  {/* Feature 1 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <line x1="9" y1="3" x2="9" y2="21"/>
+                        <line x1="3" y1="9" x2="21" y2="9"/>
+                      </svg>
                     </div>
-
-                    <div style={{ width: '74px', height: '74px', borderRadius: '14px', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 110, 255, 0.18))', border: '1px solid rgba(0, 240, 255, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
-                      <span style={{ color: '#d9fcff', fontSize: '24px', fontWeight: 700, letterSpacing: '0.5px' }}>
-                        {broker
-                          .split(' ')
-                          .map((part) => part[0])
-                          .join('')
-                          .slice(0, 3)
-                          .toUpperCase()}
-                      </span>
-                    </div>
-
-                    <h3 style={{ color: '#ffffff', fontSize: '24px', fontWeight: 700, marginBottom: '10px', lineHeight: 1.25 }}>
-                      {broker}
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Unified Multi-Market Dashboard
                     </h3>
-                    <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '14px', lineHeight: 1.6 }}>
-                      Secure account sync and fast execution routing.
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Trade Forex & Crypto in one place. Monitor major pairs and assets side-by-side with real-time prices.
                     </p>
-                  </article>
-                ))}
-              </div>
+                  </div>
+
+                  {/* Feature 2 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      No-Code AI Strategy Builder
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Build winning strategies with simple prompts. Our AI creates, backtests, and refines instantly.
+                    </p>
+                  </div>
+
+                  {/* Feature 3 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Smart AI Trade Assistant
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      AI scans global news, analyst reports, and on-chain data. Executes trades with your risk preference.
+                    </p>
+                  </div>
+
+                  {/* Feature 4 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Advanced Backtesting Engine
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Test on years of historical data. See win rate, drawdown, and profit before risking capital.
+                    </p>
+                  </div>
+
+                  {/* Feature 5 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Smart Copy Trading
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Mirror expert trades automatically. Master & Child accounts with full risk control.
+                    </p>
+                  </div>
+
+                  {/* Feature 6 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Real-Time Risk Management
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Smart stop-loss, dynamic position sizing, trailing stops running live across all positions.
+                    </p>
+                  </div>
+
+                  {/* Feature 7 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Paper / Live Trading Suite
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Practice risk-free, then go live in one click. Zero downtime between modes.
+                    </p>
+                  </div>
+
+                  {/* Feature 8 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                        <line x1="12" y1="18" x2="12.01" y2="18"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Secure Broker Integration
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Bank-level secure API to Indian brokers, Forex platforms, and Crypto exchanges.
+                    </p>
+                  </div>
+
+                  {/* Feature 9 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Strategy Marketplace
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Buy, sell, or share proven strategies from top Indian traders. Save time.
+                    </p>
+                  </div>
+
+                  {/* Feature 10 */}
+                  <div className="explore-step feature-card" style={{ 
+                    background: 'rgba(10, 15, 30, 0.6)', 
+                    border: '1px solid rgba(255, 255, 255, 0.1)', 
+                    borderRadius: '16px', 
+                    padding: '36px',
+                    minWidth: '420px',
+                    maxWidth: '420px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(0, 240, 255, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 240, 255, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}>
+                    <div style={{ marginBottom: '20px' }}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ color: '#ffffff', fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>
+                      Instant Funding
+                    </h3>
+                    <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '15px', lineHeight: 1.6 }}>
+                      Add money instantly via UPI, Razorpay, or crypto. Fully secure and transparent.
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="explore-cta" style={{ 
+            textAlign: 'center', 
+            marginTop: '40px', 
+            padding: '60px 40px',
+            background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(0, 150, 255, 0.1))',
+            borderRadius: '16px',
+            border: '1px solid rgba(0, 240, 255, 0.2)',
+            opacity: 0
+          }}>
+            <h3 style={{ color: '#ffffff', fontSize: '32px', fontWeight: 700, marginBottom: '16px' }}>
+              Ready to trade with tools this powerful?
+            </h3>
+            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '18px', marginBottom: '32px' }}>
+              Every feature above is live and ready for you right now.
+            </p>
+            <a href="https://app.uptrender.in/auth/register" style={{
+              background: 'linear-gradient(135deg, #00f0ff, #0080ff)',
+              color: '#0a0a0a',
+              padding: '18px 50px',
+              borderRadius: '8px',
+              fontSize: '20px',
+              fontWeight: 700,
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 20px rgba(0, 240, 255, 0.4)',
+              textDecoration: 'none',
+              display: 'inline-block'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 30px rgba(0, 240, 255, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 240, 255, 0.4)';
+            }}>
+              Start Trading Now
+            </a>
           </div>
         </div>
       </section>
