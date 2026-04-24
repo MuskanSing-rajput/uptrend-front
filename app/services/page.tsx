@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
@@ -153,6 +154,46 @@ export default function ServicesPage() {
     return () => ctx.revert();
   }, []);
 
+  // Refresh ScrollTrigger on client-side route changes
+  const pathname = usePathname();
+  useEffect(() => {
+    const refreshId = setTimeout(() => {
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    }, 80);
+
+    const selectors = [
+      ".services-hero-badge",
+      ".services-hero-title",
+      ".services-hero-desc",
+      ".service-detail-card",
+      ".services-cta-inner",
+    ];
+
+    const makeVisible = () => {
+      selectors.forEach((sel) => {
+        document.querySelectorAll(sel).forEach((el) => {
+          const e = el as HTMLElement;
+          const comp = window.getComputedStyle(e);
+          if (comp.opacity === "0" || comp.display === "none") {
+            e.style.opacity = "1";
+            e.style.transform = "none";
+            e.style.display = "block";
+          }
+        });
+      });
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    };
+
+    const t1 = setTimeout(makeVisible, 200);
+    const t2 = setTimeout(makeVisible, 700);
+
+    return () => {
+      clearTimeout(refreshId);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [pathname]);
+
   return (
     <div style={{ background: "#0a0a0a", minHeight: "100vh", color: "#ffffff" }}>
       {/* Header */}
@@ -164,14 +205,14 @@ export default function ServicesPage() {
         <div style={{ position: "absolute", bottom: "-100px", left: "-200px", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <span className="services-hero-badge" style={{ display: "inline-block", background: "linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(168, 85, 247, 0.15))", border: "1px solid rgba(0, 240, 255, 0.3)", borderRadius: "50px", padding: "10px 28px", fontSize: "13px", fontWeight: 600, color: "#00f0ff", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "28px", opacity: 0 }}>Our Services</span>
+          <span className="services-hero-badge" style={{ display: "inline-block", background: "linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(168, 85, 247, 0.15))", border: "1px solid rgba(0, 240, 255, 0.3)", borderRadius: "50px", padding: "10px 28px", fontSize: "13px", fontWeight: 600, color: "#00f0ff", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "28px" }}>Our Services</span>
 
-          <h1 className="services-hero-title" style={{ fontSize: "clamp(40px, 5vw, 68px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", opacity: 0 }}>
+          <h1 className="services-hero-title" style={{ fontSize: "clamp(40px, 5vw, 68px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px" }}>
             Premium Trading<br />
             <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Solutions</span> for Every Trader<span style={{ color: "#00f0ff" }}>.</span>
           </h1>
 
-          <p className="services-hero-desc" style={{ fontSize: "19px", color: "rgba(255, 255, 255, 0.6)", maxWidth: "700px", margin: "0 auto", lineHeight: 1.7, opacity: 0 }}>
+          <p className="services-hero-desc" style={{ fontSize: "19px", color: "rgba(255, 255, 255, 0.6)", maxWidth: "700px", margin: "0 auto", lineHeight: 1.7 }}>
             Discover our comprehensive suite of AI-powered tools and services designed to elevate your trading journey from beginner to professional.
           </p>
         </div>
@@ -185,7 +226,7 @@ export default function ServicesPage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px" }}>
           <div className="services-grid" style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
             {services.map((service, index) => (
-              <div key={service.id} id={service.id} className="service-detail-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease", opacity: 0 }}
+              <div key={service.id} id={service.id} className="service-detail-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease" }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${service.color}40`; e.currentTarget.style.boxShadow = `0 20px 60px ${service.color}10`; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)"; e.currentTarget.style.boxShadow = "none"; }}>
 
@@ -238,7 +279,7 @@ export default function ServicesPage() {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)" }} />
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-        <div className="services-cta-inner" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1, opacity: 0 }}>
+        <div className="services-cta-inner" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1 }}>
           <h2 style={{ fontSize: "48px", fontWeight: 800, marginBottom: "20px", lineHeight: 1.15 }}>
             Ready to Experience<br />Premium Trading?<span style={{ color: "#00f0ff" }}>.</span>
           </h2>

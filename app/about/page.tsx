@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -208,6 +209,60 @@ export default function About() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Refresh ScrollTrigger on client-side route changes
+  const pathname = usePathname();
+  useEffect(() => {
+    const t = setTimeout(() => ScrollTrigger.refresh(true), 80);
+    return () => clearTimeout(t);
+  }, [pathname]);
+
+  // Fallback: ensure animated elements are visible if GSAP failed to run
+  useEffect(() => {
+    const selectors = [
+      '.about-hero-title',
+      '.about-hero-desc',
+      '.story-badge',
+      '.story-title',
+      '.story-text',
+      '.story-line',
+      '.story-milestone',
+      '.mv-title',
+      '.mv-card',
+      '.mv-icon',
+      '.values-title',
+      '.value-card',
+      '.cta-content'
+    ];
+
+    const makeVisible = () => {
+      selectors.forEach((sel) => {
+        document.querySelectorAll<HTMLElement>(sel).forEach((el) => {
+          try {
+            const comp = window.getComputedStyle(el);
+            if (comp && comp.opacity === '0') {
+              el.style.opacity = '1';
+              el.style.transform = 'none';
+            }
+          } catch (e) {
+            // ignore
+          }
+        });
+      });
+    };
+
+    // Run shortly after mount and again after a small delay to cover late navigations
+    const t1 = setTimeout(makeVisible, 200);
+    const t2 = setTimeout(() => {
+      ScrollTrigger.refresh(true);
+      makeVisible();
+    }, 500);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [pathname]);
+
   return (
     <div style={{ background: "#0a0a0a", minHeight: "100vh", color: "#ffffff" }}>
       {/* Gradient Grid Keyframes - Optimized for performance */}
@@ -334,7 +389,6 @@ export default function About() {
               fontWeight: 800, 
               lineHeight: 1.05, 
               marginBottom: "28px", 
-              opacity: 0,
               textShadow: "0 4px 20px rgba(0, 0, 0, 0.5)"
             }}>
               Making <span style={{ 
@@ -351,7 +405,6 @@ export default function About() {
               color: "rgba(255, 255, 255, 0.85)", 
               maxWidth: "580px", 
               lineHeight: 1.7, 
-              opacity: 0,
               textShadow: "0 2px 10px rgba(0, 0, 0, 0.5)"
             }}>
               Uptrender is India&apos;s first &amp; most advanced AI-powered algo trading platform built exclusively for Forex and Crypto. Designed by traders for traders, it turns complex markets into simple, intelligent, and profitable automation - no coding, no guesswork, just smarter trading.
@@ -367,8 +420,8 @@ export default function About() {
       <section ref={storyRef} style={{ padding: "100px 0" }}>
         <div style={{ width: "80%", padding: "0 60px" }}>
           {/* Story header */}
-          <span className="story-badge" style={{ display: "inline-block", background: "rgba(0, 240, 255, 0.1)", border: "1px solid rgba(0, 240, 255, 0.2)", borderRadius: "50px", padding: "8px 20px", fontSize: "12px", fontWeight: 600, color: "#00f0ff", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "20px", opacity: 0 }}>Our Story</span>
-          <h2 className="story-title" style={{ fontSize: "48px", fontWeight: 700, lineHeight: 1.15, marginBottom: "60px", opacity: 0 }}>
+          <span className="story-badge" style={{ display: "inline-block", background: "rgba(0, 240, 255, 0.1)", border: "1px solid rgba(0, 240, 255, 0.2)", borderRadius: "50px", padding: "8px 20px", fontSize: "12px", fontWeight: 600, color: "#00f0ff", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "20px" }}>Our Story</span>
+          <h2 className="story-title" style={{ fontSize: "48px", fontWeight: 700, lineHeight: 1.15, marginBottom: "60px" }}>
             Built by Traders,<br />for Traders<span style={{ color: "#00f0ff" }}>.</span>
           </h2>
 
@@ -381,26 +434,26 @@ export default function About() {
 
             {/* Right - content blocks */}
             <div className="story-milestones" style={{ display: "flex", flexDirection: "column", gap: "48px", flex: 1 }}>
-              <div className="story-milestone" style={{ opacity: 0, position: "relative", paddingLeft: "20px" }}>
+              <div className="story-milestone" style={{ position: "relative", paddingLeft: "20px" }}>
                 <div style={{ position: "absolute", left: "-42px", top: "6px", width: "12px", height: "12px", borderRadius: "50%", background: "#00f0ff", boxShadow: "0 0 15px rgba(0, 240, 255, 0.5)" }} />
                 <span style={{ fontSize: "13px", fontWeight: 700, color: "#00f0ff", letterSpacing: "1px", textTransform: "uppercase" }}>The Beginning</span>
-                <p className="story-text" style={{ fontSize: "17px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, marginTop: "10px", opacity: 0 }}>
+                <p className="story-text" style={{ fontSize: "17px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, marginTop: "10px" }}>
                   Uptrender was born from a simple vision: to democratize trading by making advanced market intelligence accessible to every trader in India and around the world. We saw the gap between complex institutional tools and what retail traders had access to.
                 </p>
               </div>
 
-              <div className="story-milestone" style={{ opacity: 0, position: "relative", paddingLeft: "20px" }}>
+              <div className="story-milestone" style={{ position: "relative", paddingLeft: "20px" }}>
                 <div style={{ position: "absolute", left: "-42px", top: "6px", width: "12px", height: "12px", borderRadius: "50%", background: "#a855f7", boxShadow: "0 0 15px rgba(168, 85, 247, 0.5)" }} />
                 <span style={{ fontSize: "13px", fontWeight: 700, color: "#a855f7", letterSpacing: "1px", textTransform: "uppercase" }}>The Challenge</span>
-                <p className="story-text" style={{ fontSize: "17px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, marginTop: "10px", opacity: 0 }}>
+                <p className="story-text" style={{ fontSize: "17px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, marginTop: "10px" }}>
                   We recognized that traditional trading platforms were either too complex for beginners or lacked the sophisticated tools professional traders needed. So we built something different — a platform that serves everyone.
                 </p>
               </div>
 
-              <div className="story-milestone" style={{ opacity: 0, position: "relative", paddingLeft: "20px" }}>
+              <div className="story-milestone" style={{ position: "relative", paddingLeft: "20px" }}>
                 <div style={{ position: "absolute", left: "-42px", top: "6px", width: "12px", height: "12px", borderRadius: "50%", background: "#10b981", boxShadow: "0 0 15px rgba(16, 185, 129, 0.5)" }} />
                 <span style={{ fontSize: "13px", fontWeight: 700, color: "#10b981", letterSpacing: "1px", textTransform: "uppercase" }}>Today</span>
-                <p className="story-text" style={{ fontSize: "17px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, marginTop: "10px", opacity: 0 }}>
+                <p className="story-text" style={{ fontSize: "17px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, marginTop: "10px" }}>
                   Today, Uptrender combines India&apos;s smartest AI with real-time market sentiment analysis, no-code strategy builders, and smart copy trading — all in one seamless platform trusted by 100,000+ traders worldwide.
                 </p>
               </div>
@@ -423,7 +476,7 @@ export default function About() {
           {/* Mission & Vision Cards */}
           <div className="mv-cards" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px", marginBottom: "80px" }}>
             {/* Mission */}
-            <div className="mv-card" style={{ background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06) 0%, rgba(0, 100, 200, 0.08) 100%)", border: "1px solid rgba(0, 240, 255, 0.15)", borderRadius: "24px", padding: "48px", position: "relative", overflow: "hidden", opacity: 0, transition: "transform 0.4s ease, box-shadow 0.4s ease" }}
+            <div className="mv-card" style={{ background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06) 0%, rgba(0, 100, 200, 0.08) 100%)", border: "1px solid rgba(0, 240, 255, 0.15)", borderRadius: "24px", padding: "48px", position: "relative", overflow: "hidden", transition: "transform 0.4s ease, box-shadow 0.4s ease" }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-8px) scale(1.02)"; e.currentTarget.style.boxShadow = "0 20px 60px rgba(0, 240, 255, 0.15)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0) scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
               <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "200px", height: "200px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
@@ -437,7 +490,7 @@ export default function About() {
             </div>
 
             {/* Vision */}
-            <div className="mv-card" style={{ background: "linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(109, 40, 217, 0.08) 100%)", border: "1px solid rgba(139, 92, 246, 0.15)", borderRadius: "24px", padding: "48px", position: "relative", overflow: "hidden", opacity: 0, transition: "transform 0.4s ease, box-shadow 0.4s ease" }}
+            <div className="mv-card" style={{ background: "linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(109, 40, 217, 0.08) 100%)", border: "1px solid rgba(139, 92, 246, 0.15)", borderRadius: "24px", padding: "48px", position: "relative", overflow: "hidden", transition: "transform 0.4s ease, box-shadow 0.4s ease" }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-8px) scale(1.02)"; e.currentTarget.style.boxShadow = "0 20px 60px rgba(139, 92, 246, 0.15)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0) scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
               <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "200px", height: "200px", background: "radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
@@ -453,7 +506,7 @@ export default function About() {
 
           {/* Core Values */}
           <div style={{ textAlign: "center", marginBottom: "48px" }}>
-            <h2 className="values-title" style={{ fontSize: "42px", fontWeight: 700, opacity: 0 }}>
+            <h2 className="values-title" style={{ fontSize: "42px", fontWeight: 700 }}>
               What Makes Us <span style={{ 
                 background: "linear-gradient(135deg, #00f0ff, #a855f7)", 
                 WebkitBackgroundClip: "text", 
@@ -469,7 +522,7 @@ export default function About() {
               { icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></svg>, title: "Forex + Crypto in One Platform", desc: "One dashboard. Multiple opportunities", color: "#a855f7" },
               { icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>, title: "Built for Real Traders", desc: "Every feature is designed based on real trading problems", color: "#f59e0b" },
             ].map((v, i) => (
-              <div key={i} className="value-card" style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "32px", transition: "all 0.3s ease", cursor: "default", opacity: 0 }}
+              <div key={i} className="value-card" style={{ background: "rgba(255, 255, 255, 0.03)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px", padding: "32px", transition: "all 0.3s ease", cursor: "default" }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${v.color}40`; e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = `0 12px 40px ${v.color}15`; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
                 <div style={{ width: "48px", height: "48px", background: `${v.color}15`, borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>{v.icon}</div>
@@ -486,7 +539,7 @@ export default function About() {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06) 0%, rgba(139, 92, 246, 0.06) 100%)" }} />
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-        <div className="cta-content" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1, opacity: 0 }}>
+        <div className="cta-content" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1 }}>
           <h2 style={{ fontSize: "48px", fontWeight: 800, marginBottom: "20px", lineHeight: 1.15 }}>
             Ready to Trade<br />Smarter?<span style={{ color: "#00f0ff" }}>.</span>
           </h2>

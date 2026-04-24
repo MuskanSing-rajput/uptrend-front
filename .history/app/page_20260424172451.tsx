@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -80,6 +81,10 @@ const brokerPartners = [
   "PrimeXBT",
 ];
 const brokerLoop = [...brokerPartners, ...brokerPartners];
+const brokerLogoMap: Record<string, string> = {
+  Binance: "https://cdn.pixabay.com/photo/2021/04/30/16/47/bnb-6219388_1280.png",
+  Vantage: "https://financialcommission.org/wp-content/uploads/2022/10/vantage-full-logo-RGB.png",
+};
 
 type PricingPlan = {
   id: string;
@@ -122,12 +127,15 @@ export default function Home() {
   // Fetch pricing data
   useEffect(() => {
     const fetchPricing = async () => {
+      const controller = new AbortController();
+      // Abort request if it takes too long
+      const timeoutId = setTimeout(() => controller.abort(), 7000);
+
       try {
-        const response = await fetch('https://app.uptrender.in/api/public/pricing/plans');
+        const response = await fetch('https://app.uptrender.in/api/public/pricing/plans', { signal: controller.signal });
         if (response.ok) {
           const apiData = await response.json();
-          if (apiData.success && apiData.data) {
-            // Transform API data to match expected format
+          if (apiData && apiData.success && apiData.data) {
             const transformedPlans = apiData.data.map((plan: any) => ({
               id: plan.planType,
               name: plan.name,
@@ -144,11 +152,21 @@ export default function Home() {
               ctaLink: 'https://app.uptrender.in/auth/register'
             }));
             setPricingPlans(transformedPlans);
+          } else {
+            // API returned no data — log for debugging
+            console.warn('Pricing API returned no data or success=false', apiData);
           }
+        } else {
+          console.warn('Pricing API responded with non-OK status:', response.status);
         }
-      } catch (error) {
-        console.error('Error fetching pricing:', error);
+      } catch (error: any) {
+        if (error.name === 'AbortError') {
+          console.warn('Pricing fetch aborted due to timeout');
+        } else {
+          console.error('Error fetching pricing:', error);
+        }
       } finally {
+        clearTimeout(timeoutId);
         setLoadingPricing(false);
       }
     };
@@ -164,6 +182,30 @@ export default function Home() {
       }, 100);
     }
   }, [loadingPricing]);
+
+  // Fix for browser back button - refresh ScrollTrigger when page is restored from cache
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        // Page was restored from bfcache
+        ScrollTrigger.refresh(true);
+      }
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, []);
+
+  // Refresh ScrollTrigger on client-side route changes (Next.js app router)
+  const pathname = usePathname();
+  useEffect(() => {
+    // Small delay to allow new content to render
+    const t = setTimeout(() => ScrollTrigger.refresh(true), 80);
+    return () => clearTimeout(t);
+  }, [pathname]);
 
   
   // Close social menu when clicking outside
@@ -200,23 +242,7 @@ export default function Home() {
 
     const ctx = gsap.context(() => {
       // Batch animations with shared ScrollTrigger for better performance
-      gsap.fromTo(
-        ".about-us-label",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          force3D: true,
-          scrollTrigger: {
-            trigger: ".about-us-label",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
+      
       gsap.fromTo(
         ".everything-title",
         { opacity: 0, y: 50 },
@@ -507,7 +533,7 @@ export default function Home() {
           ease: "power3.out",
           force3D: true,
           scrollTrigger: {
-            trigger: ".why-choose-section",
+            trigger: whyChooseRef.current,
             start: "top 70%",
             toggleActions: "play none none none",
           },
@@ -558,28 +584,21 @@ export default function Home() {
           },
         }
       );
+    }, pricingRef);
 
-      // Animate toggle
-      gsap.fromTo(
-        ".pricing-toggle",
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.6,
-          delay: 0.2,
-          ease: "back.out(1.5)",
-          scrollTrigger: {
-            trigger: ".pricing-toggle",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
+    return () => ctx.revert();
+  }, []);
 
-      // Animate pricing cards with stagger
+  // Animate pricing cards only after pricing data is rendered
+  useEffect(() => {
+    if (loadingPricing || !pricingRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const pricingCards = gsap.utils.toArray(".pricing-card");
+      if (!pricingCards.length) return;
+
       gsap.fromTo(
-        ".pricing-card",
+        pricingCards,
         { opacity: 0, y: 60, rotateX: 15 },
         {
           opacity: 1,
@@ -589,7 +608,7 @@ export default function Home() {
           stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: ".pricing-cards-grid",
+            trigger: pricingRef.current,
             start: "top 75%",
             toggleActions: "play none none none",
           },
@@ -598,7 +617,7 @@ export default function Home() {
     }, pricingRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [loadingPricing]);
 
   // GSAP animation for Awards section
   useEffect(() => {
@@ -852,7 +871,6 @@ export default function Home() {
     <div className="relative">
       {/* Performance optimizations */}
       <style>{`
-        .about-us-label,
         .everything-title,
         .everything-subtitle,
         .read-more-link,
@@ -981,14 +999,14 @@ export default function Home() {
       <section ref={everythingSectionRef} className="everything-section" style={{ background: '#0a0a0a', padding: '100px 0' }}>
         <div className="everything-inner" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px', display: 'flex', alignItems: 'stretch', justifyContent: 'space-between', gap: '80px' }}>
           <div className="everything-content" style={{ flex: 1, maxWidth: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <span className="about-us-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0, alignSelf: 'flex-start' }}>About Us</span>
-            <h2 className="everything-title" style={{ color: '#ffffff', fontSize: '48px', fontWeight: 700, lineHeight: 1.1, marginBottom: '24px', opacity: 0 }}>
+            
+            <h2 className="everything-title" style={{ color: '#ffffff', fontSize: '48px', fontWeight: 700, lineHeight: 1.1, marginBottom: '24px' }}>
               Everything you need for profitable <span style={{ color: '#00f0ff' }}>Forex & Crypto trading</span><span className="everything-dot" style={{ color: '#dc2626' }}>.</span>
             </h2>
-            <p className="everything-subtitle" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '18px', lineHeight: 1.6, marginBottom: '4px', maxWidth: '500px', opacity: 0 }}>
+            <p className="everything-subtitle" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '18px', lineHeight: 1.6, marginBottom: '4px', maxWidth: '500px' }}>
               Now powered by India's smartest AI. Real-time market sentiment analysis. No-code strategy builder. <br/> Smart copy trading. All of it, right in your pocket. Trade smarter, faster, and 24/7 — whether you're at your desk or on the move.
             </p>
-            <a href="/about" className="read-more-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#00f0ff', fontSize: '16px', fontWeight: 600, textDecoration: 'none', marginBottom: '16px', opacity: 0, transition: 'all 0.3s ease' }}>
+            <a href="/about" className="read-more-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#00f0ff', fontSize: '16px', fontWeight: 600, textDecoration: 'none', marginBottom: '16px', transition: 'all 0.3s ease' }}>
               Read More About Us
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -996,7 +1014,7 @@ export default function Home() {
             </a>
             
             <div className="everything-downloads" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-              <div className="qr-code" style={{ display: 'flex', alignItems: 'center', gap: '16px', opacity: 0 }}>
+              <div className="qr-code" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <div className="qr-placeholder" style={{ width: '100px', height: '100px', background: '#ffffff', borderRadius: '8px', backgroundImage: 'repeating-linear-gradient(0deg, #000 0px, #000 3px, #fff 3px, #fff 6px), repeating-linear-gradient(90deg, #000 0px, #000 3px, #fff 3px, #fff 6px)', backgroundSize: '6px 6px', padding: '10px', position: 'relative' }}></div>
                 <div className="qr-text" style={{ display: 'flex', flexDirection: 'column', gap: '4px', color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px' }}>
                   <span>Scan to download</span>
@@ -1005,7 +1023,7 @@ export default function Home() {
               </div>
               
               <div className="store-buttons" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-                <a href="#" className="store-btn" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 24px', background: '#1a1a1a', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '8px', textDecoration: 'none', opacity: 0 }}>
+                <a href="#" className="store-btn" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 24px', background: '#1a1a1a', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '8px', textDecoration: 'none' }}>
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                   </svg>
@@ -1015,7 +1033,7 @@ export default function Home() {
                   </div>
                 </a>
                 
-                <a href="#" className="store-btn" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 24px', background: '#1a1a1a', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '8px', textDecoration: 'none', opacity: 0 }}>
+                <a href="#" className="store-btn" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 24px', background: '#1a1a1a', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '8px', textDecoration: 'none' }}>
                   <svg viewBox="0 0 24 24" width="20" height="20">
                     <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" fill="#4CAF50"/>
                   </svg>
@@ -1025,7 +1043,7 @@ export default function Home() {
                   </div>
                 </a>
                 
-                <a href="#" className="store-btn apk-btn" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 24px', background: '#2a2a2a', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '8px', textDecoration: 'none', opacity: 0 }}>
+                <a href="#" className="store-btn apk-btn" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 24px', background: '#2a2a2a', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '8px', textDecoration: 'none' }}>
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
                     <path d="M5 20h14v-2H5v2zm0-10h4v6h6v-6h4l-7-7-7 7z"/>
                   </svg>
@@ -1038,8 +1056,8 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="everything-phone" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'stretch', maxWidth: '700px', position: 'relative', marginTop: '55px' }}>
-            <img src="/about.jpg" alt="Uptrender Trading App" className="phone-image" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '24px', opacity: 0, minHeight: '100%' }} />
+            <div className="everything-phone" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'stretch', maxWidth: '700px', position: 'relative', marginTop: '55px' }}>
+            <img src="/about.jpg" alt="Uptrender Trading App" className="phone-image" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '24px', minHeight: '100%' }} />
           </div>
         </div>
       </section>
@@ -1049,11 +1067,11 @@ export default function Home() {
         <div className="always-ready-inner" style={{ maxWidth: '1920px', margin: '0 auto', padding: '0 80px', textAlign: 'center' }}>
           {/* Header Row */}
           <div className="always-ready-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '-80px', gap: '100px', position: 'relative', zIndex: 20, maxWidth: '1600px', margin: '0 auto -80px' }}>
-            <h2 className="always-ready-title" style={{ color: '#ffffff', fontSize: '60px', fontWeight: 750, lineHeight: 1.2, textAlign: 'left', opacity: 0, flex: '0 0 auto' }}>
+            <h2 className="always-ready-title" style={{ color: '#ffffff', fontSize: '60px', fontWeight: 750, lineHeight: 1.2, textAlign: 'left', flex: '0 0 auto' }}>
               Always one step<br />
               ahead<span style={{ color: '#dc2626' }}>.</span>
             </h2>
-            <p className="always-ready-subtitle" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '19px', lineHeight: 1.6, maxWidth: '550px', textAlign: 'left', opacity: 0, flex: '1 1 auto', paddingTop: '8px' }}>
+            <p className="always-ready-subtitle" style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '19px', lineHeight: 1.6, maxWidth: '550px', textAlign: 'left', flex: '1 1 auto', paddingTop: '8px' }}>
               A powerful trading ecosystem built for every market phase.<br/>Trade Forex & Crypto with an AI-driven platform.
             </p>
           </div>
@@ -1061,22 +1079,22 @@ export default function Home() {
           {/* Laptop with Platform Labels */}
           <div className="always-ready-laptop" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '700px', zIndex: 1, padding: '0 20px', marginTop: '20px' }}>
             {/* Copy Trading Label */}
-            <div className="platform-label-gradient" style={{ position: 'absolute', top: '15%', left: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
+            <div className="platform-label-gradient" style={{ position: 'absolute', top: '15%', left: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)' }}>
               Copy Trading
             </div>
             
             {/* AI Assistant Label */}
-            <div className="platform-label-gradient" style={{ position: 'absolute', top: '15%', right: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
+            <div className="platform-label-gradient" style={{ position: 'absolute', top: '15%', right: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)' }}>
               AI Assistant
             </div>
             
             {/* AI Trade Label */}
-            <div className="platform-label-gradient" style={{ position: 'absolute', top: '52%', left: 'calc(6% + 50px)', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
+            <div className="platform-label-gradient" style={{ position: 'absolute', top: '52%', left: 'calc(6% + 50px)', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)' }}>
               AI Trade
             </div>
             
             {/* Trading View Label */}
-            <div className="platform-label-gradient" style={{ position: 'absolute', top: '60%', right: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)', opacity: 0 }}>
+            <div className="platform-label-gradient" style={{ position: 'absolute', top: '60%', right: '8%', background: 'rgba(192, 192, 192, 0.15)', backdropFilter: 'blur(10px)', border: '2px solid rgba(192, 192, 192, 0.5)', borderRadius: '14px', padding: '20px 44px', color: '#e5e5e5', fontSize: '24px', fontWeight: 700, zIndex: 10, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 0 25px rgba(192, 192, 192, 0.3), 0 0 50px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.08)' }}>
               Trading View
             </div>
 
@@ -1147,7 +1165,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/s1.png" 
+                      src="/s2.png" 
                       alt="AI Strategy Builder"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1188,7 +1206,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src="/s3.png" 
                       alt="AI Trade Assistant"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1229,7 +1247,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src="/s4.png" 
                       alt="Advanced Backtesting Engine"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1270,7 +1288,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src="/s5.png" 
                       alt="Smart Copy Trading"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1311,7 +1329,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src="/s6.png" 
                       alt="Paper / Live Trading"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1352,7 +1370,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src="/s7.png" 
                       alt="Broker API Integration"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1393,7 +1411,7 @@ export default function Home() {
                 <div className="stacking-card-image">
                   <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src="/s8.png" 
                       alt="Strategy Marketplace"
                       fill
                       style={{ objectFit: "contain" }}
@@ -1434,22 +1452,22 @@ export default function Home() {
       {/* Why Traders Choose Us Section */}
       <section ref={whyChooseRef} className="why-choose-section" style={{ background: '#0a0a0a', padding: '100px 0', position: 'relative', zIndex: 12 }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px' }}>
-          <h2 className="why-choose-title" style={{ color: '#ffffff', fontSize: '52px', fontWeight: 700, textAlign: 'center', marginBottom: '80px', opacity: 0 }}>
+          <h2 className="why-choose-title" style={{ color: '#ffffff', fontSize: '52px', fontWeight: 700, textAlign: 'center', marginBottom: '80px' }}>
             Why Traders Are Switching to Uptrender<span style={{ color: '#00f0ff' }}>.</span>
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }}>
             {/* Card 1 - Make informed trades */}
-            <div className="why-card" style={{ background: 'rgba(0, 0, 0, 0.6)', border: '2px solid rgba(80, 80, 80, 0.6)', borderRadius: '24px', padding: '40px 32px', position: 'relative', boxShadow: '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)', transition: 'all 0.3s ease', opacity: 0 }}
+            <div className="why-card" style={{ background: '#000000', border: '2px solid rgba(60, 60, 60, 0.7)', borderRadius: '24px', padding: '40px 32px', position: 'relative', boxShadow: '0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02)', transition: 'all 0.3s ease' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.border = '2px solid rgba(0, 240, 255, 0.6)';
                 e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.2)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.border = '2px solid rgba(80, 80, 80, 0.6)';
-                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)';
+                e.currentTarget.style.border = '2px solid rgba(60, 60, 60, 0.7)';
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02)';
               }}>
-              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#10141f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#000000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ position: 'relative', width: '82%', height: '90%' }}>
                   <Image
                     src="/f1.png"
@@ -1468,16 +1486,16 @@ export default function Home() {
             </div>
 
             {/* Card 2 - Support whenever, wherever */}
-            <div className="why-card" style={{ background: 'rgba(0, 0, 0, 0.6)', border: '2px solid rgba(80, 80, 80, 0.6)', borderRadius: '24px', padding: '40px 32px', position: 'relative', boxShadow: '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)', transition: 'all 0.3s ease', opacity: 0 }}
+            <div className="why-card" style={{ background: '#000000', border: '2px solid rgba(60, 60, 60, 0.7)', borderRadius: '24px', padding: '40px 32px', position: 'relative', boxShadow: '0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02)', transition: 'all 0.3s ease' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.border = '2px solid rgba(0, 240, 255, 0.6)';
                 e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.2)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.border = '2px solid rgba(80, 80, 80, 0.6)';
-                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)';
+                e.currentTarget.style.border = '2px solid rgba(60, 60, 60, 0.7)';
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02)';
               }}>
-              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#10141f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#000000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ position: 'relative', width: '82%', height: '90%' }}>
                   <Image
                     src="/f2.png"
@@ -1496,16 +1514,16 @@ export default function Home() {
             </div>
 
             {/* Card 3 - Your capital is protected */}
-            <div className="why-card" style={{ background: 'rgba(0, 0, 0, 0.6)', border: '2px solid rgba(80, 80, 80, 0.6)', borderRadius: '24px', padding: '40px 32px', position: 'relative', boxShadow: '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)', transition: 'all 0.3s ease', opacity: 0 }}
+            <div className="why-card" style={{ background: '#000000', border: '2px solid rgba(60, 60, 60, 0.7)', borderRadius: '24px', padding: '40px 32px', position: 'relative', boxShadow: '0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02)', transition: 'all 0.3s ease' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.border = '2px solid rgba(0, 240, 255, 0.6)';
                 e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.2)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.border = '2px solid rgba(80, 80, 80, 0.6)';
-                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 192, 192, 0.05)';
+                e.currentTarget.style.border = '2px solid rgba(60, 60, 60, 0.7)';
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02)';
               }}>
-              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#10141f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ height: '220px', position: 'relative', marginBottom: '24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#000000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ position: 'relative', width: '82%', height: '90%' }}>
                   <Image
                     src="/f3.png"
@@ -1541,7 +1559,6 @@ export default function Home() {
               fontWeight: 800, 
               textAlign: 'center',
               marginBottom: '16px',
-              opacity: 0,
               letterSpacing: '-1px',
               lineHeight: '1.1'
             }}>
@@ -1552,7 +1569,6 @@ export default function Home() {
               fontSize: '20px', 
               textAlign: 'center',
               marginBottom: '0',
-              opacity: 0,
               fontWeight: 400,
               maxWidth: '600px',
               margin: '0 auto'
@@ -1947,14 +1963,13 @@ export default function Home() {
       }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px' }}>
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span className="features-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px', opacity: 0 }}>Our Brokers</span>
+            <span className="features-label" style={{ display: 'inline-block', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 150, 255, 0.15))', border: '1px solid rgba(0, 240, 255, 0.3)', borderRadius: '50px', padding: '10px 28px', fontSize: '14px', fontWeight: 600, color: '#00f0ff', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '24px' }}>Our Brokers</span>
             <h2 className="explore-title" style={{
               color: '#ffffff',
               fontSize: '48px',
               fontWeight: 700,
               marginBottom: '20px',
               lineHeight: 1.2,
-              opacity: 0
             }}>
               Trade Across Top Brokers & Exchanges<span style={{ color: '#00f0ff' }}>.</span>
             </h2>
@@ -1978,44 +1993,54 @@ export default function Home() {
                   width: 'max-content'
                 }}
               >
-                {brokerLoop.map((broker, index) => (
-                  <article
-                    key={`${broker}-${index}`}
-                    className="broker-step broker-card"
-                    style={{
-                      background: 'rgba(10, 15, 30, 0.7)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      borderRadius: '16px',
-                      padding: '24px',
-                      minWidth: '300px',
-                      maxWidth: '300px',
-                      transition: 'all 0.3s ease'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                      <span style={{ fontSize: '11px', letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.45)', fontWeight: 600 }}>Broker</span>
-                      <span style={{ fontSize: '11px', letterSpacing: '1px', textTransform: 'uppercase', color: '#00f0ff', fontWeight: 700 }}>Live</span>
-                    </div>
+                {brokerLoop.map((broker, index) => {
+                  const logoSrc = brokerLogoMap[broker];
+                  const brokerInitials = broker
+                    .split(" ")
+                    .map((part) => part[0])
+                    .join("")
+                    .slice(0, 3)
+                    .toUpperCase();
 
-                    <div style={{ width: '74px', height: '74px', borderRadius: '14px', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 110, 255, 0.18))', border: '1px solid rgba(0, 240, 255, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
-                      <span style={{ color: '#d9fcff', fontSize: '24px', fontWeight: 700, letterSpacing: '0.5px' }}>
-                        {broker
-                          .split(' ')
-                          .map((part) => part[0])
-                          .join('')
-                          .slice(0, 3)
-                          .toUpperCase()}
-                      </span>
-                    </div>
+                  return (
+                    <article
+                      key={`${broker}-${index}`}
+                      className="broker-step broker-card"
+                      style={{
+                        background: 'rgba(10, 15, 30, 0.7)',
+                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        borderRadius: '16px',
+                        padding: '18px 20px',
+                        minWidth: '340px',
+                        maxWidth: '340px',
+                        minHeight: '98px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      <div style={{ width: '56px', height: '56px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 110, 255, 0.18))', border: '1px solid rgba(0, 240, 255, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+                        {logoSrc ? (
+                          <img
+                            src={logoSrc}
+                            alt={`${broker} logo`}
+                            loading="lazy"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }}
+                          />
+                        ) : (
+                          <span style={{ color: '#d9fcff', fontSize: '24px', fontWeight: 700, letterSpacing: '0.5px' }}>
+                            {brokerInitials}
+                          </span>
+                        )}
+                      </div>
 
-                    <h3 style={{ color: '#ffffff', fontSize: '24px', fontWeight: 700, marginBottom: '10px', lineHeight: 1.25 }}>
-                      {broker}
-                    </h3>
-                    <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '14px', lineHeight: 1.6 }}>
-                      Secure account sync and fast execution routing.
-                    </p>
-                  </article>
-                ))}
+                      <h3 style={{ color: '#ffffff', fontSize: '36px', fontWeight: 700, lineHeight: 1.1, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {broker}
+                      </h3>
+                    </article>
+                  );
+                })}
               </div>
             </div>
           </div>

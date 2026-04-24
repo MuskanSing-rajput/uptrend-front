@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -79,6 +80,49 @@ export default function WhiteLabel() {
     return () => ctx.revert();
   }, []);
 
+  // Refresh ScrollTrigger on client-side navigations and force visibility
+  // for key selectors if GSAP fails to run after SPA navigation.
+  const pathname = usePathname();
+  useEffect(() => {
+    const refreshId = setTimeout(() => {
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    }, 80);
+
+    const selectors = [
+      ".whitelabel-title",
+      ".whitelabel-subtitle",
+      ".whitelabel-content",
+      ".feature-card",
+      ".benefit-item",
+      ".revenue-item",
+      ".cta-button",
+    ];
+
+    const makeVisible = () => {
+      selectors.forEach((sel) => {
+        document.querySelectorAll(sel).forEach((el) => {
+          const e = el as HTMLElement;
+          const comp = window.getComputedStyle(e);
+          if (comp.opacity === "0" || comp.display === "none") {
+            e.style.opacity = "1";
+            e.style.transform = "none";
+            e.style.display = e.style.display === "none" ? "block" : e.style.display;
+          }
+        });
+      });
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    };
+
+    const t1 = setTimeout(makeVisible, 200);
+    const t2 = setTimeout(makeVisible, 700);
+
+    return () => {
+      clearTimeout(refreshId);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [pathname]);
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (name === "phone") {
@@ -119,19 +163,19 @@ export default function WhiteLabel() {
         <div style={{ position: "absolute", top: "-200px", left: "-200px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(50, 194, 252, 0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", position: "relative", zIndex: 1 }}>
-          <h1 className="whitelabel-title" style={{ fontSize: "clamp(42px, 5vw, 72px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", opacity: 0 }}>
+          <h1 className="whitelabel-title" style={{ fontSize: "clamp(42px, 5vw, 72px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px" }}>
             White Label <span style={{ background: "linear-gradient(135deg, #32c2fc, #32c2fc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Solutions</span><span style={{ color: "#32c2fc" }}>.</span>
           </h1>
 
-          <p className="whitelabel-subtitle" style={{ fontSize: "20px", color: "rgba(255, 255, 255, 0.65)", maxWidth: "800px", lineHeight: 1.7, opacity: 0, marginBottom: "24px" }}>
+          <p className="whitelabel-subtitle" style={{ fontSize: "20px", color: "rgba(255, 255, 255, 0.65)", maxWidth: "800px", lineHeight: 1.7, marginBottom: "24px" }}>
             Launch Your Own Branded AI-Powered Forex & Crypto Trading Platform
           </p>
 
-          <p className="whitelabel-subtitle" style={{ fontSize: "18px", color: "rgba(255, 255, 255, 0.6)", maxWidth: "800px", lineHeight: 1.8, opacity: 0, marginBottom: "48px" }}>
+          <p className="whitelabel-subtitle" style={{ fontSize: "18px", color: "rgba(255, 255, 255, 0.6)", maxWidth: "800px", lineHeight: 1.8, marginBottom: "48px" }}>
             Build and scale your own trading business — with your logo, your domain, and your pricing.
           </p>
 
-          <div className="whitelabel-content" style={{ opacity: 0, background: "linear-gradient(135deg, rgba(50, 194, 252, 0.08), rgba(50, 194, 252, 0.08))", border: "1px solid rgba(50, 194, 252, 0.2)", borderRadius: "24px", padding: "48px", marginTop: "48px" }}>
+          <div className="whitelabel-content" style={{ background: "linear-gradient(135deg, rgba(50, 194, 252, 0.08), rgba(50, 194, 252, 0.08))", border: "1px solid rgba(50, 194, 252, 0.2)", borderRadius: "24px", padding: "48px", marginTop: "48px" }}>
             <h2 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "24px", color: "#32c2fc" }}>Why Choose Uptrender White Label?</h2>
             <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.7)", lineHeight: 1.8, marginBottom: "32px" }}>
               Launch a complete AI trading platform in weeks, not months. Give your users powerful no-code tools while you earn recurring revenue.
@@ -161,7 +205,6 @@ export default function WhiteLabel() {
               const IconComponent = item.icon;
               return (
               <div key={i} className="feature-card" style={{
-                opacity: 0,
                 background: "linear-gradient(135deg, rgba(50, 194, 252, 0.08), rgba(50, 194, 252, 0.08))",
                 border: "1px solid rgba(50, 194, 252, 0.2)",
                 borderRadius: "20px",
@@ -198,7 +241,6 @@ export default function WhiteLabel() {
               { title: "Secure API Integrations", description: "Direct integrations with major brokers and exchanges globally." }
             ].map((item, i) => (
               <div key={i} className="benefit-item" style={{
-                opacity: 0,
                 background: "linear-gradient(135deg, rgba(50, 194, 252, 0.08), rgba(50, 194, 252, 0.08))",
                 border: "1px solid rgba(50, 194, 252, 0.15)",
                 borderRadius: "16px",

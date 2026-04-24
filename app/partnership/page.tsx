@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +10,7 @@ import { Users, Sliders, CheckCircle, BarChart3, Target, Settings } from "lucide
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Partnership() {
+  const pathname = usePathname();
       const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -82,6 +84,46 @@ export default function Partnership() {
     return () => ctx.revert();
   }, []);
 
+  // Refresh ScrollTrigger on client-side navigations and provide a small
+  // fallback to force elements visible if GSAP fails to run after route change.
+  useEffect(() => {
+    const refreshId = setTimeout(() => {
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    }, 80);
+
+    const selectors = [
+      ".partnership-title",
+      ".partnership-subtitle",
+      ".partnership-content",
+      ".franchise-intro-box",
+      ".dashboard-card",
+      ".cta-button"
+    ];
+
+    const makeVisible = () => {
+      selectors.forEach((sel) => {
+        document.querySelectorAll(sel).forEach((el) => {
+          const e = el as HTMLElement;
+          const comp = window.getComputedStyle(e);
+          if (comp.opacity === "0") {
+            e.style.opacity = "1";
+            e.style.transform = "none";
+          }
+        });
+      });
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    };
+
+    const t1 = setTimeout(makeVisible, 200);
+    const t2 = setTimeout(makeVisible, 700);
+
+    return () => {
+      clearTimeout(refreshId);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [pathname]);
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -122,15 +164,15 @@ export default function Partnership() {
         <div style={{ position: "absolute", top: "-200px", left: "-200px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", position: "relative", zIndex: 1 }}>
-          <h1 className="partnership-title" style={{ fontSize: "clamp(42px, 5vw, 72px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", opacity: 0 }}>
+          <h1 className="partnership-title" style={{ fontSize: "clamp(42px, 5vw, 72px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px" }}>
             Partnership <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Opportunities</span><span style={{ color: "#00f0ff" }}>.</span>
           </h1>
 
-          <p className="partnership-subtitle" style={{ fontSize: "20px", color: "rgba(255, 255, 255, 0.65)", maxWidth: "700px", lineHeight: 1.7, opacity: 0, marginBottom: "48px" }}>
+          <p className="partnership-subtitle" style={{ fontSize: "20px", color: "rgba(255, 255, 255, 0.65)", maxWidth: "700px", lineHeight: 1.7, marginBottom: "48px" }}>
             Join our growing network of partners and grow your business with Uptrender. We offer flexible partnership programs designed to drive mutual growth and success.
           </p>
 
-          <div className="partnership-content" style={{ opacity: 0, background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06), rgba(139, 92, 246, 0.06))", border: "1px solid rgba(0, 240, 255, 0.2)", borderRadius: "24px", padding: "48px", marginTop: "48px" }}>
+          <div className="partnership-content" style={{ background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06), rgba(139, 92, 246, 0.06))", border: "1px solid rgba(0, 240, 255, 0.2)", borderRadius: "24px", padding: "48px", marginTop: "48px" }}>
             <h2 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "24px", color: "#00f0ff" }}>Build Your Own Trading Business with Uptrender</h2>
             <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.7)", lineHeight: 1.8, marginBottom: "24px" }}>
               Earn recurring revenue by becoming an official Uptrender Franchise Partner in Forex & Crypto. Get your own branded franchise dashboard, manage users, set commissions, and grow with India's leading AI-powered algo trading platform.
@@ -156,7 +198,7 @@ export default function Partnership() {
             Run your own franchise with complete control and industry-leading support
           </p>
 
-          <div className="franchise-intro-box" style={{ opacity: 0, background: "linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(139, 92, 246, 0.08))", border: "1px solid rgba(0, 240, 255, 0.2)", borderRadius: "24px", padding: "40px", marginBottom: "40px", perspective: "1000px" }}>
+          <div className="franchise-intro-box" style={{ background: "linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(139, 92, 246, 0.08))", border: "1px solid rgba(0, 240, 255, 0.2)", borderRadius: "24px", padding: "40px", marginBottom: "40px", perspective: "1000px" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "32px" }}>
               {[
                 { title: "Run Your Own Franchise", description: "Complete business autonomy with our technology foundation" },
@@ -200,7 +242,6 @@ export default function Partnership() {
               const IconComponent = item.icon;
               return (
               <div key={i} className="dashboard-card" style={{
-                opacity: 0,
                 background: "linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(139, 92, 246, 0.08))",
                 border: "1px solid rgba(0, 240, 255, 0.2)",
                 borderRadius: "20px",
@@ -273,7 +314,6 @@ export default function Partnership() {
           
           <div style={{ display: "flex", gap: "24px", justifyContent: "center", flexWrap: "wrap" }}>
             <a href="/contact" className="cta-button" style={{
-              opacity: 0,
               display: "inline-block",
               background: "linear-gradient(135deg, #00f0ff, #00b8d4)",
               color: "#0a0a0a",
@@ -292,7 +332,6 @@ export default function Partnership() {
               Apply for Franchise
             </a>
             <a href="/contact" className="cta-button" style={{
-              opacity: 0,
               display: "inline-block",
               background: "transparent",
               color: "#00f0ff",

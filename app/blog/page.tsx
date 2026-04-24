@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -138,6 +139,48 @@ export default function BlogPage() {
     return () => ctx.revert();
   }, [selectedPost]);
 
+  // Refresh ScrollTrigger on client-side route changes and fallback to
+  // force visible elements if animations didn't run (SPA navigation cases).
+  const pathname = usePathname();
+  useEffect(() => {
+    const refreshId = setTimeout(() => {
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    }, 80);
+
+    const selectors = [
+      ".blog-title",
+      ".category-btn",
+      ".featured-post",
+      ".featured-post-image",
+      ".featured-post-content",
+      ".blog-card",
+    ];
+
+    const makeVisible = () => {
+      selectors.forEach((sel) => {
+        document.querySelectorAll(sel).forEach((el) => {
+          const e = el as HTMLElement;
+          const comp = window.getComputedStyle(e);
+          if (comp.opacity === "0" || comp.display === "none") {
+            e.style.opacity = "1";
+            e.style.transform = "none";
+            e.style.display = e.style.display === "none" ? "block" : e.style.display;
+          }
+        });
+      });
+      try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
+    };
+
+    const t1 = setTimeout(makeVisible, 200);
+    const t2 = setTimeout(makeVisible, 700);
+
+    return () => {
+      clearTimeout(refreshId);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [pathname]);
+
 
   return (
     <div className="relative" style={{ background: "#0a0a14", minHeight: "100vh" }}>
@@ -191,7 +234,6 @@ export default function BlogPage() {
               fontWeight: 800,
               lineHeight: 1.1,
               marginBottom: "16px",
-              opacity: 0,
             }}
           >
             Insights, Strategies &<br />
@@ -227,7 +269,6 @@ export default function BlogPage() {
               fontWeight: 600,
               cursor: "pointer",
               transition: "all 0.3s ease",
-              opacity: 0,
               backdropFilter: "blur(10px)",
             }}
             onMouseEnter={(e) => {
@@ -266,7 +307,6 @@ export default function BlogPage() {
               overflow: "hidden",
               cursor: "pointer",
               transition: "all 0.4s ease",
-              opacity: 0,
               position: "sticky",
               top: "120px",
             }}
@@ -384,7 +424,6 @@ export default function BlogPage() {
                   overflow: "hidden",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
-                  opacity: 0,
                   display: "grid",
                   gridTemplateColumns: "180px 1fr",
                   gap: "20px",
