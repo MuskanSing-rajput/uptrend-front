@@ -87,7 +87,6 @@ export default function Navbar() {
             <Link href="/about" className="nav-link" style={{ color: pathname === "/about" ? "#13b1ac" : undefined }}>About Us</Link>
             <Link href="/services" className="nav-link" style={{ color: pathname === "/services" ? "#13b1ac" : undefined }}>Services</Link>
             <Link href="/#pricing" className="nav-link">Pricing</Link>
-            <Link href="/#features" className="nav-link">Features</Link>
             <Link href="/blog" className="nav-link" style={{ color: pathname === "/blog" ? "#13b1ac" : undefined }}>Blog</Link>
             <Link href="/contact" className="nav-link" style={{ color: pathname === "/contact" ? "#13b1ac" : undefined }}>Contact Us</Link>
           </nav>
@@ -238,20 +237,6 @@ export default function Navbar() {
                 transition: 'all 0.2s ease'
               }}
             >Pricing</Link>
-            
-            <Link 
-              href="/#features" 
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ 
-                color: "#ffffff",
-                fontSize: '20px',
-                padding: '16px 0',
-                textAlign: 'center',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                textDecoration: 'none',
-                transition: 'all 0.2s ease'
-              }}
-            >Features</Link>
             
             <Link 
               href="/blog" 

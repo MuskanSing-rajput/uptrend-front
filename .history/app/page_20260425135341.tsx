@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -533,7 +532,7 @@ export default function Home() {
           ease: "power3.out",
           force3D: true,
           scrollTrigger: {
-            trigger: ".why-choose-section",
+            trigger: whyChooseRef.current,
             start: "top 70%",
             toggleActions: "play none none none",
           },
@@ -584,28 +583,21 @@ export default function Home() {
           },
         }
       );
+    }, pricingRef);
 
-      // Animate toggle
-      gsap.fromTo(
-        ".pricing-toggle",
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.6,
-          delay: 0.2,
-          ease: "back.out(1.5)",
-          scrollTrigger: {
-            trigger: ".pricing-toggle",
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
+    return () => ctx.revert();
+  }, []);
 
-      // Animate pricing cards with stagger
+  // Animate pricing cards only after pricing data is rendered
+  useEffect(() => {
+    if (loadingPricing || !pricingRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const pricingCards = gsap.utils.toArray(".pricing-card");
+      if (!pricingCards.length) return;
+
       gsap.fromTo(
-        ".pricing-card",
+        pricingCards,
         { opacity: 0, y: 60, rotateX: 15 },
         {
           opacity: 1,
@@ -615,7 +607,7 @@ export default function Home() {
           stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: ".pricing-cards-grid",
+            trigger: pricingRef.current,
             start: "top 75%",
             toggleActions: "play none none none",
           },
@@ -624,7 +616,7 @@ export default function Home() {
     }, pricingRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [loadingPricing]);
 
   // GSAP animation for Awards section
   useEffect(() => {

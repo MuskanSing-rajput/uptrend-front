@@ -120,6 +120,16 @@ export default function ServicesPage() {
       const heroRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const serviceImages = [
+    "/s1.png",
+    "/s2.png",
+    "/s3.png",
+    "/s4.png",
+    "/s5.png",
+    "/s6.png",
+    "/s7.png",
+    "/s8.png",
+  ];
 
   
   // Hero animations
@@ -205,8 +215,6 @@ export default function ServicesPage() {
         <div style={{ position: "absolute", bottom: "-100px", left: "-200px", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <span className="services-hero-badge" style={{ display: "inline-block", background: "linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(168, 85, 247, 0.15))", border: "1px solid rgba(0, 240, 255, 0.3)", borderRadius: "50px", padding: "10px 28px", fontSize: "13px", fontWeight: 600, color: "#00f0ff", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "28px" }}>Our Services</span>
-
           <h1 className="services-hero-title" style={{ fontSize: "clamp(40px, 5vw, 68px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px" }}>
             Premium Trading<br />
             <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Solutions</span> for Every Trader<span style={{ color: "#00f0ff" }}>.</span>
@@ -231,14 +239,14 @@ export default function ServicesPage() {
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)"; e.currentTarget.style.boxShadow = "none"; }}>
 
                 {/* Image/Visual Side */}
-                <div style={{ order: 0, background: `linear-gradient(135deg, ${service.color}08 0%, ${service.color}15 100%)`, padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
+                <div style={{ order: 0, background: `linear-gradient(135deg, ${service.color}08 0%, ${service.color}15 100%)`, padding: index >= 6 ? "28px" : "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
                   <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "200px", height: "200px", background: `radial-gradient(circle, ${service.color}15 0%, transparent 70%)`, pointerEvents: "none" }} />
-                  <div style={{ width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden", boxShadow: `0 10px 40px ${service.color}20`, border: `1px solid ${service.color}30`, position: "relative" }}>
+                  <div style={{ width: "100%", height: "100%", maxWidth: index >= 6 ? "88%" : "100%", maxHeight: index >= 6 ? "88%" : "100%", borderRadius: "16px", overflow: "hidden", boxShadow: `0 10px 40px ${service.color}20`, border: `1px solid ${service.color}30`, position: "relative" }}>
                     <Image 
-                      src="/service1.jpg" 
+                      src={serviceImages[index]}
                       alt={service.title}
                       fill
-                      style={{ objectFit: "cover", objectPosition: "center" }}
+                      style={{ objectFit: index >= 6 ? "contain" : "cover", objectPosition: "center" }}
                       sizes="(max-width: 1200px) 100vw, 500px"
                       priority={index === 0}
                     />

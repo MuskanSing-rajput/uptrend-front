@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -1063,6 +1062,7 @@ export default function Home() {
       </section>
 
       {/* Always Ready Section */}
+      
       <section ref={alwaysReadyRef} className="always-ready-section" style={{ background: '#0a0a0a', padding: '100px 0 80px', position: 'relative', zIndex: 12 }}>
         <div className="always-ready-inner" style={{ maxWidth: '1920px', margin: '0 auto', padding: '0 80px', textAlign: 'center' }}>
           {/* Header Row */}
