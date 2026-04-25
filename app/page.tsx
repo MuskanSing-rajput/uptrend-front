@@ -66,24 +66,10 @@ const tickerSecondary: TickerItem[] = [
 const tickerItems = [...tickerPrimary, ...tickerSecondary];
 const tickerLoop = [...tickerItems, ...tickerItems];
 
-const brokerPartners = [
-  "Binance",
-  "Coinbase",
-  "Delta Exchange",
-  "Exness",
-  "Vantage",
-  "MetaTrader 4",
-  "MetaTrader 5",
-  "XM Trading",
-  "WazirX",
-  "CoinDCX",
-  "PrimeXBT",
-];
-const brokerLoop = [...brokerPartners, ...brokerPartners];
-const brokerLogoMap: Record<string, string> = {
-  Binance: "https://cdn.pixabay.com/photo/2021/04/30/16/47/bnb-6219388_1280.png",
-  Vantage: "https://financialcommission.org/wp-content/uploads/2022/10/vantage-full-logo-RGB.png",
-};
+
+// Local broker/exchange images and display names
+
+// Broker/exchange data with local images
 
 type PricingPlan = {
   id: string;
@@ -100,6 +86,18 @@ type PricingPlan = {
   cta: string;
   ctaLink: string;
 };
+
+const brokerPartners = [
+  { name: "Binance", img: "/binance.png" },
+  { name: "CoinDCX", img: "/Coin DCX - trading.png" },
+  { name: "Coinbase", img: "/Coinbase Logo.png" },
+  { name: "Delta Exchange", img: "/deltaexchange.png" },
+  { name: "Ex", img: "/ex.png" },
+  { name: "MetaTrader 5", img: "/metatrader5.png" },
+  { name: "WazirX", img: "/WazirX.png" },
+  { name: "XM Trading", img: "/xm.png" },
+];
+const brokerLoop = [...brokerPartners, ...brokerPartners];
 
 export default function Home() {
       const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
@@ -151,80 +149,17 @@ export default function Home() {
               ctaLink: 'https://app.uptrender.in/auth/register'
             }));
             setPricingPlans(transformedPlans);
-          } else {
-            // API returned no data — log for debugging
-            console.warn('Pricing API returned no data or success=false', apiData);
           }
-        } else {
-          console.warn('Pricing API responded with non-OK status:', response.status);
         }
-      } catch (error: any) {
-        if (error.name === 'AbortError') {
-          console.warn('Pricing fetch aborted due to timeout');
-        } else {
-          console.error('Error fetching pricing:', error);
-        }
+      } catch (error) {
+        // handle error
       } finally {
-        clearTimeout(timeoutId);
         setLoadingPricing(false);
+        clearTimeout(timeoutId);
       }
     };
     fetchPricing();
   }, []);
-
-  // Refresh ScrollTrigger when pricing cards finish loading
-  useEffect(() => {
-    if (!loadingPricing) {
-      // Give React time to render the cards, then refresh ScrollTrigger
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-    }
-  }, [loadingPricing]);
-
-  // Fix for browser back button - refresh ScrollTrigger when page is restored from cache
-  useEffect(() => {
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) {
-        // Page was restored from bfcache
-        ScrollTrigger.refresh(true);
-      }
-    };
-
-    window.addEventListener('pageshow', handlePageShow);
-
-    return () => {
-      window.removeEventListener('pageshow', handlePageShow);
-    };
-  }, []);
-
-  // Refresh ScrollTrigger on client-side route changes (Next.js app router)
-  const pathname = usePathname();
-  useEffect(() => {
-    // Small delay to allow new content to render
-    const t = setTimeout(() => ScrollTrigger.refresh(true), 80);
-    return () => clearTimeout(t);
-  }, [pathname]);
-
-  
-  // Close social menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const socialMenu = target.closest('.floating-btn');
-      if (!socialMenu && showSocialMenu) {
-        setShowSocialMenu(false);
-      }
-    };
-
-    if (showSocialMenu) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [showSocialMenu]);
 
   // Auto-cycle through asset categories every 1 second
   useEffect(() => {
@@ -1914,6 +1849,7 @@ export default function Home() {
 
 
       {/* Broker Section */}
+
       <section id="features" ref={exploreRef} style={{
         background: '#0a0a0a',
         padding: '120px 0',
@@ -1948,59 +1884,52 @@ export default function Home() {
                 className="broker-carousel-track"
                 style={{
                   display: 'flex',
-                  gap: '24px',
+                  gap: '32px',
                   animation: 'features-scroll 38s linear infinite',
                   width: 'max-content'
                 }}
               >
-                {brokerLoop.map((broker, index) => {
-                  const logoSrc = brokerLogoMap[broker];
-                  const brokerInitials = broker
-                    .split(" ")
-                    .map((part) => part[0])
-                    .join("")
-                    .slice(0, 3)
-                    .toUpperCase();
-
-                  return (
-                    <article
-                      key={`${broker}-${index}`}
-                      className="broker-step broker-card"
-                      style={{
-                        background: 'rgba(10, 15, 30, 0.7)',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
-                        borderRadius: '16px',
-                        padding: '18px 20px',
-                        minWidth: '340px',
-                        maxWidth: '340px',
-                        minHeight: '98px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '16px',
-                        transition: 'all 0.3s ease'
-                      }}
-                    >
-                      <div style={{ width: '56px', height: '56px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 110, 255, 0.18))', border: '1px solid rgba(0, 240, 255, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
-                        {logoSrc ? (
-                          <img
-                            src={logoSrc}
-                            alt={`${broker} logo`}
-                            loading="lazy"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }}
-                          />
-                        ) : (
-                          <span style={{ color: '#d9fcff', fontSize: '24px', fontWeight: 700, letterSpacing: '0.5px' }}>
-                            {brokerInitials}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 style={{ color: '#ffffff', fontSize: '36px', fontWeight: 700, lineHeight: 1.1, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {broker}
-                      </h3>
-                    </article>
-                  );
-                })}
+                {brokerLoop.map((broker, index) => (
+                  <article
+                    key={`${broker.name}-${index}`}
+                    className="broker-step broker-card"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.10), rgba(0, 110, 255, 0.10))',
+                      border: '1.5px solid rgba(0, 240, 255, 0.18)',
+                      borderRadius: '20px',
+                      padding: '22px 28px',
+                      minWidth: '320px',
+                      maxWidth: '320px',
+                      minHeight: '110px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '22px',
+                      boxShadow: '0 4px 32px rgba(0,240,255,0.07)',
+                      transition: 'transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s cubic-bezier(.4,0,.2,1)',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.transform = 'scale(1.07) translateY(-6px)';
+                      e.currentTarget.style.boxShadow = '0 8px 40px 0 #00f0ff33, 0 0 0 2px #00f0ff44';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 4px 32px rgba(0,240,255,0.07)';
+                    }}
+                  >
+                    <div style={{ width: '64px', height: '64px', borderRadius: '14px', background: 'rgba(0,240,255,0.10)', border: '1.5px solid #00f0ff33', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', boxShadow: '0 2px 12px #00f0ff11' }}>
+                      <img
+                        src={broker.img}
+                        alt={`${broker.name} logo`}
+                        loading="lazy"
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '7px' }}
+                      />
+                    </div>
+                    <h3 style={{ color: '#fff', fontSize: '2rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: '0.5px', textShadow: '0 2px 12px #00f0ff22' }}>
+                      {broker.name}
+                    </h3>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
@@ -2184,4 +2113,5 @@ export default function Home() {
       </div>
     </div>
   );
+
 }
