@@ -88,7 +88,7 @@ const services = [
     features: ["Paper trading", "Live trading", "One-click switching", "Zero downtime", "Strategy testing", "Confidence building"],
     tags: ["Paper", "Live", "Seamless"],
   },
-  // Service 7: Broker API Integration (rewritten, pure black card, colored gradient only on image side)
+  // Service 7: Broker API Integration (rewritten)
   {
     id: "broker-api-integration",
     title: "Broker API Integration",
@@ -106,7 +106,7 @@ const services = [
     ],
     tags: ["API", "Secure", "Brokers"],
   },
-  // Service 8: Strategy Marketplace (rewritten, pure black card, colored gradient only on image side)
+  // Service 8: Strategy Marketplace (rewritten)
   {
     id: "strategy-marketplace",
     title: "Strategy Marketplace",
@@ -262,7 +262,7 @@ export default function ServicesPage() {
                 <div
                   style={{
                     order: 0,
-                    background: `linear-gradient(135deg, ${service.color}33 0%, #000 80%)`, // more color on left, pure black on right
+                    background: `linear-gradient(135deg, ${service.color}22 0%, #000 100%)`, // subtle color gradient fading to black
                     padding: "20px",
                     display: "flex",
                     flexDirection: "column",
@@ -279,7 +279,7 @@ export default function ServicesPage() {
                       right: "-80px",
                       width: "200px",
                       height: "200px",
-                      background: `radial-gradient(circle, ${service.color}44 0%, transparent 70%)`,
+                      background: `radial-gradient(circle, ${service.color}33 0%, transparent 70%)`,
                       pointerEvents: "none"
                     }}
                   />
@@ -291,17 +291,16 @@ export default function ServicesPage() {
                       maxHeight: "100%",
                       borderRadius: "16px",
                       overflow: "hidden",
-                      boxShadow: `0 10px 40px ${service.color}30`,
-                      border: `1px solid ${service.color}40`,
-                      position: "relative",
-                      background: "#000"
+                      boxShadow: `0 10px 40px ${service.color}20`,
+                      border: `1px solid ${service.color}30`,
+                      position: "relative"
                     }}
                   >
                     <Image
                       src={service.image || `/s${index + 1}.png`}
                       alt={service.title}
                       fill
-                      style={{ objectFit: "cover", objectPosition: "center", background: "#000" }}
+                      style={{ objectFit: "cover", objectPosition: "center" }}
                       sizes="(max-width: 1200px) 100vw, 500px"
                       priority={index === 0}
                     />
