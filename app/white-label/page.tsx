@@ -20,6 +20,9 @@ export default function WhiteLabel() {
     time: "",
     description: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const benefitsRef = useRef<HTMLDivElement>(null);
@@ -136,12 +139,29 @@ export default function WhiteLabel() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Demo request submitted! We'll contact you soon.");
-    setFormData({ name: "", email: "", phone: "", date: "", time: "", description: "" });
-    setIsDemoModalOpen(false);
+    setIsSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch("/api/demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, source: "white-label" }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitSuccess(true);
+        setFormData({ name: "", email: "", phone: "", date: "", time: "", description: "" });
+        setTimeout(() => { setSubmitSuccess(false); setIsDemoModalOpen(false); }, 3000);
+      } else {
+        setSubmitError("Something went wrong. Please try again.");
+      }
+    } catch {
+      setSubmitError("Network error. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -568,9 +588,19 @@ export default function WhiteLabel() {
                 <textarea name="description" value={formData.description} onChange={handleFormChange} placeholder="Tell us about your white label platform interests..." rows={4} style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box", fontFamily: "inherit", resize: "vertical" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
               </div>
 
-              <div style={{ display: "flex", gap: "12px", marginTop: "6px", justifyContent: "flex-end" }}>
-                <button type="button" onClick={() => setIsDemoModalOpen(false)} style={{ background: "transparent", color: "rgba(255,255,255,0.85)", padding: "10px 18px", borderRadius: "10px", fontSize: "14px", fontWeight: 600, border: "1px solid rgba(255,255,255,0.06)", cursor: "pointer" }}>Cancel</button>
-                <button type="submit" style={{ background: "#04e1f4", color: "#06111a", padding: "12px 22px", borderRadius: "10px", fontSize: "15px", fontWeight: 800, border: "none", cursor: "pointer", boxShadow: "0 10px 30px rgba(4,225,244,0.25)", transition: "transform 0.2s ease, box-shadow 0.2s ease" }} onMouseEnter={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(-1px)"; btn.style.boxShadow = "0 18px 36px rgba(4,225,244,0.35)"; }} onMouseLeave={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(0)"; btn.style.boxShadow = "0 10px 30px rgba(4,225,244,0.25)"; }}>Schedule Demo Call</button>
+              <div style={{ display: "flex", gap: "12px", marginTop: "6px", justifyContent: "flex-end", flexDirection: "column" }}>
+                {submitSuccess && (
+                  <p style={{ color: "#00f0ff", fontSize: "14px", textAlign: "center", margin: 0 }}>
+                    ✓ Request sent! We'll contact you soon.
+                  </p>
+                )}
+                {submitError && (
+                  <p style={{ color: "#ff6b6b", fontSize: "14px", textAlign: "center", margin: 0 }}>{submitError}</p>
+                )}
+                <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+                  <button type="button" onClick={() => setIsDemoModalOpen(false)} style={{ background: "transparent", color: "rgba(255,255,255,0.85)", padding: "10px 18px", borderRadius: "10px", fontSize: "14px", fontWeight: 600, border: "1px solid rgba(255,255,255,0.06)", cursor: "pointer" }}>Cancel</button>
+                  <button type="submit" disabled={isSubmitting} style={{ background: isSubmitting ? "rgba(4,225,244,0.3)" : "#04e1f4", color: "#06111a", padding: "12px 22px", borderRadius: "10px", fontSize: "15px", fontWeight: 800, border: "none", cursor: isSubmitting ? "not-allowed" : "pointer", boxShadow: "0 10px 30px rgba(4,225,244,0.25)", transition: "transform 0.2s ease, box-shadow 0.2s ease" }} onMouseEnter={(e) => { if (!isSubmitting) { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(-1px)"; btn.style.boxShadow = "0 18px 36px rgba(4,225,244,0.35)"; } }} onMouseLeave={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(0)"; btn.style.boxShadow = "0 10px 30px rgba(4,225,244,0.25)"; }}>{isSubmitting ? "Sending..." : "Schedule Demo Call"}</button>
+                </div>
               </div>
             </form>
           </div>

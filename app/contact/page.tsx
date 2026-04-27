@@ -11,13 +11,32 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 4000);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setSubmitError("Something went wrong. Please try again.");
+      }
+    } catch {
+      setSubmitError("Network error. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
@@ -322,30 +341,36 @@ export default function ContactPage() {
                 />
               </div>
 
+              {submitError && (
+                <p style={{ color: "#ff6b6b", fontSize: "14px", margin: "0" }}>{submitError}</p>
+              )}
               <button
                 type="submit"
+                disabled={isSubmitting}
                 style={{
                   padding: "18px 40px",
                   borderRadius: "12px",
                   border: "none",
-                  background: "linear-gradient(135deg, #00f0ff, #0080ff)",
+                  background: isSubmitting ? "rgba(0,240,255,0.3)" : "linear-gradient(135deg, #00f0ff, #0080ff)",
                   color: "#0a0a14",
                   fontSize: "16px",
                   fontWeight: 700,
-                  cursor: "pointer",
+                  cursor: isSubmitting ? "not-allowed" : "pointer",
                   transition: "all 0.3s ease",
                   marginTop: "8px",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,240,255,0.4)";
+                  if (!isSubmitting) {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,240,255,0.4)";
+                  }
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
