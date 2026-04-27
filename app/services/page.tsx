@@ -88,40 +88,30 @@ const services = [
     features: ["Paper trading", "Live trading", "One-click switching", "Zero downtime", "Strategy testing", "Confidence building"],
     tags: ["Paper", "Live", "Seamless"],
   },
-  // Service 7: Broker API Integration (rewritten, pure black card, colored gradient only on image side)
   {
     id: "broker-api-integration",
     title: "Broker API Integration",
     category: "INTEGRATION",
     color: "#8b5cf6",
-    image: "/s7.png",
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>
+    ),
+    shortDesc: "Secure API connections to your favorite Forex brokers and Crypto exchanges.",
     longDesc: "Secure, bank-level API connections to your favorite Forex brokers and leading Crypto exchanges. Your funds always stay safely in your own accounts.",
-    features: [
-      "Bank-level security",
-      "Forex brokers",
-      "Crypto exchanges",
-      "Secure connections",
-      "Own accounts",
-      "Full control"
-    ],
+    features: ["Bank-level security", "Forex brokers", "Crypto exchanges", "Secure connections", "Own accounts", "Full control"],
     tags: ["API", "Secure", "Brokers"],
   },
-  // Service 8: Strategy Marketplace (rewritten, pure black card, colored gradient only on image side)
   {
     id: "strategy-marketplace",
     title: "Strategy Marketplace",
     category: "MARKETPLACE",
     color: "#ef4444",
-    image: "/s8.png",
+    icon: (
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
+    ),
+    shortDesc: "Browse proven algo strategies from top Indian traders.",
     longDesc: "Browse proven algo strategies from top Indian traders or publish your own. A complete marketplace built only for Forex and Crypto — save time and discover what actually works.",
-    features: [
-      "Proven strategies",
-      "Top traders",
-      "Publish own",
-      "Forex focused",
-      "Crypto support",
-      "Community tested"
-    ],
+    features: ["Proven strategies", "Top traders", "Publish own", "Forex focused", "Crypto support", "Community tested"],
     tags: ["Strategies", "Community", "Marketplace"],
   },
 ];
@@ -130,7 +120,16 @@ export default function ServicesPage() {
       const heroRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  // Remove serviceImages array, use image property in each service instead
+  const serviceImages = [
+    "/s1.png",
+    "/s2.png",
+    "/s3.png",
+    "/s4.png",
+    "/s5.png",
+    "/s6.png",
+    "/s7.png",
+    "/s8.png",
+  ];
 
   
   // Hero animations
@@ -188,7 +187,9 @@ export default function ServicesPage() {
           if (comp.opacity === "0" || comp.display === "none") {
             e.style.opacity = "1";
             e.style.transform = "none";
-            e.style.display = "block";
+            if (comp.display === "none") {
+              e.style.display = "";
+            }
           }
         });
       });
@@ -235,73 +236,19 @@ export default function ServicesPage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px" }}>
           <div className="services-grid" style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
             {services.map((service, index) => (
-              <div
-                key={service.id}
-                id={service.id}
-                className="service-detail-card"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1.2fr",
-                  gap: "0",
-                  background: "#000", // pure black
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
-                  borderRadius: "24px",
-                  overflow: "hidden",
-                  transition: "all 0.4s ease"
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = `${service.color}40`;
-                  e.currentTarget.style.boxShadow = `0 20px 60px ${service.color}10`;
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
+              <div key={service.id} id={service.id} className="service-detail-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "#000000", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease" }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${service.color}40`; e.currentTarget.style.boxShadow = `0 20px 60px ${service.color}10`; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)"; e.currentTarget.style.boxShadow = "none"; }}>
+
                 {/* Image/Visual Side */}
-                <div
-                  style={{
-                    order: 0,
-                    background: `linear-gradient(135deg, ${service.color}33 0%, #000 80%)`, // more color on left, pure black on right
-                    padding: "20px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "relative",
-                    minHeight: "400px"
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "-80px",
-                      right: "-80px",
-                      width: "200px",
-                      height: "200px",
-                      background: `radial-gradient(circle, ${service.color}44 0%, transparent 70%)`,
-                      pointerEvents: "none"
-                    }}
-                  />
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      borderRadius: "16px",
-                      overflow: "hidden",
-                      boxShadow: `0 10px 40px ${service.color}30`,
-                      border: `1px solid ${service.color}40`,
-                      position: "relative",
-                      background: "#000"
-                    }}
-                  >
-                    <Image
-                      src={service.image || `/s${index + 1}.png`}
+                <div style={{ order: 0, background: `linear-gradient(90deg, #000000 0%, #000000 78%, ${service.color}18 100%)`, padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
+                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 10% 50%, ${service.color}12 0%, transparent 62%)`, pointerEvents: "none" }} />
+                  <div style={{ width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", borderRadius: "16px", overflow: "hidden", background: "#000000", border: `1px solid ${service.color}40`, boxShadow: `0 10px 40px ${service.color}14`, position: "relative" }}>
+                    <Image 
+                      src={serviceImages[index]}
                       alt={service.title}
                       fill
-                      style={{ objectFit: "cover", objectPosition: "center", background: "#000" }}
+                      style={{ objectFit: "cover", objectPosition: "center" }}
                       sizes="(max-width: 1200px) 100vw, 500px"
                       priority={index === 0}
                     />
@@ -309,15 +256,7 @@ export default function ServicesPage() {
                 </div>
 
                 {/* Content Side */}
-                <div
-                  style={{
-                    order: 1,
-                    padding: "60px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center"
-                  }}
-                >
+                <div style={{ order: 1, padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
                     <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.3)", fontWeight: 600 }}>0{index + 1} / 08</span>
                   </div>
@@ -325,7 +264,7 @@ export default function ServicesPage() {
                   <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.6)", lineHeight: 1.8, marginBottom: "28px" }}>{service.longDesc}</p>
 
                   {/* Features List */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "32px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                     {service.features.map((feature, fi) => (
                       <div key={fi} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={service.color} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
@@ -333,28 +272,6 @@ export default function ServicesPage() {
                       </div>
                     ))}
                   </div>
-
-                  <a
-                    href="https://app.uptrender.in/auth/register"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      background: `${service.color}15`,
-                      color: service.color,
-                      padding: "12px 24px",
-                      borderRadius: "10px",
-                      fontSize: "15px",
-                      fontWeight: 600,
-                      textDecoration: "none",
-                      border: `1px solid ${service.color}30`,
-                      transition: "all 0.3s ease",
-                      alignSelf: "flex-start"
-                    }}
-                  >
-                    Get Started
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                  </a>
                 </div>
               </div>
             ))}

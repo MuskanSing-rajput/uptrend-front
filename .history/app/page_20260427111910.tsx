@@ -1892,17 +1892,13 @@ export default function Home() {
                 {brokerLoop.map((broker, index) => (
                   <article
                     key={`${broker.name}-${index}`}
-                    className="broker-step"
+                    className="broker-step broker-card"
                     style={{
-                      padding: '6px 0',
+                      padding: '10px 2px',
                       minWidth: 'max-content',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '14px',
-                      background: 'transparent',
-                      border: 'none',
-                      boxShadow: 'none',
-                      borderRadius: '0',
                       transition: 'transform 0.25s cubic-bezier(.4,0,.2,1), filter 0.25s cubic-bezier(.4,0,.2,1)',
                       cursor: 'pointer',
                     }}
@@ -1915,15 +1911,15 @@ export default function Home() {
                       e.currentTarget.style.filter = 'none';
                     }}
                   >
-                    <div style={{ width: '58px', height: '58px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', background: 'transparent', border: 'none' }}>
+                    <div style={{ width: '58px', height: '58px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
                       <img
                         src={broker.img}
                         alt={`${broker.name} logo`}
                         loading="lazy"
-                        style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 6px 14px rgba(0, 240, 255, 0.20))', background: 'transparent', border: 'none' }}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 6px 14px rgba(0, 240, 255, 0.20))' }}
                       />
                     </div>
-                    <h3 style={{ color: 'rgba(255, 255, 255, 0.96)', fontSize: 'clamp(30px, 2.3vw, 44px)', fontWeight: 700, margin: 0, whiteSpace: 'nowrap', letterSpacing: '0.4px', textShadow: '0 2px 14px rgba(0, 240, 255, 0.16)' }}>
+                    <h3 style={{ color: 'rgba(255, 255, 255, 0.94)', fontSize: 'clamp(26px, 3.2vw, 42px)', fontWeight: 700, margin: 0, whiteSpace: 'nowrap', letterSpacing: '0.4px', textShadow: '0 2px 14px rgba(0, 240, 255, 0.16)' }}>
                       {broker.name}
                     </h3>
                   </article>
