@@ -679,7 +679,64 @@ export default function Home() {
     return () => ctx.revert();
   }, []);
 
+  // GSAP animation for broker section
+  useEffect(() => {
+    if (!exploreRef.current) return;
 
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".features-label",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".features-label",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".explore-title",
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          delay: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".explore-title",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".broker-step",
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".broker-steps",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }, exploreRef);
+
+    return () => ctx.revert();
+  }, []);
 
   // Counter animation for stats
   useEffect(() => {
@@ -1858,7 +1915,7 @@ export default function Home() {
                       e.currentTarget.style.filter = 'none';
                     }}
                   >
-                    <div style={{ width: ['CoinDCX', 'Ex', 'MetaTrader 5', 'WazirX', 'XM Trading', 'Coinbase'].includes(broker.name) ? '28px' : '40px', height: ['CoinDCX', 'Ex', 'MetaTrader 5', 'WazirX', 'XM Trading', 'Coinbase'].includes(broker.name) ? '28px' : '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', background: 'transparent', border: 'none' }}>
+                    <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', background: 'transparent', border: 'none' }}>
                       <img
                         src={broker.img}
                         alt={`${broker.name} logo`}
