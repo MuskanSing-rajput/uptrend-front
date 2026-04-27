@@ -31,11 +31,9 @@ export default function WhiteLabel() {
   useEffect(() => {
     if (!heroRef.current) return;
     const ctx = gsap.context(() => {
-      // Hero: text and image animate together for smooth entrance
-      const tl = gsap.timeline({ defaults: { ease: "power3.out", force3D: true } });
-      tl.fromTo(".whitelabel-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1 }, 0.1)
-        .fromTo(".whitelabel-content", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 1 }, 0.1)
-        .fromTo(".whitelabel-subtitle", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9 }, 0.2);
+      gsap.fromTo(".whitelabel-title", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", force3D: true, delay: 0.2 });
+      gsap.fromTo(".whitelabel-subtitle", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", force3D: true, delay: 0.4 });
+      gsap.fromTo(".whitelabel-content", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", force3D: true, delay: 0.6 });
     }, heroRef);
     
     return () => ctx.revert();
@@ -179,6 +177,9 @@ export default function WhiteLabel() {
           <div className="wl-hero-grid">
             {/* Left: Text */}
             <div>
+              <div className="whitelabel-title" style={{ display: "inline-block", background: "linear-gradient(135deg,rgba(50,194,252,0.15),rgba(50,194,252,0.05))", border: "1px solid rgba(50,194,252,0.3)", borderRadius: "50px", padding: "8px 24px", fontSize: "13px", fontWeight: 700, color: "#32c2fc", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "24px" }}>
+                White Label Solutions
+              </div>
               <h1 className="whitelabel-title" style={{ fontSize: "clamp(30px,3.8vw,58px)", fontWeight: 800, lineHeight: 1.08, marginBottom: "20px" }}>
                 Launch Your Own<br />
                 <span style={{ background: "linear-gradient(135deg,#32c2fc,#1a9ad1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI-Powered Trading</span><br />
@@ -202,7 +203,12 @@ export default function WhiteLabel() {
               </div>
             </div>
             {/* Right: Image */}
-            <Image className="whitelabel-content" src="/whitelable.png" alt="White Label Trading Platform" width={620} height={680} style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }} priority />
+            <div className="whitelabel-content">
+              <div style={{ position: "relative", borderRadius: "24px", overflow: "hidden", border: "1px solid rgba(50,194,252,0.2)", boxShadow: "0 30px 80px rgba(50,194,252,0.1)" }}>
+                <Image src="/whitelable.png" alt="White Label Trading Platform" width={620} height={520} style={{ width: "100%", height: "auto", display: "block" }} priority />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg,rgba(50,194,252,0.04),transparent)", pointerEvents: "none" }} />
+              </div>
+            </div>
           </div>
         </div>
       </section>

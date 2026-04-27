@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function FAQ() {
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const faqCategories: { category: string; items: { question: string; answer: string }[] }[] = [
     {
@@ -423,41 +426,16 @@ export default function FAQ() {
     }
   ];
 
-  const ITEMS_PER_PAGE = 15;
-  const allItems = faqCategories.flatMap((cat) =>
-    cat.items.map((item) => ({ question: item.question, answer: item.answer, category: cat.category }))
-  );
-  const isSearching = searchQuery.trim().length > 0;
-  const searchWords = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
-  const filteredItems = isSearching
-    ? allItems.filter((item) => {
-        const haystack = (item.question + " " + item.answer).toLowerCase();
-        // All words must appear (word-order-independent match)
-        const allMatch = searchWords.every((w) => haystack.includes(w));
-        if (allMatch) return true;
-        // Fallback: any single word matches (for partial/typo tolerance)
-        return searchWords.some((w) => haystack.includes(w));
-      })
-    : allItems;
-  const totalPages = Math.ceil(allItems.length / ITEMS_PER_PAGE);
-  const displayItems = isSearching
-    ? filteredItems
-    : allItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-  const groupedDisplay: { category: string; items: { question: string; answer: string }[] }[] = [];
-  displayItems.forEach((item) => {
-    const last = groupedDisplay[groupedDisplay.length - 1];
-    if (last && last.category === item.category) {
-      last.items.push(item);
-    } else {
-      groupedDisplay.push({ category: item.category, items: [item] });
-    }
-  });
-  const getPageNumbers = (): (number | string)[] => {
-    if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
-    if (currentPage <= 4) return [1, 2, 3, 4, 5, "...", totalPages];
-    if (currentPage >= totalPages - 3) return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-    return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
-  };
+  
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".faq-title", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", force3D: true, delay: 0.2 });
+      gsap.fromTo(".faq-subtitle", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", force3D: true, delay: 0.4 });
+      gsap.fromTo(".faq-item", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power3.out", force3D: true, delay: 0.6, scrollTrigger: { trigger: ".faq-items", start: "top 80%", toggleActions: "play none none none" } });
+    }, heroRef);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <div style={{ background: "#0a0a0a", minHeight: "100vh", color: "#ffffff" }}>
@@ -465,123 +443,66 @@ export default function FAQ() {
       
 
       {/* Hero Section */}
-      <section style={{ paddingTop: "clamp(100px,14vw,140px)", paddingBottom: "clamp(60px,8vw,100px)", position: "relative", overflow: "hidden" }}>
+      <section ref={heroRef} style={{ paddingTop: "140px", paddingBottom: "100px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-200px", left: "-200px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-        <div className="faq-container" style={{ width: "min(92%, 1400px)", margin: "0 auto", padding: "0 clamp(12px,3vw,40px)", position: "relative", zIndex: 1 }}>
-          <h1 className="faq-title" style={{ fontSize: "clamp(42px, 5vw, 64px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", textAlign: "center" }}>
+        <div className="faq-container" style={{ maxWidth: "900px", margin: "0 auto", padding: "0 60px", position: "relative", zIndex: 1 }}>
+          <h1 className="faq-title" style={{ fontSize: "clamp(42px, 5vw, 64px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", opacity: 0, textAlign: "center" }}>
             Frequently Asked <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Questions</span><span style={{ color: "#00f0ff" }}>.</span>
           </h1>
 
-          <p className="faq-subtitle" style={{ fontSize: "clamp(14px,2vw,18px)", color: "rgba(255, 255, 255, 0.65)", maxWidth: "600px", lineHeight: 1.7, textAlign: "center", margin: "0 auto 32px" }}>
+          <p className="faq-subtitle" style={{ fontSize: "18px", color: "rgba(255, 255, 255, 0.65)", maxWidth: "600px", lineHeight: 1.7, opacity: 0, marginBottom: "64px", textAlign: "center", margin: "0 auto 64px" }}>
             Find answers to common questions about Uptrender, trading, accounts, and more.
           </p>
 
-          {/* ── Search Bar ── */}
-          <div style={{ maxWidth: "640px", margin: "0 auto 12px", position: "relative" }}>
-            <div style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </div>
-            <input
-              type="text"
-              placeholder="Search questions..."
-              value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); setExpandedFAQ(null); }}
-              style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(0,240,255,0.25)", borderRadius: "12px", padding: "clamp(10px,2vw,14px) 44px clamp(10px,2vw,14px) 44px", fontSize: "clamp(13px,2vw,15px)", color: "#ffffff", outline: "none", boxSizing: "border-box", transition: "border-color 0.3s ease" }}
-              onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(0,240,255,0.6)"; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(0,240,255,0.25)"; }}
-            />
-            {searchQuery && (
-              <button
-                onClick={() => { setSearchQuery(""); setCurrentPage(1); setExpandedFAQ(null); }}
-                style={{ position: "absolute", right: "16px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.4)", fontSize: "18px", lineHeight: 1, padding: "4px" }}
-              >✕</button>
-            )}
-          </div>
-          <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.3)", marginBottom: "32px" }}>
-            {isSearching
-              ? (filteredItems.length === 0 ? "No results found." : `${filteredItems.length} result${filteredItems.length !== 1 ? "s" : ""} for "${searchQuery}"`)
-              : `Page ${currentPage} of ${totalPages} · ${allItems.length} total questions`
-            }
-          </p>
-
-          <div className="faq-items" style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
-            {groupedDisplay.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "60px 0" }}>
-                <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.4)" }}>No questions match your search. Try different keywords.</p>
-              </div>
-            ) : groupedDisplay.map((cat, catIdx) => (
-              <div key={catIdx}>
-                <h2 style={{ fontSize: "14px", fontWeight: 700, color: "#00f0ff", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid rgba(0,240,255,0.2)", textTransform: "uppercase", letterSpacing: "0.8px" }}>
-                  {cat.category}
-                </h2>
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                  {cat.items.map((item) => (
-                    <div
-                      key={item.question}
-                      className="faq-item"
-                      style={{
-                        background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06), rgba(139, 92, 246, 0.06))",
-                        border: `1px solid ${expandedFAQ === item.question ? "rgba(0, 240, 255, 0.4)" : "rgba(0, 240, 255, 0.15)"}`,
-                        borderRadius: "14px",
-                        overflow: "hidden",
-                        transition: "all 0.3s ease",
-                        cursor: "pointer"
-                      }}
-                      onClick={() => setExpandedFAQ(expandedFAQ === item.question ? null : item.question)}
-                    >
-                      <div style={{ padding: "clamp(14px,2vw,20px) clamp(14px,2.5vw,24px)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <h3 style={{ fontSize: "clamp(13px,1.5vw,15px)", fontWeight: 600, color: "#00f0ff", margin: 0, lineHeight: 1.5 }}>
-                          {item.question}
-                        </h3>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2"
-                          style={{ transform: expandedFAQ === item.question ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease", flexShrink: 0, marginLeft: "16px" }}>
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </div>
-                      {expandedFAQ === item.question && (
-                        <div style={{ padding: "0 clamp(14px,2.5vw,24px) clamp(14px,2vw,20px) clamp(14px,2.5vw,24px)", borderTop: "1px solid rgba(0, 240, 255, 0.2)" }}>
-                          <p style={{ fontSize: "clamp(12px,1.4vw,14px)", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, margin: "12px 0 0" }}>
-                            {item.answer}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+          <div className="faq-items" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {faqItems.map((item, i) => (
+              <div
+                key={i}
+                className="faq-item"
+                style={{
+                  opacity: 0,
+                  background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06), rgba(139, 92, 246, 0.06))",
+                  border: `1px solid ${expandedFAQ === i ? "rgba(0, 240, 255, 0.4)" : "rgba(0, 240, 255, 0.15)"}`,
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  transition: "all 0.3s ease",
+                  cursor: "pointer"
+                }}
+                onClick={() => setExpandedFAQ(expandedFAQ === i ? null : i)}
+              >
+                <div style={{ padding: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#00f0ff", margin: 0 }}>
+                    {item.question}
+                  </h3>
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#00f0ff"
+                    strokeWidth="2"
+                    style={{
+                      transform: expandedFAQ === i ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 0.3s ease",
+                      flexShrink: 0,
+                      marginLeft: "16px"
+                    }}
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </div>
+
+                {expandedFAQ === i && (
+                  <div style={{ padding: "0 24px 24px 24px", borderTop: "1px solid rgba(0, 240, 255, 0.2)" }}>
+                    <p style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, margin: 0 }}>
+                      {item.answer}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
-
-          {/* ── Pagination ── */}
-          {!isSearching && totalPages > 1 && (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px", marginTop: "48px", flexWrap: "wrap" }}>
-              <button
-                onClick={() => { setCurrentPage((p) => Math.max(1, p - 1)); setExpandedFAQ(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                disabled={currentPage === 1}
-                style={{ background: currentPage === 1 ? "rgba(255,255,255,0.04)" : "rgba(0,240,255,0.08)", border: "1px solid rgba(0,240,255,0.2)", borderRadius: "8px", padding: "8px 18px", color: currentPage === 1 ? "rgba(255,255,255,0.25)" : "#00f0ff", cursor: currentPage === 1 ? "default" : "pointer", fontSize: "14px", fontWeight: 600, transition: "all 0.2s" }}
-              >← Prev</button>
-              {getPageNumbers().map((p, i) =>
-                p === "..." ? (
-                  <span key={`e${i}`} style={{ color: "rgba(255,255,255,0.3)", padding: "0 4px", fontSize: "14px" }}>…</span>
-                ) : (
-                  <button
-                    key={p}
-                    onClick={() => { setCurrentPage(p as number); setExpandedFAQ(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                    style={{ background: currentPage === p ? "linear-gradient(135deg,#00f0ff,#00b8d4)" : "rgba(0,240,255,0.06)", border: `1px solid ${currentPage === p ? "transparent" : "rgba(0,240,255,0.2)"}`, borderRadius: "8px", padding: "8px 14px", color: currentPage === p ? "#0a0a0a" : "rgba(255,255,255,0.7)", cursor: "pointer", fontSize: "14px", fontWeight: currentPage === p ? 700 : 400, minWidth: "36px", transition: "all 0.2s" }}
-                  >{p}</button>
-                )
-              )}
-              <button
-                onClick={() => { setCurrentPage((p) => Math.min(totalPages, p + 1)); setExpandedFAQ(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                disabled={currentPage === totalPages}
-                style={{ background: currentPage === totalPages ? "rgba(255,255,255,0.04)" : "rgba(0,240,255,0.08)", border: "1px solid rgba(0,240,255,0.2)", borderRadius: "8px", padding: "8px 18px", color: currentPage === totalPages ? "rgba(255,255,255,0.25)" : "#00f0ff", cursor: currentPage === totalPages ? "default" : "pointer", fontSize: "14px", fontWeight: 600, transition: "all 0.2s" }}
-              >Next →</button>
-            </div>
-          )}
 
           <div style={{ marginTop: "64px", textAlign: "center" }}>
             <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.65)", marginBottom: "24px" }}>

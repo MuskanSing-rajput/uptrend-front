@@ -189,8 +189,8 @@ export default function Partnership() {
                 Become a Franchise Partner Now
               </a>
             </div>
-              {/* Right: Image */}
-              <Image className="partnership-content" src="/partner.png" alt="Franchise Partner Dashboard" width={620} height={680} style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }} priority />
+            {/* Right: Image */}
+            <Image className="partnership-content" src="/partner.png" alt="Franchise Partner Dashboard" width={620} height={680} style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }} priority />
           </div>
         </div>
       </section>

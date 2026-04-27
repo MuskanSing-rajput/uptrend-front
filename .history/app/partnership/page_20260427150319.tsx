@@ -31,11 +31,10 @@ export default function Partnership() {
   useEffect(() => {
     if (!heroRef.current) return;
     const ctx = gsap.context(() => {
-      // Hero: text and image animate together for smooth entrance
-      const tl = gsap.timeline({ defaults: { ease: "power3.out", force3D: true } });
-      tl.fromTo(".partnership-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1 }, 0.1)
-        .fromTo(".partnership-content", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 1 }, 0.1)
-        .fromTo(".partnership-subtitle", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9 }, 0.2);
+      // Hero section animations - immediate
+      gsap.fromTo(".partnership-title", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", force3D: true, delay: 0.2 });
+      gsap.fromTo(".partnership-subtitle", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", force3D: true, delay: 0.4 });
+      gsap.fromTo(".partnership-content", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", force3D: true, delay: 0.6 });
     }, heroRef);
     
     return () => ctx.revert();
@@ -172,6 +171,9 @@ export default function Partnership() {
           <div className="partner-hero-grid">
             {/* Left: Text */}
             <div>
+              <div className="partnership-title" style={{ display: "inline-block", background: "linear-gradient(135deg, rgba(0,240,255,0.15), rgba(139,92,246,0.15))", border: "1px solid rgba(0,240,255,0.3)", borderRadius: "50px", padding: "8px 24px", fontSize: "13px", fontWeight: 700, color: "#00f0ff", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "24px" }}>
+                Franchise Partnership
+              </div>
               <h1 className="partnership-title" style={{ fontSize: "clamp(32px,4vw,60px)", fontWeight: 800, lineHeight: 1.08, marginBottom: "20px" }}>
                 Build Your Own<br />
                 <span style={{ background: "linear-gradient(135deg,#00f0ff,#a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Trading Business</span><br />
@@ -189,8 +191,13 @@ export default function Partnership() {
                 Become a Franchise Partner Now
               </a>
             </div>
-              {/* Right: Image */}
-              <Image className="partnership-content" src="/partner.png" alt="Franchise Partner Dashboard" width={620} height={680} style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }} priority />
+            {/* Right: Image */}
+            <div className="partnership-content">
+              <div style={{ position: "relative", borderRadius: "24px", overflow: "hidden", border: "1px solid rgba(0,240,255,0.2)", boxShadow: "0 30px 80px rgba(0,240,255,0.1)" }}>
+                <Image src="/partner.png" alt="Franchise Partner Dashboard" width={620} height={520} style={{ width: "100%", height: "auto", display: "block" }} priority />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,240,255,0.04), transparent)", pointerEvents: "none" }} />
+              </div>
+            </div>
           </div>
         </div>
       </section>

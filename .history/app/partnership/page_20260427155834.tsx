@@ -189,8 +189,16 @@ export default function Partnership() {
                 Become a Franchise Partner Now
               </a>
             </div>
-              {/* Right: Image */}
+            {/* Right: Image with continuous rotation */}
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", animation: "spin 20s linear infinite" }}>
               <Image className="partnership-content" src="/partner.png" alt="Franchise Partner Dashboard" width={620} height={680} style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }} priority />
+            </div>
+            <style>{`
+              @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+              }
+            `}</style>
           </div>
         </div>
       </section>

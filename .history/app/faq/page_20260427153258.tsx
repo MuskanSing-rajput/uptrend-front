@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function FAQ() {
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const faqCategories: { category: string; items: { question: string; answer: string }[] }[] = [
     {
@@ -428,16 +433,11 @@ export default function FAQ() {
     cat.items.map((item) => ({ question: item.question, answer: item.answer, category: cat.category }))
   );
   const isSearching = searchQuery.trim().length > 0;
-  const searchWords = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
   const filteredItems = isSearching
-    ? allItems.filter((item) => {
-        const haystack = (item.question + " " + item.answer).toLowerCase();
-        // All words must appear (word-order-independent match)
-        const allMatch = searchWords.every((w) => haystack.includes(w));
-        if (allMatch) return true;
-        // Fallback: any single word matches (for partial/typo tolerance)
-        return searchWords.some((w) => haystack.includes(w));
-      })
+    ? allItems.filter((item) =>
+        item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.answer.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     : allItems;
   const totalPages = Math.ceil(allItems.length / ITEMS_PER_PAGE);
   const displayItems = isSearching
@@ -459,27 +459,36 @@ export default function FAQ() {
     return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
   };
 
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".faq-title", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", force3D: true, delay: 0.2 });
+      gsap.fromTo(".faq-subtitle", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", force3D: true, delay: 0.4 });
+    }, heroRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div style={{ background: "#0a0a0a", minHeight: "100vh", color: "#ffffff" }}>
       {/* Header */}
       
 
       {/* Hero Section */}
-      <section style={{ paddingTop: "clamp(100px,14vw,140px)", paddingBottom: "clamp(60px,8vw,100px)", position: "relative", overflow: "hidden" }}>
+      <section ref={heroRef} style={{ paddingTop: "140px", paddingBottom: "100px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-200px", left: "-200px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-        <div className="faq-container" style={{ width: "min(92%, 1400px)", margin: "0 auto", padding: "0 clamp(12px,3vw,40px)", position: "relative", zIndex: 1 }}>
-          <h1 className="faq-title" style={{ fontSize: "clamp(42px, 5vw, 64px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", textAlign: "center" }}>
+        <div className="faq-container" style={{ width: "80%", maxWidth: "1400px", margin: "0 auto", padding: "0 clamp(16px,3vw,40px)", position: "relative", zIndex: 1 }}>
+          <h1 className="faq-title" style={{ fontSize: "clamp(42px, 5vw, 64px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", opacity: 0, textAlign: "center" }}>
             Frequently Asked <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Questions</span><span style={{ color: "#00f0ff" }}>.</span>
           </h1>
 
-          <p className="faq-subtitle" style={{ fontSize: "clamp(14px,2vw,18px)", color: "rgba(255, 255, 255, 0.65)", maxWidth: "600px", lineHeight: 1.7, textAlign: "center", margin: "0 auto 32px" }}>
+          <p className="faq-subtitle" style={{ fontSize: "18px", color: "rgba(255, 255, 255, 0.65)", maxWidth: "600px", lineHeight: 1.7, opacity: 0, textAlign: "center", margin: "0 auto 32px" }}>
             Find answers to common questions about Uptrender, trading, accounts, and more.
           </p>
 
           {/* ── Search Bar ── */}
           <div style={{ maxWidth: "640px", margin: "0 auto 12px", position: "relative" }}>
-            <div style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+            <div style={{ position: "absolute", left: "18px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -490,7 +499,7 @@ export default function FAQ() {
               placeholder="Search questions..."
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); setExpandedFAQ(null); }}
-              style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(0,240,255,0.25)", borderRadius: "12px", padding: "clamp(10px,2vw,14px) 44px clamp(10px,2vw,14px) 44px", fontSize: "clamp(13px,2vw,15px)", color: "#ffffff", outline: "none", boxSizing: "border-box", transition: "border-color 0.3s ease" }}
+              style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(0,240,255,0.25)", borderRadius: "12px", padding: "14px 48px", fontSize: "15px", color: "#ffffff", outline: "none", boxSizing: "border-box", transition: "border-color 0.3s ease" }}
               onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(0,240,255,0.6)"; }}
               onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(0,240,255,0.25)"; }}
             />
@@ -533,8 +542,8 @@ export default function FAQ() {
                       }}
                       onClick={() => setExpandedFAQ(expandedFAQ === item.question ? null : item.question)}
                     >
-                      <div style={{ padding: "clamp(14px,2vw,20px) clamp(14px,2.5vw,24px)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <h3 style={{ fontSize: "clamp(13px,1.5vw,15px)", fontWeight: 600, color: "#00f0ff", margin: 0, lineHeight: 1.5 }}>
+                      <div style={{ padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <h3 style={{ fontSize: "15px", fontWeight: 600, color: "#00f0ff", margin: 0, lineHeight: 1.5 }}>
                           {item.question}
                         </h3>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" strokeWidth="2"
@@ -543,8 +552,8 @@ export default function FAQ() {
                         </svg>
                       </div>
                       {expandedFAQ === item.question && (
-                        <div style={{ padding: "0 clamp(14px,2.5vw,24px) clamp(14px,2vw,20px) clamp(14px,2.5vw,24px)", borderTop: "1px solid rgba(0, 240, 255, 0.2)" }}>
-                          <p style={{ fontSize: "clamp(12px,1.4vw,14px)", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, margin: "12px 0 0" }}>
+                        <div style={{ padding: "0 24px 20px 24px", borderTop: "1px solid rgba(0, 240, 255, 0.2)" }}>
+                          <p style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.8, margin: "12px 0 0" }}>
                             {item.answer}
                           </p>
                         </div>
