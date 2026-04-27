@@ -196,11 +196,13 @@ export default function ServicesPage() {
       try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
     };
 
-    const t1 = setTimeout(makeVisible, 800);
+    const t1 = setTimeout(makeVisible, 200);
+    const t2 = setTimeout(makeVisible, 700);
 
     return () => {
       clearTimeout(refreshId);
       clearTimeout(t1);
+      clearTimeout(t2);
     };
   }, [pathname]);
 
@@ -231,58 +233,44 @@ export default function ServicesPage() {
 
       {/* Services Detail Grid */}
       <section ref={gridRef} style={{ padding: "80px 0" }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 60px" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px" }}>
           <div className="services-grid" style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
             {services.map((service, index) => (
-              <div key={service.id} id={service.id} className="service-detail-card" style={{ '--card-index': index, '--card-color': service.color } as React.CSSProperties}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "#000000", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease" }}
-                  onMouseEnter={(e) => { 
-                    const parent = e.currentTarget as HTMLElement;
-                    parent.style.borderColor = `${service.color}40`; 
-                    parent.style.boxShadow = `0 20px 60px ${service.color}15`; 
-                  }}
-                  onMouseLeave={(e) => { 
-                    const parent = e.currentTarget as HTMLElement;
-                    parent.style.borderColor = "rgba(255, 255, 255, 0.08)"; 
-                    parent.style.boxShadow = "none"; 
-                  }}>
+              <div key={service.id} id={service.id} className="service-detail-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "#000000", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease" }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${service.color}40`; e.currentTarget.style.boxShadow = `0 20px 60px ${service.color}10`; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)"; e.currentTarget.style.boxShadow = "none"; }}>
 
-                  {/* Image/Visual Side */}
-                  <div style={{ background: `linear-gradient(90deg, #000000 0%, #000000 78%, ${service.color}18 100%)`, padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
-                    <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 10% 50%, ${service.color}12 0%, transparent 62%)`, pointerEvents: "none" }} />
-                    <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "300px", borderRadius: "16px", overflow: "hidden", background: "#000000", border: `1px solid ${service.color}40`, boxShadow: `0 10px 40px ${service.color}14` }}>
-                      <Image 
-                        src={serviceImages[index]}
-                        alt={service.title}
-                        fill
-                        style={{ objectFit: "contain" }}
-                        sizes="(max-width: 768px) 100vw, 500px"
-                        priority={index === 0}
-                      />
-                    </div>
+                {/* Image/Visual Side */}
+                <div style={{ order: 0, background: `linear-gradient(90deg, #000000 0%, #000000 78%, ${service.color}18 100%)`, padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", minHeight: "400px" }}>
+                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 10% 50%, ${service.color}12 0%, transparent 62%)`, pointerEvents: "none" }} />
+                  <div style={{ width: "100%", height: "100%", maxWidth: "100%", maxHeight: "100%", borderRadius: "16px", overflow: "hidden", background: "#000000", border: `1px solid ${service.color}40`, boxShadow: `0 10px 40px ${service.color}14`, position: "relative" }}>
+                    <Image 
+                      src={serviceImages[index]}
+                      alt={service.title}
+                      fill
+                      style={{ objectFit: "cover", objectPosition: "center" }}
+                      sizes="(max-width: 1200px) 100vw, 500px"
+                      priority={index === 0}
+                    />
                   </div>
+                </div>
 
-                  {/* Content Side */}
-                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", background: "#000000", position: "relative" }}>
-                    <div style={{ padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", zIndex: 1 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-                        <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.3)", fontWeight: 600 }}>0{index + 1} / 08</span>
+                {/* Content Side */}
+                <div style={{ order: 1, padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+                    <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.3)", fontWeight: 600 }}>0{index + 1} / 08</span>
+                  </div>
+                  <h2 style={{ fontSize: "36px", fontWeight: 700, marginBottom: "16px", lineHeight: 1.2 }}>{service.title}</h2>
+                  <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.6)", lineHeight: 1.8, marginBottom: "28px" }}>{service.longDesc}</p>
+
+                  {/* Features List */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    {service.features.map((feature, fi) => (
+                      <div key={fi} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={service.color} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                        <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.7)" }}>{feature}</span>
                       </div>
-                      <h2 style={{ fontSize: "36px", fontWeight: 700, marginBottom: "16px", lineHeight: 1.2 }}>{service.title}</h2>
-                      <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.6)", lineHeight: 1.8, marginBottom: "28px" }}>{service.longDesc}</p>
-
-                      {/* Features List */}
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "24px" }}>
-                        {service.features.map((feature, fi) => (
-                          <div key={fi} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={service.color} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                            <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.7)" }}>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-
-
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>

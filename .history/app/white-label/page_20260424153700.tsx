@@ -415,72 +415,286 @@ export default function WhiteLabel() {
       {isDemoModalOpen && (
         <div style={{
           position: "fixed",
-          inset: 0,
-          background: "rgba(10,12,14,0.65)",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(0, 0, 0, 0.7)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           zIndex: 1000,
-          padding: "20px",
-          backdropFilter: "blur(6px)"
+          padding: "20px"
         }} onClick={() => setIsDemoModalOpen(false)}>
           <div style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            borderRadius: "20px",
-            padding: "36px",
-            maxWidth: "560px",
+            background: "linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(15, 10, 30, 0.95))",
+            border: "1px solid rgba(50, 194, 252, 0.3)",
+            borderRadius: "24px",
+            padding: "48px",
+            maxWidth: "500px",
             width: "100%",
             maxHeight: "90vh",
             overflowY: "auto",
-            boxShadow: "0 10px 40px rgba(2,6,23,0.6)",
-            position: "relative"
+            boxShadow: "0 20px 60px rgba(50, 194, 252, 0.1)"
           }} onClick={(e) => e.stopPropagation()}>
-            <button aria-label="Close modal" onClick={() => setIsDemoModalOpen(false)} style={{ position: "absolute", right: 12, top: 12, background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: 18, cursor: "pointer" }}>×</button>
-            <h2 style={{ fontSize: "28px", fontWeight: 800, marginBottom: "6px", color: "#fff" }}>
+            <h2 style={{ fontSize: "32px", fontWeight: 800, marginBottom: "12px", background: "linear-gradient(135deg, #32c2fc, #32c2fc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               Schedule a Demo
             </h2>
-            <p style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.65)", marginBottom: "20px" }}>
-              Let us show you how to launch your white label platform. Share a few details and we'll reach out.
+            <p style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.6)", marginBottom: "32px" }}>
+              Let us show you how to launch your white label platform
             </p>
 
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Name</label>
-                <input type="text" name="name" value={formData.name} onChange={handleFormChange} required placeholder="Your full name" style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.02)" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                <label style={{ display: "block", fontSize: "14px", fontWeight: 600, marginBottom: "8px", color: "#32c2fc" }}>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleFormChange}
+                  required
+                  placeholder="Your full name"
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(50, 194, 252, 0.2)",
+                    borderRadius: "12px",
+                    color: "#ffffff",
+                    fontSize: "14px",
+                    outline: "none",
+                    transition: "all 0.3s ease",
+                    boxSizing: "border-box"
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.6)";
+                    e.target.style.background = "rgba(50, 194, 252, 0.05)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.2)";
+                    e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                  }}
+                />
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Email</label>
-                <input type="email" name="email" value={formData.email} onChange={handleFormChange} required placeholder="your@email.com" style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                <label style={{ display: "block", fontSize: "14px", fontWeight: 600, marginBottom: "8px", color: "#32c2fc" }}>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                  required
+                  placeholder="your@email.com"
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(50, 194, 252, 0.2)",
+                    borderRadius: "12px",
+                    color: "#ffffff",
+                    fontSize: "14px",
+                    outline: "none",
+                    transition: "all 0.3s ease",
+                    boxSizing: "border-box"
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.6)";
+                    e.target.style.background = "rgba(50, 194, 252, 0.05)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.2)";
+                    e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                  }}
+                />
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Phone</label>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleFormChange} required placeholder="91XXXXXXXXXX" style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                <label style={{ display: "block", fontSize: "14px", fontWeight: 600, marginBottom: "8px", color: "#32c2fc" }}>Phone</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleFormChange}
+                  required
+                  placeholder="91XXXXXXXXXX"
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(50, 194, 252, 0.2)",
+                    borderRadius: "12px",
+                    color: "#ffffff",
+                    fontSize: "14px",
+                    outline: "none",
+                    transition: "all 0.3s ease",
+                    boxSizing: "border-box"
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.6)";
+                    e.target.style.background = "rgba(50, 194, 252, 0.05)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.2)";
+                    e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                  }}
+                />
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Preferred Date</label>
-                  <input type="date" name="date" value={formData.date} onChange={handleFormChange} required style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                  <label style={{ display: "block", fontSize: "14px", fontWeight: 600, marginBottom: "8px", color: "#32c2fc" }}>Preferred Date</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleFormChange}
+                    required
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(50, 194, 252, 0.2)",
+                      borderRadius: "12px",
+                      color: "#ffffff",
+                      fontSize: "14px",
+                      outline: "none",
+                      transition: "all 0.3s ease",
+                      boxSizing: "border-box",
+                      colorScheme: "dark"
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = "rgba(50, 194, 252, 0.6)";
+                      e.target.style.background = "rgba(50, 194, 252, 0.05)";
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = "rgba(50, 194, 252, 0.2)";
+                      e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                    }}
+                  />
                 </div>
 
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Preferred Time</label>
-                  <input type="time" name="time" value={formData.time} onChange={handleFormChange} required style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                  <label style={{ display: "block", fontSize: "14px", fontWeight: 600, marginBottom: "8px", color: "#32c2fc" }}>Preferred Time</label>
+                  <input
+                    type="time"
+                    name="time"
+                    value={formData.time}
+                    onChange={handleFormChange}
+                    required
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(50, 194, 252, 0.2)",
+                      borderRadius: "12px",
+                      color: "#ffffff",
+                      fontSize: "14px",
+                      outline: "none",
+                      transition: "all 0.3s ease",
+                      boxSizing: "border-box",
+                      colorScheme: "dark"
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = "rgba(50, 194, 252, 0.6)";
+                      e.target.style.background = "rgba(50, 194, 252, 0.05)";
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = "rgba(50, 194, 252, 0.2)";
+                      e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                    }}
+                  />
                 </div>
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Description (Optional)</label>
-                <textarea name="description" value={formData.description} onChange={handleFormChange} placeholder="Tell us about your white label platform interests..." rows={4} style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box", fontFamily: "inherit", resize: "vertical" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                <label style={{ display: "block", fontSize: "14px", fontWeight: 600, marginBottom: "8px", color: "#32c2fc" }}>Description (Optional)</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleFormChange}
+                  placeholder="Tell us about your white label platform interests..."
+                  rows={4}
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(50, 194, 252, 0.2)",
+                    borderRadius: "12px",
+                    color: "#ffffff",
+                    fontSize: "14px",
+                    outline: "none",
+                    transition: "all 0.3s ease",
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                    resize: "vertical"
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.6)";
+                    e.target.style.background = "rgba(50, 194, 252, 0.05)";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "rgba(50, 194, 252, 0.2)";
+                    e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                  }}
+                />
               </div>
 
-              <div style={{ display: "flex", gap: "12px", marginTop: "6px", justifyContent: "flex-end" }}>
-                <button type="button" onClick={() => setIsDemoModalOpen(false)} style={{ background: "transparent", color: "rgba(255,255,255,0.85)", padding: "10px 18px", borderRadius: "10px", fontSize: "14px", fontWeight: 600, border: "1px solid rgba(255,255,255,0.06)", cursor: "pointer" }}>Cancel</button>
-                <button type="submit" style={{ background: "linear-gradient(90deg,#32c2fc,#1a9ad1)", color: "#06111a", padding: "12px 22px", borderRadius: "10px", fontSize: "15px", fontWeight: 800, border: "none", cursor: "pointer", boxShadow: "0 10px 30px rgba(26,154,209,0.08)" }} onMouseEnter={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(-1px)"; btn.style.boxShadow = "0 18px 36px rgba(26,154,209,0.12)"; }} onMouseLeave={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(0)"; btn.style.boxShadow = "0 10px 30px rgba(26,154,209,0.08)"; }}>Schedule Demo</button>
-              </div>
+              <button
+                type="submit"
+                style={{
+                  background: "linear-gradient(135deg, #32c2fc, #1a9ad1)",
+                  color: "#ffffff",
+                  padding: "14px 32px",
+                  borderRadius: "12px",
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  marginTop: "16px"
+                }}
+                onMouseEnter={(e) => {
+                  const btn = e.currentTarget as HTMLButtonElement;
+                  btn.style.transform = "scale(1.05)";
+                  btn.style.boxShadow = "0 20px 40px rgba(50, 194, 252, 0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  const btn = e.currentTarget as HTMLButtonElement;
+                  btn.style.transform = "scale(1)";
+                  btn.style.boxShadow = "none";
+                }}
+              >
+                Schedule Demo
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsDemoModalOpen(false)}
+                style={{
+                  background: "transparent",
+                  color: "#32c2fc",
+                  padding: "12px 32px",
+                  borderRadius: "12px",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  border: "1px solid rgba(50, 194, 252, 0.4)",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseEnter={(e) => {
+                  const btn = e.currentTarget as HTMLButtonElement;
+                  btn.style.background = "rgba(50, 194, 252, 0.1)";
+                  btn.style.borderColor = "rgba(50, 194, 252, 0.8)";
+                }}
+                onMouseLeave={(e) => {
+                  const btn = e.currentTarget as HTMLButtonElement;
+                  btn.style.background = "transparent";
+                  btn.style.borderColor = "rgba(50, 194, 252, 0.4)";
+                }}
+              >
+                Cancel
+              </button>
             </form>
           </div>
         </div>

@@ -6,12 +6,45 @@ export default function Footer() {
   return (
     <footer style={{ background: '#0a0a0a', color: '#9ca3af', position: 'relative', zIndex: 12, borderTop: '2px solid rgba(0, 240, 255, 0.3)' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 60px 60px' }}>
-        {/* Risk Disclaimer */}
+        {/* Risk Warning */}
         <div style={{ marginBottom: '48px' }}>
-          <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Risk Disclaimer</h3>
+          <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Risk Warning</h3>
           <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af' }}>
-            Trading in financial markets involves substantial risk and may not be suitable for all investors. Past performance is not indicative of future results. Algorithmic trading carries additional risks including system failures, connectivity issues, and unexpected market conditions. The use of AI and automated trading systems does not guarantee profits. You should carefully consider your financial situation and risk tolerance before engaging in trading activities. Uptrender provides technology solutions only and does not provide investment advice. Please consult with a qualified financial advisor before making any investment decisions.
+            Trading Contracts for Difference (CFDs) carries a high level of risk and may not be suitable for all investors. The use of leverage can significantly magnify gains and losses and may result in losses exceeding your initial investment. Prior to engaging in CFD trading, you should ensure that you fully understand the risks involved, carefully consider your investment objectives, financial situation, and level of experience, and seek independent advice where necessary. Past performance is not indicative of future results. Please refer to our legal documents for a comprehensive overview of the risks associated with CFD trading.
           </p>
+        </div>
+
+        {/* General Disclaimer */}
+        <div style={{ marginBottom: '48px' }}>
+          <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>General Disclaimer</h3>
+          <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af', marginBottom: '16px' }}>
+            The content on this website is provided for general informational purposes only and does not take into account your specific investment objectives, financial circumstances, or particular needs. Access to this website is made at your own initiative. Uptrender makes no warranties regarding the accuracy, timeliness, completeness, or relevance of any information provided and disclaims any liability for reliance placed on such information.
+          </p>
+          <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af' }}>
+            Uptrender does not offer its services to residents of certain jurisdictions, including, but not limited to, the United States, Singapore, India, Russia, and any jurisdictions listed by the Financial Action Task Force (FATF) or subject to international sanctions. The information on this website is not intended for distribution to, or use by, any person or entity in any jurisdiction where such distribution or use would contravene local law or regulation.
+          </p>
+        </div>
+
+        {/* Regulatory Information */}
+        <div style={{ marginBottom: '48px' }}>
+          <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Regulatory Information</h3>
+          <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af', marginBottom: '12px' }}>
+            Uptrender is a global brand comprising multiple entities, each authorised and registered in various jurisdictions:
+          </p>
+          <ul style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af', paddingLeft: '20px', marginBottom: '12px' }}>
+            <li style={{ marginBottom: '12px' }}>
+              <strong style={{ color: '#ffffff' }}>Uptrender (Pty) Ltd</strong> is an authorized Financial Services Provider (FSP No. 50865, Company Reg. No. 2015/072049/07) (&ldquo;FSP&rdquo;) regulated by the Financial Sector Conduct Authority in South Africa. The FSP is not the market maker or product issuer and acts solely as an intermediary in terms of the FAIS Act between the client and Uptrender Limited (the &ldquo;Product Supplier&rdquo;), rendering only intermediary services in relation to derivative products offer by the Product Supplier. Therefore the FSP does not act as principal or counterparty in any of your transactions. Registered address: 18 Cavendish Road, Claremont, Cape Town, Western Cape, 7708, South Africa.
+            </li>
+            <li style={{ marginBottom: '12px' }}>
+              <strong style={{ color: '#ffffff' }}>Uptrender (Pty) Ltd – Dubai Branch</strong> is licensed by the UAE Capital Markets Authority (CMA) under License No. 20200000299 as a Category 5 licensee, authorised to carry out regulated activities of Introduction and Promotion in the UAE. It is not authorised to provide brokerage services or execute client trades.
+            </li>
+            <li style={{ marginBottom: '12px' }}>
+              <strong style={{ color: '#ffffff' }}>Uptrender Limited</strong> is a Full-Service Investment Dealer (excluding Underwriting), authorised and regulated by the Financial Services Commission (FSC) of Mauritius (License No. GB23202269). Registered address: 40 Silicon Avenue, The Catalyst, Level 2, Suite 201, Ebene, Mauritius.
+            </li>
+            <li>
+              <strong style={{ color: '#ffffff' }}>Uptrender Ltd</strong>, incorporated in the Republic of Cyprus with Company Reg. No. HE436466 and Registered address: 160 Archbishop Makarios III Avenue, Floor 1, 3026 Limassol, Cyprus. This entity does not offer regulated financial products or provide trading services.
+            </li>
+          </ul>
         </div>
 
         {/* Quick Links Grid */}
@@ -101,7 +134,7 @@ export default function Footer() {
             <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Resources</h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {[
-                { name: 'Partners', href: '/partnership' },
+                { name: 'Partnership', href: '/partnership' },
                 { name: 'White Label', href: '/white-label' },
                 { name: 'FAQ', href: '/faq' }
               ].map((item, i) => (

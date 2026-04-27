@@ -101,7 +101,7 @@ export default function Footer() {
             <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Resources</h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {[
-                { name: 'Partners', href: '/partnership' },
+                { name: 'Partnership', href: '/partnership' },
                 { name: 'White Label', href: '/white-label' },
                 { name: 'FAQ', href: '/faq' }
               ].map((item, i) => (

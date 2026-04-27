@@ -281,7 +281,20 @@ export default function ServicesPage() {
                         ))}
                       </div>
 
-
+                      <a href={`/services#${service.id}`} style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: service.color, fontSize: "15px", fontWeight: 600, textDecoration: "none", transition: "all 0.3s ease", width: "fit-content" }}
+                        onMouseEnter={(e) => {
+                          const link = e.currentTarget as HTMLElement;
+                          link.style.gap = "12px";
+                        }}
+                        onMouseLeave={(e) => {
+                          const link = e.currentTarget as HTMLElement;
+                          link.style.gap = "8px";
+                        }}>
+                        View Details
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                      </a>
                     </div>
                   </div>
                 </div>

@@ -250,11 +250,16 @@ export default function About() {
       });
     };
 
-    // Run only once on mount to ensure elements are visible as fallback
-    const t1 = setTimeout(makeVisible, 800);
+    // Run shortly after mount and again after a small delay to cover late navigations
+    const t1 = setTimeout(makeVisible, 200);
+    const t2 = setTimeout(() => {
+      ScrollTrigger.refresh(true);
+      makeVisible();
+    }, 500);
 
     return () => {
       clearTimeout(t1);
+      clearTimeout(t2);
     };
   }, [pathname]);
 

@@ -263,25 +263,42 @@ export default function ServicesPage() {
                   </div>
 
                   {/* Content Side */}
-                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", background: "#000000", position: "relative" }}>
+                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", position: "relative" }}>
+                    <div style={{ background: `linear-gradient(135deg, rgba(${parseInt(service.color.slice(1,3), 16)}, ${parseInt(service.color.slice(3,5), 16)}, ${parseInt(service.color.slice(5,7), 16)}, 0.15) 0%, rgba(${parseInt(service.color.slice(1,3), 16)}, ${parseInt(service.color.slice(3,5), 16)}, ${parseInt(service.color.slice(5,7), 16)}, 0.25) 100%)`, position: "absolute", inset: 0, pointerEvents: "none" }} />
                     <div style={{ padding: "60px", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", zIndex: 1 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-                        <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.3)", fontWeight: 600 }}>0{index + 1} / 08</span>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+                        <span style={{ display: "inline-block", background: `rgba(${parseInt(service.color.slice(1,3), 16)}, ${parseInt(service.color.slice(3,5), 16)}, ${parseInt(service.color.slice(5,7), 16)}, 0.2)`, color: service.color, fontSize: "13px", fontWeight: 700, textTransform: "uppercase", padding: "8px 16px", borderRadius: "6px" }}>
+                          {service.category}
+                        </span>
+                        <span style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: "14px", fontWeight: 600 }}>0{index + 1} / 08</span>
                       </div>
-                      <h2 style={{ fontSize: "36px", fontWeight: 700, marginBottom: "16px", lineHeight: 1.2 }}>{service.title}</h2>
-                      <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.6)", lineHeight: 1.8, marginBottom: "28px" }}>{service.longDesc}</p>
-
-                      {/* Features List */}
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "24px" }}>
-                        {service.features.map((feature, fi) => (
-                          <div key={fi} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={service.color} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                            <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.7)" }}>{feature}</span>
-                          </div>
+                      <h3 style={{ color: "#ffffff", fontSize: "32px", fontWeight: 700, marginBottom: "16px", lineHeight: 1.2 }}>
+                        {service.title}
+                      </h3>
+                      <p style={{ color: "rgba(255, 255, 255, 0.8)", fontSize: "15px", lineHeight: 1.6, marginBottom: "24px" }}>
+                        {service.longDesc}
+                      </p>
+                      <div style={{ display: "flex", gap: "8px", marginBottom: "24px", flexWrap: "wrap" }}>
+                        {service.tags.map((tag, ti) => (
+                          <span key={ti} style={{ display: "inline-block", background: "rgba(255, 255, 255, 0.08)", color: "rgba(255, 255, 255, 0.7)", fontSize: "13px", padding: "6px 14px", borderRadius: "6px", border: `1px solid rgba(${parseInt(service.color.slice(1,3), 16)}, ${parseInt(service.color.slice(3,5), 16)}, ${parseInt(service.color.slice(5,7), 16)}, 0.2)` }}>
+                            {tag}
+                          </span>
                         ))}
                       </div>
-
-
+                      <a href={`/services#${service.id}`} style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: service.color, fontSize: "15px", fontWeight: 600, textDecoration: "none", transition: "all 0.3s ease", width: "fit-content" }}
+                        onMouseEnter={(e) => {
+                          const link = e.currentTarget as HTMLElement;
+                          link.style.gap = "12px";
+                        }}
+                        onMouseLeave={(e) => {
+                          const link = e.currentTarget as HTMLElement;
+                          link.style.gap = "8px";
+                        }}>
+                        View Details
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                      </a>
                     </div>
                   </div>
                 </div>
