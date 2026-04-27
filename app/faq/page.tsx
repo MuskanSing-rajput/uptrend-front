@@ -66,7 +66,7 @@ export default function FAQ() {
       <section ref={heroRef} style={{ paddingTop: "140px", paddingBottom: "100px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-200px", left: "-200px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 60px", position: "relative", zIndex: 1 }}>
+        <div className="faq-container" style={{ maxWidth: "900px", margin: "0 auto", padding: "0 60px", position: "relative", zIndex: 1 }}>
           <h1 className="faq-title" style={{ fontSize: "clamp(42px, 5vw, 64px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", opacity: 0, textAlign: "center" }}>
             Frequently Asked <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Questions</span><span style={{ color: "#00f0ff" }}>.</span>
           </h1>

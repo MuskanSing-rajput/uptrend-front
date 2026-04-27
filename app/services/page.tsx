@@ -147,9 +147,26 @@ export default function ServicesPage() {
   useEffect(() => {
     if (!gridRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".service-detail-card", { opacity: 0, y: 60 }, {
-        opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: ".services-grid", start: "top 85%", toggleActions: "play none none none" },
+      // Per-card animation — alternating slide-in from left/right
+      gsap.utils.toArray<HTMLElement>(".service-detail-card").forEach((card, i) => {
+        const fromX = i % 2 === 0 ? -80 : 80;
+        gsap.fromTo(
+          card,
+          { opacity: 0, x: fromX, y: 30 },
+          {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            duration: 0.85,
+            ease: "power3.out",
+            force3D: true,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 90%",
+              once: true,
+            },
+          }
+        );
       });
     }, gridRef);
     return () => ctx.revert();
@@ -180,16 +197,14 @@ export default function ServicesPage() {
     ];
 
     const makeVisible = () => {
-      selectors.forEach((sel) => {
+      // Only force-show hero elements. Let scroll-triggered card animations play naturally.
+      [".services-hero-badge", ".services-hero-title", ".services-hero-desc"].forEach((sel) => {
         document.querySelectorAll(sel).forEach((el) => {
           const e = el as HTMLElement;
           const comp = window.getComputedStyle(e);
-          if (comp.opacity === "0" || comp.display === "none") {
+          if (comp.opacity === "0") {
             e.style.opacity = "1";
             e.style.transform = "none";
-            if (comp.display === "none") {
-              e.style.display = "";
-            }
           }
         });
       });
@@ -235,7 +250,7 @@ export default function ServicesPage() {
           <div className="services-grid" style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
             {services.map((service, index) => (
               <div key={service.id} id={service.id} className="service-detail-card" style={{ '--card-index': index, '--card-color': service.color } as React.CSSProperties}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "#000000", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease" }}
+                <div className="service-card-layout" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "0", background: "#000000", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "24px", overflow: "hidden", transition: "all 0.4s ease" }}
                   onMouseEnter={(e) => { 
                     const parent = e.currentTarget as HTMLElement;
                     parent.style.borderColor = `${service.color}40`; 
@@ -272,7 +287,7 @@ export default function ServicesPage() {
                       <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.6)", lineHeight: 1.8, marginBottom: "28px" }}>{service.longDesc}</p>
 
                       {/* Features List */}
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "24px" }}>
+                      <div className="service-stats-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "24px" }}>
                         {service.features.map((feature, fi) => (
                           <div key={fi} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={service.color} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>

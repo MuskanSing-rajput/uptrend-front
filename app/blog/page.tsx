@@ -83,23 +83,17 @@ const blogPosts = [
   },
 ];
 
-const categories = ["All", "Market Analysis", "Trading Strategies", "Education", "Product Update"];
-
 export default function BlogPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
-      const [selectedPost, setSelectedPost] = useState(blogPosts[0]);
+  const [selectedPost, setSelectedPost] = useState(blogPosts[0]);
   const [showAllPosts, setShowAllPosts] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const featuredRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  const filteredPosts =
-    activeCategory === "All"
-      ? blogPosts
-      : blogPosts.filter((post) => post.category === activeCategory);
+  const filteredPosts = blogPosts;
 
   const featuredPost = blogPosts.find((p) => p.featured);
-  const gridPosts = filteredPosts.filter((p) => !p.featured || activeCategory !== "All");
+  const gridPosts = filteredPosts.filter((p) => !p.featured);
 
   // Hero animations
   useEffect(() => {
@@ -118,16 +112,14 @@ export default function BlogPage() {
       gsap.fromTo(".featured-post", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".featured-post", start: "top 85%", toggleActions: "play none none none" } });
     }, featuredRef);
     return () => ctx.revert();
-  }, [activeCategory]);
-
-  // Grid posts animation
+  }, []);
   useEffect(() => {
     if (!gridRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(".blog-card", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.12, ease: "power3.out", scrollTrigger: { trigger: ".blog-card", start: "top 90%", toggleActions: "play none none none" } });
     }, gridRef);
     return () => ctx.revert();
-  }, [activeCategory, showAllPosts]);
+  }, [showAllPosts]);
 
   // Featured post change animation
   useEffect(() => {
@@ -242,60 +234,11 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Category Filter - Simplified */}
-      <div
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-          padding: "0 24px 24px",
-          display: "flex",
-          justifyContent: "flex-start",
-          gap: "12px",
-          flexWrap: "wrap",
-        }}
-      >
-        {categories.slice(0, 5).map((cat, index) => (
-          <button
-            key={cat}
-            className="category-btn"
-            onClick={() => setActiveCategory(cat)}
-            style={{
-              padding: "10px 24px",
-              borderRadius: "100px",
-              border: activeCategory === cat ? "1px solid #00f0ff" : "1px solid rgba(255,255,255,0.12)",
-              background: activeCategory === cat ? "linear-gradient(135deg, rgba(0,240,255,0.15), rgba(0,150,255,0.15))" : "rgba(255,255,255,0.03)",
-              color: activeCategory === cat ? "#00f0ff" : "rgba(255,255,255,0.6)",
-              fontSize: "13px",
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              backdropFilter: "blur(10px)",
-            }}
-            onMouseEnter={(e) => {
-              if (activeCategory !== cat) {
-                e.currentTarget.style.borderColor = "rgba(0,240,255,0.4)";
-                e.currentTarget.style.color = "#ffffff";
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeCategory !== cat) {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
-                e.currentTarget.style.color = "rgba(255,255,255,0.6)";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-              }
-            }}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+
 
       {/* Main Content Section - Two Column Layout */}
       <section ref={featuredRef} style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 24px 100px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: "40px", alignItems: "start" }}>
+        <div className="blog-main-layout" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: "40px", alignItems: "start" }}>
           
           {/* Left Side - Large Featured Post */}
           <div

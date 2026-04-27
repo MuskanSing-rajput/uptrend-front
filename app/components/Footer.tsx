@@ -5,17 +5,17 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer style={{ background: '#0a0a0a', color: '#9ca3af', position: 'relative', zIndex: 12, borderTop: '2px solid rgba(0, 240, 255, 0.3)' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 60px 60px' }}>
+      <div className="footer-wrapper" style={{ maxWidth: '1200px', margin: '0 auto', padding: 'clamp(48px, 6vw, 80px) clamp(20px, 5vw, 60px) clamp(32px, 4vw, 60px)' }}>
         {/* Risk Disclaimer */}
         <div style={{ marginBottom: '48px' }}>
-          <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Risk Disclaimer</h3>
-          <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#9ca3af' }}>
+          <h3 className="footer-heading" style={{ fontSize: 'clamp(16px, 2vw, 20px)', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Risk Disclaimer</h3>
+          <p className="footer-text" style={{ fontSize: 'clamp(12px, 1.2vw, 14px)', lineHeight: 1.8, color: '#9ca3af' }}>
             Trading in financial markets involves substantial risk and may not be suitable for all investors. Past performance is not indicative of future results. Algorithmic trading carries additional risks including system failures, connectivity issues, and unexpected market conditions. The use of AI and automated trading systems does not guarantee profits. You should carefully consider your financial situation and risk tolerance before engaging in trading activities. Uptrender provides technology solutions only and does not provide investment advice. Please consult with a qualified financial advisor before making any investment decisions.
           </p>
         </div>
 
         {/* Quick Links Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '60px', marginBottom: '48px', paddingTop: '48px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+        <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'clamp(24px, 4vw, 60px)', marginBottom: '48px', paddingTop: '48px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
           {/* Column 1 - Company */}
           <div>
             <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#ffffff' }}>Company</h3>

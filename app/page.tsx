@@ -411,19 +411,23 @@ export default function Home() {
 
       gsap.fromTo(
         ".stacking-card",
-        { opacity: 0, y: 80, scale: 0.9 },
+        { opacity: 0, y: 60 },
         {
           opacity: 1,
           y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.1,
+          duration: 0.7,
+          stagger: 0.12,
           ease: "power3.out",
           force3D: true,
           scrollTrigger: {
             trigger: ".stacking-cards-wrapper",
-            start: "top 75%",
-            toggleActions: "play none none none",
+            start: "top 90%",
+            once: true,
+            onEnter: () => {
+              document.querySelectorAll<HTMLElement>(".stacking-card").forEach(el => {
+                el.style.willChange = "transform, opacity";
+              });
+            },
           },
         }
       );
@@ -833,7 +837,7 @@ export default function Home() {
 
           <div className="coin-stage">
             <video autoPlay muted loop playsInline className="coin-video">
-              <source src="/coin.mp4" type="video/mp4" />
+              <source src="/coin.mov" type="video/mp4" />
             </video>
           </div>
 
@@ -1288,13 +1292,13 @@ export default function Home() {
       </section>
 
       {/* Why Traders Choose Us Section */}
-      <section ref={whyChooseRef} className="why-choose-section" style={{ background: '#0a0a0a', padding: '100px 0', position: 'relative', zIndex: 12 }}>
+      <section ref={whyChooseRef} className="why-choose-section" style={{ background: '#0a0a0a', padding: '100px 0', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px' }}>
           <h2 className="why-choose-title" style={{ color: '#ffffff', fontSize: '52px', fontWeight: 700, textAlign: 'center', marginBottom: '80px' }}>
             Why Traders Are Switching to Uptrender<span style={{ color: '#00f0ff' }}>.</span>
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }}>
+          <div className="why-choose-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }}>
             {/* Card 1 - Make informed trades */}
             <div className="why-card" style={{ background: '#000000', border: '2px solid rgba(60, 60, 60, 0.7)', borderRadius: '24px', padding: '40px 32px', position: 'relative', boxShadow: '0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.02)', transition: 'all 0.3s ease' }}
               onMouseEnter={(e) => {
@@ -1797,8 +1801,8 @@ export default function Home() {
         background: '#0a0a0a',
         padding: '120px 0',
         position: 'relative',
-        zIndex: 12,
-        overflow: 'hidden'
+        zIndex: 1,
+        overflow: 'visible'
       }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 60px' }}>
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>

@@ -362,24 +362,24 @@ export default function Partnership() {
         <div style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(10,12,14,0.65)",
+          background: "rgba(10,12,14,0.92)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           zIndex: 1000,
           padding: "20px",
-          backdropFilter: "blur(6px)"
+          backdropFilter: "blur(12px)"
         }} onClick={() => setIsModalOpen(false)}>
           <div style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.06)",
+            background: "#111318",
+            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "20px",
             padding: "36px",
             maxWidth: "560px",
             width: "100%",
             maxHeight: "90vh",
             overflowY: "auto",
-            boxShadow: "0 10px 40px rgba(2,6,23,0.6)",
+            boxShadow: "0 24px 60px rgba(0,0,0,0.8)",
             position: "relative"
           }} onClick={(e) => e.stopPropagation()}>
             <button aria-label="Close modal" onClick={() => setIsModalOpen(false)} style={{ position: "absolute", right: 12, top: 12, background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: 18, cursor: "pointer" }}>×</button>
@@ -406,15 +406,15 @@ export default function Partnership() {
                 <input type="tel" name="phone" value={formData.phone} onChange={(e) => { const value = e.target.value.replace(/[^0-9]/g, ""); setFormData(prev => ({ ...prev, phone: value })); }} required placeholder="91XXXXXXXXXX" pattern="[0-9]*" style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+              <div className="modal-date-time-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                 <div>
                   <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Preferred Date</label>
-                  <input type="date" name="date" value={formData.date} onChange={handleFormChange} required style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                  <input type="date" name="date" value={formData.date} onChange={handleFormChange} required style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box", colorScheme: "dark" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
                 </div>
 
                 <div>
                   <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "8px", color: "rgba(255,255,255,0.85)" }}>Preferred Time</label>
-                  <input type="time" name="time" value={formData.time} onChange={handleFormChange} required style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
+                  <input type="time" name="time" value={formData.time} onChange={handleFormChange} required style={{ width: "100%", padding: "12px 14px", background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", color: "#fff", fontSize: "14px", outline: "none", boxSizing: "border-box", colorScheme: "dark" }} onFocus={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.background = "rgba(255,255,255,0.02)"; }} onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.06)"; e.target.style.background = "rgba(0,0,0,0.35)"; }} />
                 </div>
               </div>
 
@@ -425,7 +425,7 @@ export default function Partnership() {
 
               <div style={{ display: "flex", gap: "12px", marginTop: "6px", justifyContent: "flex-end" }}>
                 <button type="button" onClick={() => setIsModalOpen(false)} style={{ background: "transparent", color: "rgba(255,255,255,0.85)", padding: "10px 18px", borderRadius: "10px", fontSize: "14px", fontWeight: 600, border: "1px solid rgba(255,255,255,0.06)", cursor: "pointer" }}>Cancel</button>
-                <button type="submit" style={{ background: "linear-gradient(90deg,#00f0ff,#a855f7)", color: "#06111a", padding: "12px 22px", borderRadius: "10px", fontSize: "15px", fontWeight: 800, border: "none", cursor: "pointer", boxShadow: "0 10px 30px rgba(168,85,247,0.08)" }} onMouseEnter={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(-1px)"; btn.style.boxShadow = "0 18px 36px rgba(168,85,247,0.12)"; }} onMouseLeave={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(0)"; btn.style.boxShadow = "0 10px 30px rgba(168,85,247,0.08)"; }}>Schedule Demo Call</button>
+                <button type="submit" style={{ background: "#04e1f4", color: "#06111a", padding: "12px 22px", borderRadius: "10px", fontSize: "15px", fontWeight: 800, border: "none", cursor: "pointer", boxShadow: "0 10px 30px rgba(4,225,244,0.25)", transition: "transform 0.2s ease, box-shadow 0.2s ease" }} onMouseEnter={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(-1px)"; btn.style.boxShadow = "0 18px 36px rgba(4,225,244,0.35)"; }} onMouseLeave={(e) => { const btn = e.currentTarget as HTMLButtonElement; btn.style.transform = "translateY(0)"; btn.style.boxShadow = "0 10px 30px rgba(4,225,244,0.25)"; }}>Schedule Demo Call</button>
               </div>
             </form>
           </div>

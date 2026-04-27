@@ -62,34 +62,33 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
-  // Story section animations - Optimized with ScrollTrigger batching
+  // Story section animations — once:true prevents re-triggering flicker on scroll back
   useEffect(() => {
     if (!storyRef.current) return;
     const ctx = gsap.context(() => {
-      // Batch story animations
       gsap.fromTo(".story-badge", 
         { opacity: 0, y: 20 }, 
-        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-badge", start: "top 85%", toggleActions: "play none none none" } }
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-badge", start: "top 88%", once: true } }
       );
       
       gsap.fromTo(".story-title", 
         { opacity: 0, y: 40 }, 
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-title", start: "top 85%", toggleActions: "play none none none" } }
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-title", start: "top 88%", once: true } }
       );
       
       gsap.fromTo(".story-text", 
         { opacity: 0, y: 30 }, 
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-text", start: "top 85%", toggleActions: "play none none none" } }
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-text", start: "top 88%", once: true } }
       );
       
       gsap.fromTo(".story-line", 
         { scaleY: 0 }, 
-        { scaleY: 1, duration: 1, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-line", start: "top 85%", toggleActions: "play none none none" } }
+        { scaleY: 1, duration: 1, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-line", start: "top 88%", once: true } }
       );
       
       gsap.fromTo(".story-milestone", 
         { opacity: 0, x: -30 }, 
-        { opacity: 1, x: 0, duration: 0.6, stagger: 0.15, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-milestones", start: "top 80%", toggleActions: "play none none none" } }
+        { opacity: 1, x: 0, duration: 0.6, stagger: 0.15, ease: "power3.out", force3D: true, scrollTrigger: { trigger: ".story-milestones", start: "top 85%", once: true } }
       );
     }, storyRef);
     return () => ctx.revert();
@@ -99,49 +98,58 @@ export default function About() {
   useEffect(() => {
     if (!missionRef.current) return;
     const ctx = gsap.context(() => {
-      // Title animation
+      // Title animation — no scale (prevents layout thrashing/flicker)
       gsap.fromTo(".mv-title", 
-        { opacity: 0, y: 50, scale: 0.9 }, 
+        { opacity: 0, y: 40 }, 
         { 
           opacity: 1, 
           y: 0, 
-          scale: 1, 
-          duration: 1, 
-          ease: "back.out(1.5)", 
+          duration: 0.9, 
+          ease: "power3.out", 
           force3D: true,
           scrollTrigger: { 
             trigger: ".mv-title", 
-            start: "top 80%", 
-            toggleActions: "play none none none" 
+            start: "top 85%", 
+            once: true,
           } 
         }
       );
       
-      // Mission and Vision cards - staggered with GPU acceleration
+      // Mission and Vision cards — opacity + y only for smooth GPU animation
       gsap.fromTo(".mv-card", 
-        { opacity: 0, y: 80, scale: 0.85 }, 
+        { opacity: 0, y: 50 }, 
         { 
           opacity: 1, 
           y: 0, 
-          scale: 1, 
-          duration: 0.8, 
+          duration: 0.75, 
           stagger: 0.15, 
-          ease: "power4.out", 
+          ease: "power3.out", 
           force3D: true,
           scrollTrigger: { 
             trigger: ".mv-cards", 
-            start: "top 80%", 
-            toggleActions: "play none none none" 
+            start: "top 85%", 
+            once: true,
           } 
         }
       );
       
-      // Floating icon animation - reduced intensity
-      gsap.to(".mv-icon", { y: -6, duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: -1, force3D: true, stagger: 0.2 });
+      // Floating icon animation — longer duration, less movement to avoid jitter
+      const mvIcons = gsap.utils.toArray<HTMLElement>(".mv-icon");
+      mvIcons.forEach((el, i) => {
+        gsap.to(el, {
+          y: -5,
+          duration: 3.5 + i * 0.3,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          force3D: true,
+          delay: i * 0.4,
+        });
+      });
       
       // Values section animations
       gsap.fromTo(".values-title", 
-        { opacity: 0, y: 40 }, 
+        { opacity: 0, y: 30 }, 
         { 
           opacity: 1, 
           y: 0, 
@@ -150,27 +158,26 @@ export default function About() {
           force3D: true,
           scrollTrigger: { 
             trigger: ".values-title", 
-            start: "top 85%", 
-            toggleActions: "play none none none" 
+            start: "top 88%", 
+            once: true,
           } 
         }
       );
       
-      // Value cards - simpler animation
+      // Value cards — no scale, just fade+slide
       gsap.fromTo(".value-card", 
-        { opacity: 0, y: 50, scale: 0.9 }, 
+        { opacity: 0, y: 40 }, 
         { 
           opacity: 1, 
           y: 0, 
-          scale: 1, 
-          duration: 0.7, 
+          duration: 0.65, 
           stagger: 0.1, 
-          ease: "back.out(1)", 
+          ease: "power3.out", 
           force3D: true,
           scrollTrigger: { 
             trigger: ".values-grid", 
-            start: "top 80%", 
-            toggleActions: "play none none none" 
+            start: "top 85%", 
+            once: true,
           } 
         }
       );
@@ -327,7 +334,7 @@ export default function About() {
       `}</style>
 
       {/* Hero Section - Fullscreen Video Background */}
-      <section ref={heroRef} style={{ 
+      <section ref={heroRef} className="about-hero-section" style={{ 
         position: "relative", 
         minHeight: "100vh", 
         overflow: "hidden",
@@ -348,6 +355,7 @@ export default function About() {
             loop
             muted
             playsInline
+            className="about-hero-video"
             style={{
               width: "100%",
               height: "100%",
@@ -360,7 +368,7 @@ export default function About() {
           </video>
           
           {/* Dark overlay for better text readability */}
-          <div style={{
+          <div className="about-hero-overlay" style={{
             position: "absolute",
             inset: 0,
             background: "linear-gradient(to right, rgba(10, 10, 20, 0.85) 0%, rgba(10, 10, 20, 0.6) 50%, rgba(10, 10, 20, 0.3) 100%)",
@@ -369,7 +377,7 @@ export default function About() {
         </div>
 
         {/* Content Container */}
-        <div style={{ 
+        <div className="about-hero-container" style={{ 
           maxWidth: "1300px", 
           margin: "0 auto", 
           padding: "140px 60px 80px", 
@@ -413,7 +421,7 @@ export default function About() {
 
       {/* Our Story Section - 80% width, left aligned, attractive */}
       <section ref={storyRef} style={{ padding: "100px 0" }}>
-        <div style={{ width: "80%", padding: "0 60px" }}>
+        <div className="about-story-container" style={{ width: "80%", padding: "0 60px" }}>
           {/* Story header */}
           <span className="story-badge" style={{ display: "inline-block", background: "rgba(0, 240, 255, 0.1)", border: "1px solid rgba(0, 240, 255, 0.2)", borderRadius: "50px", padding: "8px 20px", fontSize: "12px", fontWeight: 600, color: "#00f0ff", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "20px" }}>Our Story</span>
           <h2 className="story-title" style={{ fontSize: "48px", fontWeight: 700, lineHeight: 1.15, marginBottom: "60px" }}>
@@ -421,7 +429,7 @@ export default function About() {
           </h2>
 
           {/* Timeline style content */}
-          <div style={{ display: "flex", gap: "60px" }}>
+          <div className="about-story-timeline" style={{ display: "flex", gap: "60px" }}>
             {/* Left - decorative line */}
             <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", minWidth: "3px" }}>
               <div className="story-line" style={{ width: "3px", flex: 1, background: "linear-gradient(180deg, #00f0ff, #a855f7, transparent)", borderRadius: "2px", transformOrigin: "top" }} />
@@ -461,7 +469,7 @@ export default function About() {
       <section ref={missionRef} style={{ padding: "100px 0", background: "linear-gradient(180deg, #0a0a0a 0%, #0d0f18 50%, #0a0a0a 100%)", position: "relative", perspective: "1000px" }}>
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "800px", height: "800px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.04) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", position: "relative", zIndex: 1 }}>
+        <div className="about-section-inner" style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", position: "relative", zIndex: 1 }}>
           <div style={{ textAlign: "center", marginBottom: "60px" }}>
             <h2 className="mv-title" style={{ fontSize: "48px", fontWeight: 700, marginBottom: "16px", opacity: 0 }}>
               What Drives Us<span style={{ color: "#00f0ff" }}>.</span>
@@ -534,14 +542,14 @@ export default function About() {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0, 240, 255, 0.06) 0%, rgba(139, 92, 246, 0.06) 100%)" }} />
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-        <div className="cta-content" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1 }}>
+        <div className="cta-content about-cta-inner" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1 }}>
           <h2 style={{ fontSize: "48px", fontWeight: 800, marginBottom: "20px", lineHeight: 1.15 }}>
             Ready to Trade<br />Smarter?<span style={{ color: "#00f0ff" }}>.</span>
           </h2>
           <p style={{ fontSize: "18px", color: "rgba(255, 255, 255, 0.6)", marginBottom: "40px", lineHeight: 1.7 }}>
             Join 100,000+ traders who trust Uptrender for AI-powered, next-generation trading.
           </p>
-          <div style={{ display: "flex", gap: "16px", justifyContent: "center" }}>
+          <div className="about-cta-buttons" style={{ display: "flex", gap: "16px", justifyContent: "center" }}>
             <a href="https://app.uptrender.in/auth/register" style={{ display: "inline-block", background: "linear-gradient(135deg, #00f0ff, #00b8d4)", color: "#0a0a0a", padding: "16px 40px", borderRadius: "12px", fontSize: "16px", fontWeight: 700, textDecoration: "none", transition: "all 0.3s ease", boxShadow: "0 8px 30px rgba(0, 240, 255, 0.3)" }}>
               Get Started Free
             </a>

@@ -180,6 +180,7 @@ export default function ContactPage() {
       {/* Contact Form */}
       <section style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 24px 100px" }}>
         <div
+          className="contact-form-layout"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
