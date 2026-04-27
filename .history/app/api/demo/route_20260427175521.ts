@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     // Email to support
     await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "muskansingh7105@gmail.com", // TODO: change to support@uptrend.in after domain verification
+      to: "support@uptrend.in",
       subject: `New Demo Call Request — ${sourceLabel}`,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     // Auto-reply to user
     await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "muskansingh7105@gmail.com", // TODO: change to `email` after domain verification
+      to: email,
       subject: `Your Demo Call Request — Uptrender ${sourceLabel}`,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0a14;padding:40px;border-radius:12px">
@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, message: "Emails sent" });
   } catch (error) {
     console.error("Email error:", error);
-    const msg = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ success: false, message: msg }, { status: 500 });
+    return NextResponse.json({ success: false, message: "Failed to send email" }, { status: 500 });
   }
 }
