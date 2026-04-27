@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -44,6 +45,18 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Reset mobile menu when page is restored from bfcache (back/forward navigation)
+  useEffect(() => {
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        setMobileMenuOpen(false);
+        document.body.classList.remove('mobile-menu-open');
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
+
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -69,12 +82,14 @@ export default function Navbar() {
         }}>
           {/* Logo */}
           <Link href="/" className="logo-wrap" style={{ textDecoration: "none", zIndex: 1002 }}>
-            <span className="logo-mark" aria-label="uptrender">
-              <span className="logo-v">up</span>
-              <span className="logo-t">trender</span>
-              <span className="logo-dot"></span>
-            </span>
-            <span className="logo-text"></span>
+            <Image
+              src="/Uptrender-white.png"
+              alt="Uptrender"
+              width={320}
+              height={44}
+              priority
+              style={{ width: "clamp(170px,15vw,390px)", height: "80px", objectFit: "contain", display: "block" }}
+            />
           </Link>
 
           {/* Desktop Navigation */}

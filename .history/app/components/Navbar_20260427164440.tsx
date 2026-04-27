@@ -85,10 +85,10 @@ export default function Navbar() {
             <Image
               src="/Uptrender-white.jpg"
               alt="Uptrender"
-              width={160}
+              width={320}
               height={44}
               priority
-              style={{ height: "clamp(30px,4vw,44px)", width: "auto", objectFit: "contain", display: "block" }}
+              style={{ width: "clamp(170px,15vw,390px)", height: "80px", objectFit: "contain", display: "block" }}
             />
           </Link>
 

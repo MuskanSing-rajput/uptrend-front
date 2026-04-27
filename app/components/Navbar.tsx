@@ -83,12 +83,12 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="logo-wrap" style={{ textDecoration: "none", zIndex: 1002 }}>
             <Image
-              src="/Uptrender-white.jpg"
+              src="/Uptrender-white.png"
               alt="Uptrender"
-              width={160}
+              width={320}
               height={44}
               priority
-              style={{ height: "clamp(30px,4vw,44px)", width: "auto", objectFit: "contain", display: "block" }}
+              style={{ width: "clamp(170px,15vw,390px)", height: "80px", objectFit: "contain", display: "block" }}
             />
           </Link>
 
