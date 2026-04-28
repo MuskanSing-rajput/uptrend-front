@@ -1,0 +1,57 @@
+# Uptrender
+
+> AI-Powered Forex & Crypto Trading Platform — India
+
+## What is Uptrender?
+
+Uptrender is India's leading all-in-one AI-powered algorithmic trading platform that lets users trade Forex, Cryptocurrency, and Indian equities from a single dashboard. It is designed for both beginners and professional traders.
+
+Uptrender is NOT a broker. It connects to users' existing broker accounts via secure APIs and automates trade execution.
+
+## Core Features
+
+- **AI Strategy Builder** — Build automated trading strategies using plain-English prompts. No coding required.
+- **Copy Trading** — Automatically mirror top-performing traders' strategies in real time.
+- **Multi-Market Dashboard** — Monitor Forex pairs and Crypto assets side-by-side with live prices.
+- **Advanced Backtesting Engine** — Test strategies on historical data before going live.
+- **Strategy Marketplace** — Buy, sell, or subscribe to proven strategies from expert traders.
+- **Risk Management System** — Per-trade stop-loss, position sizing, and portfolio-level risk controls.
+- **Paper Trading** — Full simulation environment before switching to live trading.
+
+## Business Programmes
+
+- **Franchise Partnership** — Become an Uptrender franchise partner, run your own branded trading business, earn recurring commissions from strategy subscriptions, plan subscriptions, and per-trade fees.
+- **White Label Platform** — Launch a fully custom-branded AI trading platform (your logo, domain, pricing) powered by Uptrender's infrastructure. Go live in weeks.
+
+## Company Info
+
+- **Founded**: India (Raipur, Chhattisgarh)
+- **Address**: 509, Babylon Capital, VIP Road, Raipur, Chhattisgarh
+- **Support Email**: support@uptrender.in
+- **Website**: https://uptrender.in
+
+## Key Pages
+
+- Homepage: https://uptrender.in
+- Services: https://uptrender.in/services
+- Partnership: https://uptrender.in/partnership
+- White Label: https://uptrender.in/white-label
+- Blog: https://uptrender.in/blog
+- FAQ: https://uptrender.in/faq
+- Contact: https://uptrender.in/contact
+- About: https://uptrender.in/about
+
+## Target Users
+
+- Retail traders (beginners and professionals)
+- Forex and Crypto signal providers
+- Trading educators and mentors
+- Finance influencers / content creators
+- Entrepreneurs looking to start a trading business
+- Businesses wanting a branded trading platform
+
+## Supported Markets
+
+- Forex (major, minor, and exotic pairs)
+- Cryptocurrency (BTC, ETH, and altcoins)
+- Indian Stock Market (equity and options)

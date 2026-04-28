@@ -132,16 +132,7 @@ export default function ServicesPage() {
   ];
 
   
-  // Hero animations
-  useEffect(() => {
-    if (!heroRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".services-hero-badge", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.2 });
-      gsap.fromTo(".services-hero-title", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.4 });
-      gsap.fromTo(".services-hero-desc", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.6 });
-    }, heroRef);
-    return () => ctx.revert();
-  }, []);
+  // Hero content is rendered immediately via CSS (no GSAP fromTo so it is never invisible)
 
   // Grid animations
   useEffect(() => {
@@ -197,21 +188,10 @@ export default function ServicesPage() {
     ];
 
     const makeVisible = () => {
-      // Only force-show hero elements. Let scroll-triggered card animations play naturally.
-      [".services-hero-badge", ".services-hero-title", ".services-hero-desc"].forEach((sel) => {
-        document.querySelectorAll(sel).forEach((el) => {
-          const e = el as HTMLElement;
-          const comp = window.getComputedStyle(e);
-          if (comp.opacity === "0") {
-            e.style.opacity = "1";
-            e.style.transform = "none";
-          }
-        });
-      });
       try { ScrollTrigger.refresh(true); } catch (e) { /* ignore */ }
     };
 
-    const t1 = setTimeout(makeVisible, 800);
+    const t1 = setTimeout(makeVisible, 200);
 
     return () => {
       clearTimeout(refreshId);
@@ -230,12 +210,12 @@ export default function ServicesPage() {
         <div style={{ position: "absolute", bottom: "-100px", left: "-200px", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <h1 className="services-hero-title" style={{ fontSize: "clamp(40px, 5vw, 68px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px" }}>
+          <h1 className="services-hero-title" style={{ fontSize: "clamp(40px, 5vw, 68px)", fontWeight: 800, lineHeight: 1.05, marginBottom: "24px", animation: "fadeInUp 0.7s ease both" }}>
             Premium Trading<br />
             <span style={{ background: "linear-gradient(135deg, #00f0ff, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Solutions</span> for Every Trader<span style={{ color: "#00f0ff" }}>.</span>
           </h1>
 
-          <p className="services-hero-desc" style={{ fontSize: "19px", color: "rgba(255, 255, 255, 0.6)", maxWidth: "700px", margin: "0 auto", lineHeight: 1.7 }}>
+          <p className="services-hero-desc" style={{ fontSize: "19px", color: "rgba(255, 255, 255, 0.6)", maxWidth: "700px", margin: "0 auto", lineHeight: 1.7, animation: "fadeInUp 0.7s 0.15s ease both" }}>
             Discover our comprehensive suite of AI-powered tools and services designed to elevate your trading journey from beginner to professional.
           </p>
         </div>

@@ -291,7 +291,7 @@ export default function BlogPage() {
 
             {/* Content */}
             <div className="featured-post-content" style={{ padding: "32px" }}>
-              <span
+              <span className="category-btn"
                 style={{
                   display: "inline-block",
                   padding: "6px 18px",
@@ -402,7 +402,7 @@ export default function BlogPage() {
 
                 {/* Content */}
                 <div style={{ padding: "20px 20px 20px 0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <span
+                  <span className="category-btn"
                     style={{
                       display: "inline-block",
                       width: "fit-content",
